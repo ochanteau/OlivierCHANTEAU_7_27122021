@@ -15,19 +15,19 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 // import des routes
-// const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/user');
 // const saucesRoutes = require('./routes/sauces')
 
 
 
 
 // connection à la base de donnée
-const db = require('./modele/database')
+// const db = require('./modele/database')
 // voir pour try catch
-db.connect(function(err) {
-  if (err) throw err;
-  console.log("Connecté à la base de données MySQL!");
-});
+// db.connect(function(err) {
+//   if (err) throw err;
+//   console.log("Connecté à la base de données MySQL!");
+// });
 
 // try{db.connect();
 //   console.log("Connecté à la base de données MySQL!");
@@ -43,6 +43,49 @@ db.connect(function(err) {
 //     console.log(err); // fields contains extra meta data about results, if available
 //   }
 // );
+
+// db.query(
+//     'SELECT user_password, user_id FROM user WHERE user_email=?', 'quentin@gmail.com',
+//     function(err, results) {
+//       console.log(results); // results contains rows returned by server
+//       console.log(results.length); // results contains rows returned by server
+//       console.log(results[0]); // results contains rows returned by server
+//       console.log(results[0].user_password); // results contains rows returned by server
+
+//       console.log(err); // fields contains extra meta data about results, if available
+//     }
+//   );
+
+
+
+// test
+
+// import du module bcrypt
+// const bcrypt = require ("bcrypt");
+
+// bcrypt.hash("test", 10)
+//       .then(hash => {
+//         console.log(hash);
+//         const email = 'cha23@dzdz.com';
+//         const nom  = "test";
+//         const prenom = "test";
+//         const password= hash;
+       
+//         const user = {email,nom,prenom,password,droits_id:1};
+
+//         console.log(user);
+
+//  (  `nom`, `prenom`, `email`, `password`, `droits_id`)
+//         db.query(
+//           'INSERT INTO user SET  ?',user,
+//           function(err, results) {
+//           console.log(results); // results contains rows returned by server
+//           console.log(err); // fields contains extra meta data about results, if available
+//           }
+//         );
+//       })
+//       .catch(error => console.log(error));
+
 
 
 // middleware Morgan pour console.log les requetes et reponses serveurs
@@ -86,7 +129,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 // middleware de routing
-// app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes);
 // app.use('/api/sauces', saucesRoutes);
 
 module.exports = app;
