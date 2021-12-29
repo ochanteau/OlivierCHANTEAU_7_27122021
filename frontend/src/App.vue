@@ -1,30 +1,61 @@
 <template>
-  <div id="nav">
+  <!-- <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
-  </div>
+  </div> -->
   <router-view/>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<style lang="scss" >
+
+$font-stack: "Roboto", sans-serif;
+$title: "Shrikhand", sans-serif;
+$primary: #9356dc;
+$secondary: #ff79da;
+$tertiary: #99e2d0;
+$hint: #999;
+$border: #ddd;
+$localisation: #e4e0e0;
+$background: #f2f2f2;
+$background-light: white;
+$proposition_text: rgb(102, 100, 100);
+$shadow: 8px 8px 10px $border;
+$shadow--menu: 2px 2px 4px $border;
+
+// RESET
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#nav {
-  padding: 30px;
+// GENERAL
+
+html {
+  font-size: 62.5%;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+body {
+  font-family: $font-stack;
+  font-size: 1.6rem;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+
+h1 {
+  font-family: $title;
 }
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
 </style>
