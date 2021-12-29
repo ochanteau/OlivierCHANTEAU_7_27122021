@@ -8,8 +8,19 @@ CREATE TABLE `foodly`.`user` (
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `email_UNIQUE` (`user_email` ASC) VISIBLE);
 
+
+// 
+
 INSERT INTO `user` ( `iduser`, `nom`, `prenom`, `email`, `password`, `droits_id`)
 
     VALUES
     
     ( 'bernard','quentin', 'quentin@gmail.com', 'test', '1');
+
+
+// 
+
+SELECT * FROM user WHERE user_mail=?;
+
+// 
+

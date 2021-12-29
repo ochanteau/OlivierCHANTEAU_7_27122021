@@ -38,7 +38,7 @@ exports.signup = async (req, res) => {
    
 
     // fonction pour se loguer
-    exports.login = async (req, res) => {
+    exports.login =  (req, res) => {
     
       db.query(
         'SELECT user_password, user_id FROM user WHERE user_email=?', req.body.user_email,
@@ -48,8 +48,7 @@ exports.signup = async (req, res) => {
           else { 
 
               const {user_password, user_id} = results[0];
-              console.log(user_password,user_id);
-
+              
               // verification password de la requete et password base de donnée
               bcrypt.compare(req.body.user_password, results[0].user_password)
               .then(valid => {
