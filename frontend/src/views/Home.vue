@@ -6,31 +6,35 @@
     </div>
     <h3 class="home__h3">Bienvenue sur le réseau social de votre entreprise !</h3>
 
-    <form class="home__form">
-       <div>
+    <form class="home__form" :class="{ 'home__form--login': mode=='login' }">
+      <div v-if="mode=='createAccount'">
         <label for="nom"></label>
-        <input type="text" id="nom" name="user_nom" placeholder="Votre nom :">
+        <input v-model="nom" type="text" id="nom" name="user_nom" placeholder="Votre nom :" required >
       </div>
-      <div>
+      <div v-if="mode=='createAccount'">
         <label for="prénom"></label>
-        <input type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" >
+        <input v-model="prénom" type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" required>
       </div>
       <div>
         <label for="mail"></label>
-        <input type="email" id="mail" name="user_email" placeholder="Votre e-mail :">
+        <input v-model="email" type="email" id="mail" name="user_email" placeholder="Votre e-mail :" required>
       </div>
       <div>
         <label for="password"></label>
-        <input type="text" id="password" name="user_password" placeholder="Votre mot de passe :">
+        <input v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" required>
       </div>
       <div class="home__form__button">
-        <button type="submit">S'inscrire</button>
+        <button v-if="mode=='login'" class="home__form__button--login" :class="{'home__form__button--disabled' : !validatedFields}"  type="submit">Se connecter</button>
+        <button v-else type="submit" :class="{'home__form__button--disabled' : !validatedFields}" >S'inscrire</button>
       </div>
       
 
     </form>
     <div class="home__nav">
-        <p>Vous avez déjà un compte ? Connectez vous</p>
+        <p v-if="mode=='login'">Vous n'avez pas encore de compte ? <span class="home__nav__switch" @click="switchToCreateAccount">Inscrivez vous</span></p>
+        <p v-else >Vous avez déjà un compte ? <span class="home__nav__switch" @click="switchToLogin">Connectez vous</span></p>
+        
+
     </div>
   
   </div>
@@ -42,6 +46,37 @@
 
 export default {
   name: 'Home',
+  data: function (){
+    return {
+      mode :"login",
+      nom:"",
+      prénom:"",
+      email:"",
+      password:"",
+      
+    }
+  },
+  methods:{
+    switchToCreateAccount : function (){
+      this.mode = "createAccount"
+    },
+    switchToLogin : function (){
+      this.mode = "login"
+    }
+  },
+  computed : {
+    validatedFields : function(){
+      if (this.mode =='createAccount'){
+        if (this.nom !="" &&this.prenom !="" &&this.email !="" &&this.password !="" ){return true}
+        else {return false}
+      }
+      else {
+        if (this.email !="" &&this.password !="") {return true}
+        else return false
+      }
+
+    }
+  },
   components: {
  
   }
@@ -54,6 +89,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  
   &__img{
     display: flex;
     flex-direction: row;
@@ -72,7 +108,12 @@ export default {
   }
   &__nav{
     font-size: 2rem;
-    margin-top : 2rem
+    margin-top : 2rem;
+    &__switch {
+      color:#FD2D01 ;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
   &__form{
     // border: #FFD7D7 solid 1px;
@@ -83,7 +124,9 @@ export default {
     border-radius: 1rem;
     box-shadow: 2px 2px 8px 3px #FFD7D7;
     color: rgb(66, 61, 61);
-
+    &--login{
+    margin-top: 6rem ;
+    }
 
     div{
       display: flex;
@@ -111,6 +154,15 @@ export default {
     }
     &__button{
       justify-content: center !important;
+      &--login{
+        margin-bottom: 2rem ;
+      }
+      &--disabled{
+        background-color: rgb(168, 161, 161) !important;
+        cursor: not-allowed !important;
+        border: #FFD7D7 solid 1px !important;
+        color:#FFD7D7 !important ;
+      }
      
       button{   
         font-size: 2.5rem ;
@@ -121,9 +173,11 @@ export default {
         border: #FD2D01 solid 1px;
         background-color:#FFD7D7 ;
         box-shadow: 2px 2px 4px #999;
+        cursor: pointer;
         &:focus{
           outline: groove 2px #FD2D01;
         }
+
       }
     }
   
