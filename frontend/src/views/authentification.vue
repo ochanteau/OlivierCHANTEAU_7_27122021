@@ -24,11 +24,11 @@
         <input v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" required>
       </div>
       <div class="auth__form__button">
-        <button v-if="mode=='login'" class="auth__form__button--login" :class="{'auth__form__button--disabled' : !validatedFields}"  type="submit" @click="login">Se connecter</button>
-        <button v-else :class="{'auth__form__button--disabled' : !validatedFields}" @click="createAccount" >S'inscrire</button>
+        <button v-if="mode=='login'" class="auth__form__button--login" :class="{'auth__form__button--disabled' : !validatedFields}"  type="submit" @click.prevent="login">Se connecter</button>
+        <button v-else :class="{'auth__form__button--disabled' : !validatedFields}" @click.prevent="createAccount" >S'inscrire</button>
       </div>
       <div class="auth__form__error">
-        <p v-if="loginError">Adresse email et/ou mot de passe incorrect</p>
+        <p v-if="loginError&&mode=='login'">Adresse email et/ou mot de passe incorrect</p>
       </div>
       
 
@@ -57,10 +57,12 @@ export default {
       prenom:"",
       email:"",
       password:"",
-      loginError:false
+      loginError:false,
+      createAccountError:false
       
     }
   },
+  
   methods:{
     switchToCreateAccount : function (){
       this.mode = "createAccount"
@@ -68,31 +70,28 @@ export default {
     switchToLogin : function (){
       this.mode = "login"
     },
-    createAccount : function(e){
-      e.preventDefault();
+    createAccount : function(){
+      const self =this;
       const user = {user_nom:this.nom,user_prenom:this.prenom,user_email: this.email,user_password:this.password};
       instance.post('/signup', user)
-        .then(function (response) {console.log(response);})
+        .then(function () {self.login();})
         .catch(function (error) {console.log(error);});
     },
-    login : async function(e){
-      e.preventDefault();
+    login : async function(){
+      
       const user = {user_email: this.email,user_password:this.password}
       try{
-          // const response = await this.$store.dispatch('login', user );
-          // this.$store.dispatch('login', user ).then( function(response){
-          //   console.log(response);
-          // })
           const response = await instance.post('/login',user);
           console.log("response.data////////");
           console.log(response.data);
           this.$store.commit("logUser", response.data);
-          // this.$router.push('/profile')
+          this.$router.push('/about');
 
       }
       catch (error){
         this.loginError=true;
-        console.log(error)}
+        console.log(error)
+      }
       
 
     }
