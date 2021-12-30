@@ -24,8 +24,11 @@
         <input v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" required>
       </div>
       <div class="auth__form__button">
-        <button v-if="mode=='login'" class="auth__form__button--login" :class="{'auth__form__button--disabled' : !validatedFields}"  type="submit">Se connecter</button>
+        <button v-if="mode=='login'" class="auth__form__button--login" :class="{'auth__form__button--disabled' : !validatedFields}"  type="submit" @click="login">Se connecter</button>
         <button v-else :class="{'auth__form__button--disabled' : !validatedFields}" @click="createAccount" >S'inscrire</button>
+      </div>
+      <div class="auth__form__error">
+        <p v-if="loginError">Adresse email et/ou mot de passe incorrect</p>
       </div>
       
 
@@ -43,6 +46,7 @@
 <script>
 
 const axios = require('axios');
+const instance = axios.create({baseURL: 'http://localhost:3000/api/auth'});
 
 export default {
   name: 'authentification',
@@ -53,6 +57,7 @@ export default {
       prenom:"",
       email:"",
       password:"",
+      loginError:false
       
     }
   },
@@ -65,14 +70,31 @@ export default {
     },
     createAccount : function(e){
       e.preventDefault();
-      
-      const user = {user_nom:this.nom,user_prenom:this.prenom,user_email: this.email,user_password:this.password}
-      console.log(user);
-      axios.post('http://localhost:3000/api/auth/signup', user)
+      const user = {user_nom:this.nom,user_prenom:this.prenom,user_email: this.email,user_password:this.password};
+      instance.post('/signup', user)
         .then(function (response) {console.log(response);})
         .catch(function (error) {console.log(error);});
+    },
+    login : async function(e){
+      e.preventDefault();
+      const user = {user_email: this.email,user_password:this.password}
+      try{
+          // const response = await this.$store.dispatch('login', user );
+          // this.$store.dispatch('login', user ).then( function(response){
+          //   console.log(response);
+          // })
+          const response = await instance.post('/login',user);
+          console.log("response.data////////");
+          console.log(response.data);
+          this.$store.commit("logUser", response.data);
+          // this.$router.push('/profile')
+
+      }
+      catch (error){
+        this.loginError=true;
+        console.log(error)}
       
-    
+
     }
   },
   computed : {
@@ -138,6 +160,11 @@ export default {
     &--login{
     margin-top: 6rem ;
     }
+    &__error{
+      font-size: 1.5rem !important;
+      color: red !important;
+    }
+    
 
     div{
       display: flex;

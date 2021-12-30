@@ -50,7 +50,7 @@ exports.signup = async (req, res) => {
               const {user_password, user_id} = results[0];
               
               // verification password de la requete et password base de donnée
-              bcrypt.compare(req.body.user_password, results[0].user_password)
+              bcrypt.compare(req.body.user_password, user_password)
               .then(valid => {
                 
                 // si non concordant :envoie d'une  erreur 401
