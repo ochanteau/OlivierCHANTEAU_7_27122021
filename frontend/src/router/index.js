@@ -5,11 +5,13 @@ const routes = [
   {
     path: '/',
     name: 'authentification',
-    component: authentification
+    component: authentification,
+    meta:{title: "Groupamania"}
   },
   {
     path: '/about',
     name: 'About',
+    meta:{title: "about"},
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

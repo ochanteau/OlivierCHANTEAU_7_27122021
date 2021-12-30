@@ -6,6 +6,21 @@
   <router-view/>
 </template>
 
+<script>
+
+
+export default {
+  name:'app',
+  watch: { $route(to) {document.title = to.meta.title }
+  }
+    
+}
+
+
+
+</script>
+
+
 <style lang="scss" >
 
 $font-stack: "Roboto", sans-serif;
