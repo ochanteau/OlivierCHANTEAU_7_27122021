@@ -1,19 +1,19 @@
 <template>
-  <div class="home">
-    <div class="home__img">
+  <div class="auth">
+    <div class="auth__img">
     <img height="100" width="100"    src="../assets/icon.svg" alt="logo groupomania">
-    <h1 class="home__h1">Groupomania</h1>
+    <h1 class="auth__h1">Groupomania</h1>
     </div>
-    <h3 class="home__h3">Bienvenue sur le réseau social de votre entreprise !</h3>
+    <h3 class="auth__h3">Bienvenue sur le réseau social de votre entreprise !</h3>
 
-    <form class="home__form" :class="{ 'home__form--login': mode=='login' }">
+    <form class="auth__form" :class="{ 'auth__form--login': mode=='login' }">
       <div v-if="mode=='createAccount'">
         <label for="nom"></label>
         <input v-model="nom" type="text" id="nom" name="user_nom" placeholder="Votre nom :" required >
       </div>
       <div v-if="mode=='createAccount'">
         <label for="prénom"></label>
-        <input v-model="prénom" type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" required>
+        <input v-model="prenom" type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" required>
       </div>
       <div>
         <label for="mail"></label>
@@ -23,16 +23,16 @@
         <label for="password"></label>
         <input v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" required>
       </div>
-      <div class="home__form__button">
-        <button v-if="mode=='login'" class="home__form__button--login" :class="{'home__form__button--disabled' : !validatedFields}"  type="submit">Se connecter</button>
-        <button v-else type="submit" :class="{'home__form__button--disabled' : !validatedFields}" >S'inscrire</button>
+      <div class="auth__form__button">
+        <button v-if="mode=='login'" class="auth__form__button--login" :class="{'auth__form__button--disabled' : !validatedFields}"  type="submit">Se connecter</button>
+        <button v-else :class="{'auth__form__button--disabled' : !validatedFields}" @click="createAccount" >S'inscrire</button>
       </div>
       
 
     </form>
-    <div class="home__nav">
-        <p v-if="mode=='login'">Vous n'avez pas encore de compte ? <span class="home__nav__switch" @click="switchToCreateAccount">Inscrivez vous</span></p>
-        <p v-else >Vous avez déjà un compte ? <span class="home__nav__switch" @click="switchToLogin">Connectez vous</span></p>
+    <div class="auth__nav">
+        <p v-if="mode=='login'">Vous n'avez pas encore de compte ? <span class="auth__nav__switch" @click="switchToCreateAccount">Inscrivez vous</span></p>
+        <p v-else >Vous avez déjà un compte ? <span class="auth__nav__switch" @click="switchToLogin">Connectez vous</span></p>
         
 
     </div>
@@ -42,15 +42,15 @@
 
 <script>
 
-
+const axios = require('axios');
 
 export default {
-  name: 'Home',
+  name: 'authentification',
   data: function (){
     return {
       mode :"login",
       nom:"",
-      prénom:"",
+      prenom:"",
       email:"",
       password:"",
       
@@ -62,12 +62,23 @@ export default {
     },
     switchToLogin : function (){
       this.mode = "login"
+    },
+    createAccount : function(e){
+      e.preventDefault();
+      
+      const user = {user_nom:this.nom,user_prenom:this.prenom,user_email: this.email,user_password:this.password}
+      console.log(user);
+      axios.post('http://localhost:3000/api/auth/signup', user)
+        .then(function (response) {console.log(response);})
+        .catch(function (error) {console.log(error);});
+      
+    
     }
   },
   computed : {
     validatedFields : function(){
       if (this.mode =='createAccount'){
-        if (this.nom !="" &&this.prenom !="" &&this.email !="" &&this.password !="" ){return true}
+        if (this.nom !="" && this.prenom !="" &&this.email !="" &&this.password !="" ){return true}
         else {return false}
       }
       else {
@@ -85,7 +96,7 @@ export default {
 
 <style  lang="scss" scoped>
 
-.home{
+.auth{
   display: flex;
   flex-direction: column;
   align-items: center;
