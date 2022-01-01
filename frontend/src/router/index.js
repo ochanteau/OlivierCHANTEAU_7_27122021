@@ -6,7 +6,7 @@ const routes = [
     path: '/',
     name: 'authentification',
     component: authentification,
-    meta:{title: "Groupamania"}
+    meta:{title: "Groupomania"}
   },
   {
     path: '/about',
