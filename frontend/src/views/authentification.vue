@@ -30,11 +30,13 @@
       <div class=" form__fields form__fields--error">
         <p v-if="loginError&&mode=='login'">Adresse email et/ou mot de passe incorrect.</p>
         <p v-if="!validatedNames&&mode=='createAccount'">Votre Nom et Prénom ne doivent pas contenir de caracteres spéciaux.</p>
-        <p v-if="errorEmail&&mode=='createAccount'">Merci de renseigner une adresse mail valide.</p>
-        <p v-if="errorPassword&&mode=='createAccount'">Votre mot de passe doit contenir au minimum huit caracteres dont :<br>
-        une minuscule, une majuscule et un chiffre. <br>
-        Il ne doit pas contenir d'espace.
-        </p>        
+        <p v-if="errorEmail&&mode=='createAccount'">Merci de renseigner une adresse email valide.</p>
+        <div class="form__fields--errorPassword" v-if="errorPassword&&mode=='createAccount'">
+          <p>Votre mot de passe doit contenir au minimum huit caracteres dont :</p>
+          <p><em>une minuscule, une majuscule et un chiffre.</em></p>
+          <p><em>Il ne doit pas contenir d'espace.</em></p>
+        </div>
+           
         <ul v-if="createAccountError.length&&mode=='createAccount'">
           <li v-for=" (error,index) in createAccountError" :key="index">{{error}}</li>
         </ul>
@@ -184,42 +186,46 @@ export default {
   }
 
 }
-  .form{
-    
-    max-width: 100rem;
-    margin-top: 3rem;
-    padding: 2rem 4rem;
-    font-size: 2.5rem;
-    border-radius: 1rem;
-    box-shadow: 2px 2px 8px 3px #FFD7D7;
-    color: rgb(66, 61, 61);
-    &--login{
+
+.form{
+  max-width: 100rem;
+  margin-top: 3rem;
+  padding: 2rem 4rem;
+  font-size: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 8px 3px #FFD7D7;
+  color: rgb(66, 61, 61);
+
+  &--login{
     margin-top: 6rem ;
+  }
+
+  &__fields{
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    &--error{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5rem ;
+    color: red ;
     }
-
-    
-    
-
-    &__fields{
-      display: flex;
-      justify-content: center;
-      margin-top: 3rem;
-      &--error{
+    &--errorPassword{
+      color: blue !important;
       display: flex;
       flex-direction: column;
-      font-size: 1.5rem !important;
-      color: red !important;
+      align-items: center;
     }
-    }
-   
-    &__input{
-     
-      color: rgb(66, 61, 61);
-      font-weight: bold;
-      background-color:white;
-      border: solid 2px #FFD7D7 ;
-      border-radius: 0.5rem;
-      padding: 1rem 6rem;
+  }
+  
+  &__input{
+    color: rgb(66, 61, 61);
+    font-weight: bold;
+    background-color:white;
+    border: solid 2px #FFD7D7 ;
+    border-radius: 0.5rem;
+    padding: 1rem 6rem;
    
       &:focus{
         outline: groove 2px #FD2D01;
@@ -228,48 +234,33 @@ export default {
         color: rgb(66, 61, 61);
         font-weight:bold;
       }
-    }
-    &__button{
-        font-size: 2.5rem ;
-        margin-top: 1rem;
-        padding: 1rem 7rem;
-        border-radius: 1rem;
-        color: rgb(66, 61, 61);
-        border: #FD2D01 solid 1px;
-        background-color:#FFD7D7 ;
-        box-shadow: 2px 2px 4px #999;
-        cursor: pointer;
+  }
+
+  &__button{
+    font-size: 2.5rem ;
+    margin-top: 1rem;
+    padding: 1rem 7rem;
+    border-radius: 1rem;
+    color: rgb(66, 61, 61);
+    border: #FD2D01 solid 1px;
+    background-color:#FFD7D7 ;
+    box-shadow: 2px 2px 4px #999;
+    cursor: pointer;
       &:focus{
           outline: groove 2px #FD2D01;
-        }
+      }
       &--login{
         margin-bottom: 2rem ;
       }
       &--disabled{
-        background-color: rgb(168, 161, 161) !important;
-        cursor: not-allowed !important;
-        border: #FFD7D7 solid 1px !important;
-        color:#FFD7D7 !important ;
+        background-color: rgb(168, 161, 161) ;
+        cursor: not-allowed ;
+        border: #FFD7D7 solid 1px ;
+        color:#FFD7D7  ;
       }
-     
-      // button{   
-      //   font-size: 2.5rem ;
-      //   margin-top: 1rem;
-      //   padding: 1rem 7rem;
-      //   border-radius: 1rem;
-      //   color: rgb(66, 61, 61);
-      //   border: #FD2D01 solid 1px;
-      //   background-color:#FFD7D7 ;
-      //   box-shadow: 2px 2px 4px #999;
-      //   cursor: pointer;
-      //   &:focus{
-      //     outline: groove 2px #FD2D01;
-      //   }
-
-      // }
-    }
-  
   }
+  
+}
 
 
 
