@@ -17,7 +17,7 @@
       </div>
       <div class="form__fields">
         <label for="mail"></label>
-        <input class="form__input" @change="validatedEmail" v-model="email" type="email" id="mail" name="user_email" placeholder="Votre e-mail :" >
+        <input class="form__input" @input="validatedEmail" v-model="email" type="email" id="mail" name="user_email" placeholder="Votre e-mail :" >
       </div>
       <div class="form__fields">
         <label for="password"></label>
@@ -209,10 +209,10 @@ export default {
     flex-direction: column;
     align-items: center;
     font-size: 1.5rem ;
-    color: red ;
+    color: blue;
     }
     &--errorPassword{
-      color: blue !important;
+      
       display: flex;
       flex-direction: column;
       align-items: center;
