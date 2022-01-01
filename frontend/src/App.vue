@@ -30,10 +30,8 @@ $secondary: #ff79da;
 $tertiary: #99e2d0;
 $hint: #999;
 $border: #ddd;
-$localisation: #e4e0e0;
 $background: #f2f2f2;
 $background-light: white;
-$proposition_text: rgb(102, 100, 100);
 $shadow: 8px 8px 10px $border;
 $shadow--menu: 2px 2px 4px $border;
 

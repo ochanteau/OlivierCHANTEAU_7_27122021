@@ -1,45 +1,42 @@
 <template>
   <div class="auth">
-    <div class="auth__img">
+    <div class="auth__header">
     <img height="100" width="100"    src="../assets/icon.svg" alt="logo groupomania">
     <h1 class="auth__h1">Groupomania</h1>
     </div>
     <h3 class="auth__h3">Bienvenue sur le réseau social de votre entreprise !</h3>
 
-    <form class="auth__form" :class="{ 'auth__form--login': mode=='login' }">
-      <div v-if="mode=='createAccount'">
+    <form class="form" :class="{ 'form--login': mode=='login' }">
+      <div class="form__fields" v-if="mode=='createAccount'">
         <label for="nom"></label>
-        <input v-model="nom" type="text" id="nom" name="user_nom" placeholder="Votre nom :"  >
+        <input class="form__input" v-model="nom" type="text" id="nom" name="user_nom" placeholder="Votre nom :"  >
       </div>
-      <div v-if="mode=='createAccount'">
+      <div class="form__fields" v-if="mode=='createAccount'">
         <label for="prénom"></label>
-        <input v-model="prenom" type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" >
+        <input class="form__input" v-model="prenom" type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" >
       </div>
-      <div>
+      <div class="form__fields">
         <label for="mail"></label>
-        <input @input="validatedEmail" v-model="email" type="email" id="mail" name="user_email" placeholder="Votre e-mail :" >
+        <input class="form__input" @change="validatedEmail" v-model="email" type="email" id="mail" name="user_email" placeholder="Votre e-mail :" >
       </div>
-      <div>
+      <div class="form__fields">
         <label for="password"></label>
-        <input  @input="validatedPassword" v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" >
+        <input class="form__input" @input="validatedPassword" v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" >
       </div>
-      <div class="auth__form__button">
-        <button v-if="mode=='login'" class="auth__form__button--login" :class="{'auth__form__button--disabled' : !validatedFields}"  type="submit" @click.prevent="login">Se connecter</button>
-        <button v-else :class="{'auth__form__button--disabled' : !validatedFields}" @click.prevent="createAccount" >S'inscrire</button>
+      <div class="form__fields">
+        <button v-if="mode=='login'" class="form__button  form__button--login" :class="{'form__button--disabled' : !validatedFields}"  type="submit" @click.prevent="login">Se connecter</button>
+        <button v-else class="form__button " :class="{'form__button--disabled' : !validatedFields}" @click.prevent="createAccount" >S'inscrire</button>
       </div>
-      <div class="auth__form__error">
+      <div class=" form__fields form__fields--error">
         <p v-if="loginError&&mode=='login'">Adresse email et/ou mot de passe incorrect.</p>
         <p v-if="!validatedNames&&mode=='createAccount'">Votre Nom et Prénom ne doivent pas contenir de caracteres spéciaux.</p>
         <p v-if="errorEmail&&mode=='createAccount'">Merci de renseigner une adresse mail valide.</p>
         <p v-if="errorPassword&&mode=='createAccount'">Votre mot de passe doit contenir au minimum huit caracteres dont :<br>
         une minuscule, une majuscule et un chiffre. <br>
         Il ne doit pas contenir d'espace.
-        </p>
-
-
-        
-        <ul v-if="createAccountError.length">
-          <li v-for="error in createAccountError" :key="error">{{error}}</li>
+        </p>        
+        <ul v-if="createAccountError.length&&mode=='createAccount'">
+          <li v-for=" (error,index) in createAccountError" :key="index">{{error}}</li>
         </ul>
       </div>
       
@@ -85,6 +82,7 @@ export default {
       this.mode = "login"
     },
     createAccount : function(){
+      this.createAccountError =[];
       if (this.validatedFields){
       const self =this;
       const user = {user_nom:this.nom,user_prenom:this.prenom,user_email: this.email,user_password:this.password};
@@ -92,22 +90,13 @@ export default {
         .then(function () {self.login();})
         .catch(function (error) {
           console.log(error);
-          if (error =="Error: Request failed with status code 400") {console.log("ok")}
-          else{console.log("ko")}
+          if (error =="Error: Request failed with status code 400") { self.createAccountError.push("L'adresse email a déja été utilisé pour créer un compte")}
+          else{self.createAccountError.push(`L'enregistrement à échoué:${error}`)}
         });
       }
-      // const self =this;
-      // const user = {user_nom:this.nom,user_prenom:this.prenom,user_email: this.email,user_password:this.password};
-      // instance.post('/signup', user)
-      //   .then(function () {self.login();})
-      //   .catch(function (error) {
-      //     console.log(error);
-      //     if (error =="Error: Request failed with status code 400") {console.log("ok")}
-      //     else{console.log("ko")}
-      //   });
+     
     },
     login : async function(){
-      
       const user = {user_email: this.email,user_password:this.password}
       try{
           const response = await instance.post('/login',user);
@@ -115,7 +104,6 @@ export default {
           console.log(response.data);
           this.$store.commit("logUser", response.data);
           this.$router.push('/about');
-
       }
       catch (error){
         this.loginError=true;
@@ -124,9 +112,7 @@ export default {
     },
     validatedEmail  () {
      const regexp =/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-      if (regexp.test(this.email)) {
-        this.errorEmail =false
-      }
+      if (regexp.test(this.email)) {this.errorEmail =false}
       else {this.errorEmail =true} 
     },
     validatedPassword  () {
@@ -157,7 +143,6 @@ export default {
       }
       else {return true} 
     }
-    
   },
   components: {
  
@@ -172,7 +157,7 @@ export default {
   flex-direction: column;
   align-items: center;
   
-  &__img{
+  &__header{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -197,8 +182,10 @@ export default {
       cursor: pointer;
     }
   }
-  &__form{
-    // border: #FFD7D7 solid 1px;
+
+}
+  .form{
+    
     max-width: 100rem;
     margin-top: 3rem;
     padding: 2rem 4rem;
@@ -209,23 +196,24 @@ export default {
     &--login{
     margin-top: 6rem ;
     }
-    &__error{
+
+    
+    
+
+    &__fields{
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+      &--error{
       display: flex;
       flex-direction: column;
       font-size: 1.5rem !important;
       color: red !important;
     }
-    
-
-    div{
-      display: flex;
-      justify-content: center;
-      margin-top: 3rem;
-      
     }
    
-    input{
-      // color: rgb(66, 61, 61);
+    &__input{
+     
       color: rgb(66, 61, 61);
       font-weight: bold;
       background-color:white;
@@ -242,7 +230,18 @@ export default {
       }
     }
     &__button{
-      justify-content: center !important;
+        font-size: 2.5rem ;
+        margin-top: 1rem;
+        padding: 1rem 7rem;
+        border-radius: 1rem;
+        color: rgb(66, 61, 61);
+        border: #FD2D01 solid 1px;
+        background-color:#FFD7D7 ;
+        box-shadow: 2px 2px 4px #999;
+        cursor: pointer;
+      &:focus{
+          outline: groove 2px #FD2D01;
+        }
       &--login{
         margin-bottom: 2rem ;
       }
@@ -253,26 +252,26 @@ export default {
         color:#FFD7D7 !important ;
       }
      
-      button{   
-        font-size: 2.5rem ;
-        margin-top: 1rem;
-        padding: 1rem 7rem;
-        border-radius: 1rem;
-        color: rgb(66, 61, 61);
-        border: #FD2D01 solid 1px;
-        background-color:#FFD7D7 ;
-        box-shadow: 2px 2px 4px #999;
-        cursor: pointer;
-        &:focus{
-          outline: groove 2px #FD2D01;
-        }
+      // button{   
+      //   font-size: 2.5rem ;
+      //   margin-top: 1rem;
+      //   padding: 1rem 7rem;
+      //   border-radius: 1rem;
+      //   color: rgb(66, 61, 61);
+      //   border: #FD2D01 solid 1px;
+      //   background-color:#FFD7D7 ;
+      //   box-shadow: 2px 2px 4px #999;
+      //   cursor: pointer;
+      //   &:focus{
+      //     outline: groove 2px #FD2D01;
+      //   }
 
-      }
+      // }
     }
   
   }
 
-}
+
 
 
 
