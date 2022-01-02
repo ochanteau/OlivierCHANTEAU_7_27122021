@@ -91,9 +91,12 @@ export default {
       instance.post('/signup', user)
         .then(function () {self.login();})
         .catch(function (error) {
-          console.log(error);
-          if (error =="Error: Request failed with status code 400") { self.createAccountError.push("L'adresse email a déja été utilisé pour créer un compte")}
-          else{self.createAccountError.push(`L'enregistrement à échoué:${error}`)}
+          console.log(error.response);
+          console.log(error.response.data)
+          console.log(error.message);
+          
+          if (error.response.data.err.code =="ER_DUP_ENTRY") { self.createAccountError.push("L'adresse email a déja été utilisé pour créer un compte")}
+          else{self.createAccountError.push(error.response.data.message)}
         });
       }
      
@@ -261,9 +264,5 @@ export default {
   }
   
 }
-
-
-
-
 
 </style>

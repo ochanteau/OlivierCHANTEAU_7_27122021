@@ -22,8 +22,7 @@ exports.signup = async (req, res) => {
         console.log(user);
         db.query('INSERT INTO user SET  ?',user,
             function(err, results) {
-              if (err){ res.status(400).json({ message: "l'enregistrement à échoué",err })
-              }
+              if (err){ res.status(400).json({ message: "L'enregistrement à échoué",err })}
               else {res.status(201).json({ message: 'Utilisateur créé !' })}
             }
           );
