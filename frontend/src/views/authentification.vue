@@ -1,27 +1,27 @@
 <template>
-  <div class="auth">
-    <div class="auth__header">
+  <div  role ="main" class="auth">
+    <div role="header" class="auth__header">
     <img height="100" width="100"    src="../assets/icon.svg" alt="logo groupomania">
     <h1 class="auth__h1">Groupomania</h1>
     </div>
-    <h3 class="auth__h3">Bienvenue sur le réseau social de votre entreprise !</h3>
+    <h2 class="auth__h2">Bienvenue sur le réseau social de votre entreprise !</h2>
 
-    <form class="form" :class="{ 'form--login': mode=='login' }">
+    <form role="form" class="form" :class="{ 'form--login': mode=='login' }">
       <div class="form__fields" v-if="mode=='createAccount'">
-        <label for="nom"></label>
-        <input class="form__input" v-model="nom" type="text" id="nom" name="user_nom" placeholder="Votre nom :"  >
+        <!-- <label aria-label="nom" for="nom"></label> -->
+        <input aria-label="nom" class="form__input" v-model="nom" type="text" id="nom" name="user_nom" placeholder="Votre nom :"  >
       </div>
       <div class="form__fields" v-if="mode=='createAccount'">
-        <label for="prénom"></label>
-        <input class="form__input" v-model="prenom" type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" >
+        <!-- <label aria-label="prénom" for="prénom"></label> -->
+        <input aria-label="prénom" class="form__input" v-model="prenom" type="text" id="prénom" name="user_prénom" placeholder="Votre prénom :" >
       </div>
       <div class="form__fields">
-        <label for="mail"></label>
-        <input class="form__input" @input="validatedEmail" v-model="email" type="email" id="mail" name="user_email" placeholder="Votre e-mail :" >
+        <!-- <label aria-label="mail" for="mail"></label> -->
+        <input aria-label="mail" class="form__input" @input="validatedEmail" v-model="email" type="email" id="mail" name="user_email" placeholder="Votre e-mail :" >
       </div>
       <div class="form__fields">
-        <label for="password"></label>
-        <input class="form__input" @input="validatedPassword" v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" >
+        <!-- <label aria-label="password" for="password"></label> -->
+        <input aria-label="password" class="form__input" @input="validatedPassword" v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" >
       </div>
       <div class="form__fields">
         <button v-if="mode=='login'" class="form__button  form__button--login" :class="{'form__button--disabled' : !validatedFields}"  type="submit" @click.prevent="login">Se connecter</button>
@@ -29,14 +29,14 @@
       </div>
       <div class=" form__fields form__fields--error">
         <p v-if="loginError&&mode=='login'">Adresse email et/ou mot de passe incorrect.</p>
-        <p v-if="!validatedNames&&mode=='createAccount'">Votre Nom et Prénom ne doivent pas contenir de caracteres spéciaux.</p>
+        <p v-if="!validatedNames&&mode=='createAccount'">Votre nom et prénom ne doivent pas contenir de caracteres spéciaux.</p>
         <p v-if="errorEmail&&mode=='createAccount'">Merci de renseigner une adresse email valide.</p>
         <div class="form__fields--errorPassword" v-if="errorPassword&&mode=='createAccount'">
-          <p>Votre mot de passe doit contenir au minimum huit caracteres dont :</p>
+          <p>Votre mot de passe doit contenir :</p>
+          <p><em>huit caracteres minimum,</em></p>
           <p><em>une minuscule, une majuscule et un chiffre.</em></p>
           <p><em>Il ne doit pas contenir d'espace.</em></p>
         </div>
-           
         <ul v-if="createAccountError.length&&mode=='createAccount'">
           <li v-for=" (error,index) in createAccountError" :key="index">{{error}}</li>
         </ul>
@@ -44,11 +44,9 @@
       
 
     </form>
-    <div class="auth__nav">
-        <p v-if="mode=='login'">Vous n'avez pas encore de compte ? <span class="auth__nav__switch" @click="switchToCreateAccount">Inscrivez vous</span></p>
-        <p v-else >Vous avez déjà un compte ? <span class="auth__nav__switch" @click="switchToLogin">Connectez vous</span></p>
-        
-
+    <div role="navigation" class="auth__nav">
+        <p v-if="mode=='login'">Vous n'avez pas encore de compte ? <span tabindex="0" aria-label="naviguer vers la page d'inscription'" class="auth__nav__switch" @click="switchToCreateAccount">Inscrivez vous</span></p>
+        <p v-else >Vous avez déjà un compte ? <span tabindex="0" aria-label="naviguer vers la page de connexion" class="auth__nav__switch" @click="switchToLogin">Connectez vous</span></p>
     </div>
   
   </div>
@@ -157,6 +155,21 @@ export default {
 
 <style  lang="scss" scoped>
 
+@mixin S {
+  @media (max-width: 430px) {
+    @content;
+  }
+}
+
+@mixin M {
+  @media (max-width: 700px) {
+    @content;
+  }
+}
+
+
+
+
 .auth{
   display: flex;
   flex-direction: column;
@@ -167,37 +180,56 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    @include M {
+      flex-direction: column;
+    }
   }
   &__h1{
     font-size: 6rem;
     padding: 1rem;
     color: #FD2D01;
+    @include S{
+    font-size: 4rem;
+    }
   }
-  &__h3{
+  &__h2{
     font-size: 3rem;
     color: rgb(66, 61, 61);
     margin-top: 2rem;
+    text-align: center;
+     @include S{
+    font-size: 2rem;
+    }
   }
   &__nav{
     font-size: 2rem;
     margin-top : 2rem;
+    text-align: center;
     &__switch {
-      color:#FD2D01 ;
+      color:red;
       text-decoration: underline;
+      font-weight: bold;
       cursor: pointer;
+       @include S{
+         display: block;
     }
+    }
+    
   }
 
 }
 
 .form{
-  max-width: 100rem;
+  // max-width: 100rem;
   margin-top: 3rem;
   padding: 2rem 4rem;
   font-size: 2.5rem;
   border-radius: 1rem;
   box-shadow: 2px 2px 8px 3px #FFD7D7;
   color: rgb(66, 61, 61);
+  @include S{
+    padding: 1.5rem;
+  }
 
   &--login{
     margin-top: 6rem ;
@@ -211,6 +243,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     font-size: 1.5rem ;
     color: blue;
     }
@@ -229,6 +262,9 @@ export default {
     border: solid 2px #FFD7D7 ;
     border-radius: 0.5rem;
     padding: 1rem 6rem;
+    @include S{
+    padding: 1rem;
+    }
    
       &:focus{
         outline: groove 2px #FD2D01;
@@ -256,10 +292,10 @@ export default {
         margin-bottom: 2rem ;
       }
       &--disabled{
-        background-color: rgb(168, 161, 161) ;
+        background-color: rgb(121, 120, 120) ;
         cursor: not-allowed ;
         border: #FFD7D7 solid 1px ;
-        color:#FFD7D7  ;
+        color:white  ;
       }
   }
   
