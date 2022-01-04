@@ -3,25 +3,11 @@ import { createStore } from 'vuex'
 const axios = require('axios');
 const instance = axios.create({baseURL: 'http://localhost:3000/api/auth'});
 instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`
-// let token = localStorage.getItem('token');
-// console.log("///////token");
-// console.log(token);
-
-// if (!token) {token = ""}
-// else {
-//   try {
-//     token = JSON.parse(token);
-//     instance.defaults.headers.common['Authorization'] =`Bearer ${token}`;
-//   } catch (err) {
-//     token = ''
-//     }
-// }
 
 
 console.log("////instance begin");
 console.log(instance.defaults.headers.common);
-// console.log("////token");
-// console.log(token);
+
 
 export default createStore({
   state: {
@@ -40,7 +26,7 @@ export default createStore({
       instance.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
         console.log("////instance after");
         console.log(instance.defaults.headers.common);
-      // localStorage.setItem('token', JSON.stringify(user.token));
+     
       localStorage.setItem('token', user.token);
       state.token = user.token;
       state.user_id =user.user_id;

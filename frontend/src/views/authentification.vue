@@ -108,7 +108,7 @@ export default {
           console.log("response.data////////");
           console.log(response.data);
           this.$store.commit("logUser", response.data);
-          this.$router.push('/about');
+          this.$router.push('/home');
       }
       catch (error){
         this.loginError=true;
