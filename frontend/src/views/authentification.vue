@@ -1,7 +1,7 @@
 <template>
   <div  role ="main" class="auth">
     <div role="header" class="auth__header">
-    <img height="100" width="100"    src="../assets/icon.svg" alt="logo groupomania">
+    <img height="100" width="100"    src="../assets/images/icon.svg" alt="logo groupomania">
     <h1 class="auth__h1">Groupomania</h1>
     </div>
     <h2 class="auth__h2">Bienvenue sur le réseau social de votre entreprise !</h2>
@@ -155,17 +155,17 @@ export default {
 
 <style  lang="scss" scoped>
 
-@mixin S {
-  @media (max-width: 430px) {
-    @content;
-  }
-}
+// @mixin S {
+//   @media (max-width: 430px) {
+//     @content;
+//   }
+// }
 
-@mixin M {
-  @media (max-width: 700px) {
-    @content;
-  }
-}
+// @mixin M {
+//   @media (max-width: 700px) {
+//     @content;
+//   }
+// }
 
 
 
@@ -187,7 +187,7 @@ export default {
   &__h1{
     font-size: 6rem;
     padding: 1rem;
-    color: #FD2D01;
+    color: $secondary;
     @include S{
     font-size: 4rem;
     }
@@ -220,12 +220,11 @@ export default {
 }
 
 .form{
-  // max-width: 100rem;
   margin-top: 3rem;
   padding: 2rem 4rem;
   font-size: 2.5rem;
   border-radius: 1rem;
-  box-shadow: 2px 2px 8px 3px #FFD7D7;
+  box-shadow: $box-shadow $primary;
   color: rgb(66, 61, 61);
   @include S{
     padding: 1.5rem;
@@ -259,7 +258,7 @@ export default {
     color: rgb(66, 61, 61);
     font-weight: bold;
     background-color:white;
-    border: solid 2px #FFD7D7 ;
+    border: solid 2px $primary ;
     border-radius: 0.5rem;
     padding: 1rem 6rem;
     @include S{
@@ -267,7 +266,7 @@ export default {
     }
    
       &:focus{
-        outline: groove 2px #FD2D01;
+        outline: groove 2px secondary;
       }
       &::placeholder{
         color: rgb(66, 61, 61);
@@ -281,20 +280,20 @@ export default {
     padding: 1rem 7rem;
     border-radius: 1rem;
     color: rgb(66, 61, 61);
-    border: #FD2D01 solid 1px;
-    background-color:#FFD7D7 ;
+    border: $secondary solid 1px;
+    background-color: $primary;
     box-shadow: 2px 2px 4px #999;
     cursor: pointer;
       &:focus{
-          outline: groove 2px #FD2D01;
+          outline: groove 2px $secondary;
       }
       &--login{
         margin-bottom: 2rem ;
       }
       &--disabled{
-        background-color: rgb(121, 120, 120) ;
+        background-color: $button-disabled  ;
         cursor: not-allowed ;
-        border: #FFD7D7 solid 1px ;
+        border: $primary solid 1px ;
         color:white  ;
       }
   }
