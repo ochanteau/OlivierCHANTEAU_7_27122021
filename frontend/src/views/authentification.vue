@@ -21,7 +21,7 @@
       </div>
       <div class="form__fields">
         <!-- <label aria-label="password" for="password"></label> -->
-        <input aria-label="password" class="form__input" @input="validatedPassword" v-model="password" type="text" id="password" name="user_password" placeholder="Votre mot de passe :" >
+        <input aria-label="password" class="form__input" @input="validatedPassword" v-model="password" type="password" id="password" name="user_password" placeholder="Votre mot de passe :" >
       </div>
       <div class="form__fields">
         <button v-if="mode=='login'" class="form__button  form__button--login" :class="{'form__button--disabled' : !validatedFields}"  type="submit" @click.prevent="login">Se connecter</button>
