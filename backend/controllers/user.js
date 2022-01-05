@@ -36,8 +36,9 @@ exports.signup = async (req, res) => {
   };
    
 
-    // fonction pour se loguer
-    exports.login =  (req, res) => {
+// fonction pour se loguer
+
+exports.login =  (req, res) => {
     
       db.query(
         'SELECT user_password, user_id FROM user WHERE user_email=?', req.body.user_email,
@@ -71,11 +72,4 @@ exports.signup = async (req, res) => {
 
         }
       );
-
-
-
-
-
-
-
-    };
+};

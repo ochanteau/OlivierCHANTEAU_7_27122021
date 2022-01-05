@@ -11,6 +11,7 @@
 
 export default {
   name:'app',
+  // affichage du titre de la page en fonction du meta.title de la route visité
   watch: { $route(to) {document.title = to.meta.title }
   }
     
