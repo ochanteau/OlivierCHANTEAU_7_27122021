@@ -105,15 +105,17 @@ export default {
 
     .dropDown{
       display: flex;
-      
-      
+      border-radius: 2rem;
+      background-color: $primary;
+      padding: 0.5rem 0rem 0.5rem 1rem;
+      margin-right: 1rem;
       &__img{
         border-radius: 50%;
        
         cursor: pointer;
         
       
-        // margin: 1rem;
+        
       }
       &__button{
         border:none;
