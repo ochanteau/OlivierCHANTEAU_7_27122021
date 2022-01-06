@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Authentification from '../views/Authentification.vue'
 // import de la vue principale avec les posts
 import Home from '../views/Home.vue'
+// import de la vue profil
+import Profil from '../views/Profil.vue'
 // import du store
 // import store from '../store/index';
 
@@ -25,6 +27,18 @@ const routes = [
     name: 'Home',
     meta:{title: "Groupomania-Home"},
     component: Home,
+    // si pas loguer on le dirige vers la vue authentification 
+    // beforeEnter(to,from,next){
+    //   if (store.getters.isLoggedIn) { next()}
+    //   else {router.push("/")}
+    // }
+   
+  },
+  {
+    path: '/profil',
+    name: 'Profil',
+    meta:{title: "Groupomania-Profil"},
+    component: Profil,
     // si pas loguer on le dirige vers la vue authentification 
     // beforeEnter(to,from,next){
     //   if (store.getters.isLoggedIn) { next()}
