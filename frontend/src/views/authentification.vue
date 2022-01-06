@@ -183,17 +183,19 @@ export default {
 
 <style  lang="scss" scoped>
 
-// @mixin S {
-//   @media (max-width: 430px) {
-//     @content;
-//   }
-// }
-
-// @mixin M {
-//   @media (max-width: 700px) {
-//     @content;
-//   }
-// }
+// responsive
+@mixin S {
+    @media (max-width: 430px) {
+      @content;
+    }
+  }
+  
+@mixin M {
+    @media (max-width: 700px) {
+      @content;
+    }
+  }
+  
 
 
 
@@ -248,6 +250,8 @@ export default {
 
 }
 
+
+// formulaire
 .form{
   margin-top: 3rem;
   padding: 2rem 4rem;

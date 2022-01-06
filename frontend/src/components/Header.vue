@@ -42,14 +42,43 @@ export default {
 
 <style lang="scss" scoped>
 
+// responsive
+@mixin S {
+    @media (max-width: 500px) {
+      @content;
+    }
+  }
+  
+@mixin M {
+    @media (max-width: 950px) {
+      @content;
+    }
+  }
+  
+
   header{
-    display: flex;
+    
     height: 80px;
     // border-bottom: solid 1px $primary;
     box-shadow: $box-shadow $primary;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr ;
     grid-template-areas:" . header navigation";
+    @include M{
+    display: flex;
+    justify-content: space-between;
+    }
+    @include S{
+      justify-content: space-around;
+      
+    }
+    // @include S{
+    // // display: flex;
+    // // flex-direction: column;
+    // // align-items: center;
+    // // height: 130px;
+    // // padding-bottom: 1rem;
+    // }
   }
 
   .header{
@@ -58,6 +87,10 @@ export default {
     align-items: center;
     &__h1{
       color: $secondary;
+      @include S{
+      display: none;
+      
+    }
     }
   }
 
@@ -76,19 +109,20 @@ export default {
       
       &__img{
         border-radius: 50%;
-        margin: 0 0.5rem ;
+       
         cursor: pointer;
         
       
-        margin: 1rem;
+        // margin: 1rem;
       }
       &__button{
         border:none;
         font-weight: bold;
-        font-size:1.6rem;
+        font-size:2rem;
         color: $secondary;
         background: none ;
         cursor: pointer;
+        padding: 0 3rem 0 1rem;
       }
     }
     
@@ -102,7 +136,7 @@ export default {
         background-color: $primary;
         position: absolute ;
         top: 6rem;
-
+        font-size:2rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -111,7 +145,7 @@ export default {
         &__button{
           background: none;
           border:none;
-          font-size:1.6rem;
+          font-size:2rem;
           padding: 0.5rem 0;
           cursor: pointer;
         }
