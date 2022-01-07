@@ -11,7 +11,11 @@ require("dotenv").config();
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
+    console.log(token)
     req.token = jwt.verify(token, `${process.env.USER_TOKEN}`);
+    console.log("req.token middleware")
+
+    console.log(req.token)
     next();
     
   }

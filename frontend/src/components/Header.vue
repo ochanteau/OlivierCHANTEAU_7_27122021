@@ -59,7 +59,6 @@ export default {
   header{
     
     height: 80px;
-    // border-bottom: solid 1px $primary;
     box-shadow: $box-shadow $primary;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr ;
@@ -72,13 +71,7 @@ export default {
       justify-content: space-around;
       
     }
-    // @include S{
-    // // display: flex;
-    // // flex-direction: column;
-    // // align-items: center;
-    // // height: 130px;
-    // // padding-bottom: 1rem;
-    // }
+   
   }
 
   .header{
@@ -95,7 +88,7 @@ export default {
   }
 
   .navigation{
-    // padding: 0rem 2rem;
+   
     justify-content: center;
     grid-area: navigation;
     display: flex;
@@ -127,13 +120,10 @@ export default {
         padding: 0 3rem 0 1rem;
       }
     }
-    
-      
-      
-      
+   
 
 
-      .nav{
+    .nav{
         margin-top: 1rem;
         background-color: $primary;
         position: absolute ;
@@ -159,7 +149,7 @@ export default {
         }
 
 
-      }
+    }
     
   
   }

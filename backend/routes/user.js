@@ -8,7 +8,8 @@ const userValidator = require('../middleware/userValidator');
 const accountLimiter = require('../middleware/rate-limit-config');
 // import users controllers 
 const userCtrl = require('../controllers/user');
-
+// import middleware d'authentification
+const auth = require ('../middleware/auth')
 
 
 /*
@@ -23,6 +24,13 @@ router.post('/signup',accountLimiter.createAccountLimiter , userValidator, userC
 * et du controllers "login"
 */
 router.post('/login', accountLimiter.loginAccountLimiter, userCtrl.login);
+
+/*
+* route "/login", appel des middlewares pour limiter le nombre de login  avec la meme IP,
+* et du controllers "login"
+*/
+router.get('/currentUser',auth, userCtrl.getCurrentUser);
+
 
 
 module.exports = router;

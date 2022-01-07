@@ -73,3 +73,21 @@ exports.login =  (req, res) => {
         }
       );
 };
+
+// fonction pour obtenir les infos sur l'utilisateur courant
+exports.getCurrentUser =  (req, res) => {
+  const {user_id} = req.token ;
+  console.log(user_id);
+  db.query(
+    'SELECT `user_nom`, `user_prenom`, `user_email` FROM user WHERE user_id=?', user_id,
+    function(err, results) {
+      if (err){res.status(500).json({ err })}
+      else {
+        console.log(results);
+        return res.status(200).json(results[0]);
+      }
+    }
+  )
+
+  
+}
