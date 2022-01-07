@@ -22,6 +22,7 @@ exports.signup = async (req, res) => {
         console.log(user);
         db.query('INSERT INTO user SET  ?',user,
             function(err, results) {
+              console.log(results);
               if (err){ res.status(400).json({ message: "L'enregistrement à échoué",err })}
               else {res.status(201).json({ message: 'Utilisateur créé !' })}
             }
@@ -75,11 +76,49 @@ exports.login =  (req, res) => {
 };
 
 // fonction pour obtenir les infos sur l'utilisateur courant
+// exports.getCurrentUser =  (req, res) => {
+//   const {user_id} = req.token ;
+//   console.log(user_id);
+//   db.query(
+//     'SELECT `user_nom`, `user_prenom`, `user_email` FROM user WHERE user_id=?', user_id,
+//     function(err, results) {
+//       if (err){res.status(500).json({ err })}
+//       else {
+//         console.log(results);
+//         return res.status(200).json(results[0]);
+//       }
+//     }
+//   )
+
+  
+// }
+
+// exports.getCurrentUser =  (req, res) => {
+//   const {user_id} = req.token ;
+//   console.log(user_id);
+//   db.query(
+//     'SELECT `user_nom`, `user_prenom`, `user_email`,`profil_picture_url`FROM user JOIN `profil_picture` ON `user`.`profil_picture_id` = `profil_picture`.`profil_picture_id`', 
+//     function(err, results) {
+//       if (err){res.status(500).json({ err })}
+//       else {
+//         console.log(results);
+//         return res.status(200).json(results[0]);
+//       }
+//     }
+//   )
+
+  
+// }
+
+
 exports.getCurrentUser =  (req, res) => {
   const {user_id} = req.token ;
   console.log(user_id);
   db.query(
-    'SELECT `user_nom`, `user_prenom`, `user_email` FROM user WHERE user_id=?', user_id,
+    `SELECT user_nom, user_prenom, user_email,profil_picture_url
+    FROM user, profil_picture
+    WHERE user.profil_picture_id = profil_picture.profil_picture_id
+    AND user.user_id =? `, user_id,
     function(err, results) {
       if (err){res.status(500).json({ err })}
       else {
@@ -91,3 +130,14 @@ exports.getCurrentUser =  (req, res) => {
 
   
 }
+
+
+// 'SELECT `user_nom`, `user_prenom`, `user_email`,`profil_picture_url`
+// FROM user 
+
+// JOIN `profil_picture` ON `user`.`profil_picture_id` = `profil_picture`.`profil_picture_id`';
+
+`SELECT user_nom, user_prenom, user_email,profil_picture_url
+FROM user, profil_picture
+WHERE user.profil_picture_id = profil_picture.profil_picture_id
+AND user.user_id = '43' `

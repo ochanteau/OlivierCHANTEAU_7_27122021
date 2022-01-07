@@ -1,9 +1,10 @@
 import { createStore } from 'vuex'
+import router from '../router/index';
 
 // import axios pour le requetes API 
 const axios = require('axios');
 // URL de base pour les requetes
-const instance = axios.create({baseURL: 'http://localhost:3000/api/auth'});
+const instance = axios.create({baseURL: 'http://localhost:3000/api'});
 // configuration du token dans le header
 instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`
 
@@ -15,6 +16,7 @@ console.log(instance.defaults.headers.common);
 export default createStore({
   state: {
     user_id:"",
+    currentUser:{},
     // assignation du token via local storage
     token :localStorage.getItem('token'),
     // verification de la presence du token
@@ -40,9 +42,31 @@ export default createStore({
       state.user_id =user.user_id;
       state.isLoggedIn = true;
         
+    },
+    getCurrentUser(state,CurrentUser){
+      state.currentUser = CurrentUser;
     }
   },
   actions: {
+    async fetchCurrentUser({commit}) {
+      try{
+        // requete Get api pour recuperer les données utilisateur
+      const response = await instance.get('/auth/currentUser');
+      console.log("response.data////////");
+      console.log(response.data);
+      // appel de la mutation getCurrentUser du store
+      commit("getCurrentUser", response.data);
+      // throw new Error('test');
+      }
+      catch(err) {
+        console.log(err)
+        router.push('/')
+        window.alert("une erreur s'est produite, merci de recharger la page")
+      }
+     
+    }
+
+
     // login : function ({commit}, user) {
     //   commit;
     //   return new Promise((resolve, reject) => {

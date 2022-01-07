@@ -2,14 +2,16 @@
   <header>
     <div class="header">
         <img class="header__img" height="80" width="80  "    src="../assets/images/icon.svg" alt="logo groupomania">
+         
         <h1 class="header__h1">Groupomania</h1>
     </div>
    
-            
+           
     <div class="navigation">
         <div class="dropDown" @click="openNav">
-          <img class="dropDown__img" height="40" width="40" src="../assets/images/profil.png" alt="">
-          <button class="dropDown__button">Olivier</button>
+          <!-- <img class="dropDown__img" height="40" width="40" src="../assets/images/profil.png" alt=""> -->
+          <img class="dropDown__img" height="40" width="40" :src="this.currentUser.profil_picture_url" alt="Image de profil de user">
+          <button class="dropDown__button">{{this.currentUser.user_prenom}}</button>
         </div>
         <nav class="nav" v-if="isOpen">
             <router-link to="/home" class="nav__home">Accueil</router-link> 
@@ -23,12 +25,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Header',
   data: function(){
     return {
       isOpen:false
     }
+  },
+  computed:{
+    ...mapState(['currentUser'])
   },
   methods:{
     openNav : function(){this.isOpen = !this.isOpen}

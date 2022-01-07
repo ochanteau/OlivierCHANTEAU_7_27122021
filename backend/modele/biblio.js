@@ -23,4 +23,13 @@ INSERT INTO `user` ( `iduser`, `nom`, `prenom`, `email`, `password`, `droits_id`
 SELECT * FROM user WHERE user_mail=?;
 
 // 
+SELECT `user_nom`, `user_prenom`, `user_email` FROM user WHERE user_id=14;
+// 
 
+http://localhost:3000/images/profil.png
+
+// 
+SELECT *
+FROM user 
+
+JOIN `profil_picture` ON `user`.`profil_picture_id` = `profil_picture`.`profil_picture_id`;
