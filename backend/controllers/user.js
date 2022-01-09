@@ -5,46 +5,18 @@ require("dotenv").config();
 // import du module jwt
 const jwt = require('jsonwebtoken');
 // import DB
-const db = require('../modele/database')
+const db = require('../modele/database');
 
-
-
-
-
-
-// fonction pour s'inscrire
-
-// exports.signup = async (req, res) => {
- 
-//     try{
-//         const hash = await bcrypt.hash(req.body.user_password, 10);
-//         const user = {...req.body,user_password:hash, droits_id : 1};
-//         console.log(user);
-//         db.query('INSERT INTO user SET  ?',user,
-//             function(err, results) {
-//               console.log(results);
-//               if (err){ res.status(400).json({ message: "L'enregistrement à échoué",err })}
-//               else {res.status(201).json({ message: 'Utilisateur créé !' })}
-//             }
-//           );
-  
-//     }
-//     catch (err){res.status(500).json({ message: "l'enregistrement à échoué",err })
-//       console.log(err);
-  
-//     }
-  
-//   };
 
 
 exports.signup = async (req, res) => {
  
   try{
       const hash = await bcrypt.hash(req.body.user_password, 10);
-      const user = {...req.body,user_password:hash, droits_id : 1};
+      const user = {...req.body,user_password:hash};
       console.log(user);
       const sql = 'INSERT INTO user SET  ?';
-      db.query('INSERT INTO user SET  ?',user,
+      db.query(sql,user,
           function(err, results) {
             console.log(results);
             if (err){ res.status(400).json({ message: "L'enregistrement à échoué",err })}
@@ -65,9 +37,10 @@ exports.signup = async (req, res) => {
 // fonction pour se loguer
 
 exports.login =  (req, res) => {
-    
+      const sql= 'SELECT user_password, user_id FROM user WHERE user_email=?';
+      const user_email =  req.body.user_email;
       db.query(
-        'SELECT user_password, user_id FROM user WHERE user_email=?', req.body.user_email,
+        sql, user_email,
         function(err, results) {
           if (err){res.status(500).json({ err })}
           else if ( results && results.length < 1){return res.status(401).json({ error: 'Utilisateur non trouvé !' });}
@@ -109,7 +82,7 @@ exports.getCurrentUser =  (req, res) => {
   const {user_id} = req.token ;
   console.log(user_id);
   // requete BDD sur la table user et la table profil_picture et envoie au client
-  const sql = `SELECT user_nom, user_prenom, user_email,user_picture
+  const sql = `SELECT user_nom, user_prenom, user_email,user_picture, droits_id
               FROM user
               WHERE user_id =? `
   db.query(sql, user_id, function(err, results) {
