@@ -15,7 +15,7 @@ console.log(instance.defaults.headers.common);
 
 export default createStore({
   state: {
-    user_id:"",
+    user_id:null,
     currentUser:{},
     // assignation du token via local storage
     token :localStorage.getItem('token'),
@@ -43,8 +43,9 @@ export default createStore({
       state.isLoggedIn = true;
         
     },
-    getCurrentUser(state,CurrentUser){
-      state.currentUser = CurrentUser;
+    getCurrentUser(state,payload){
+      state.currentUser = payload.currentUser;
+      state.user_id = payload.user_id;
     }
   },
   actions: {

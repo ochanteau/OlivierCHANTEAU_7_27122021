@@ -33,3 +33,17 @@ SELECT *
 FROM user 
 
 JOIN `profil_picture` ON `user`.`profil_picture_id` = `profil_picture`.`profil_picture_id`;
+
+// 
+
+SELECT `user_nom`, `user_prenom`, `user_email`,`profil_picture_url`
+FROM user 
+
+JOIN `profil_picture` ON `user`.`profil_picture_id` = `profil_picture`.`profil_picture_id`;
+
+// 
+
+`SELECT user_nom, user_prenom, user_email,profil_picture_url
+FROM user, profil_picture
+WHERE user.profil_picture_id = profil_picture.profil_picture_id
+AND user.user_id = '43' `

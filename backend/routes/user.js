@@ -10,11 +10,13 @@ const accountLimiter = require('../middleware/rate-limit-config');
 const userCtrl = require('../controllers/user');
 // import middleware d'authentification
 const auth = require ('../middleware/auth')
+// import multer 
+const multer = require ('../middleware/multer-config')
 
 
 /*
 * route "/signup", appel des middlewares pour limiter le nombre de creation de compte avec la meme IP,
-* pour verifier mail et MDP, et du controllers "signup"
+* pour verifier nom,prenom,mail et MDP, et du controllers "signup"
 */
 router.post('/signup',accountLimiter.createAccountLimiter , userValidator, userCtrl.signup);
 
@@ -26,8 +28,16 @@ router.post('/signup',accountLimiter.createAccountLimiter , userValidator, userC
 router.post('/login', accountLimiter.loginAccountLimiter, userCtrl.login);
 
 /*
-* route "/login", appel des middlewares pour limiter le nombre de login  avec la meme IP,
-* et du controllers "login"
+* route "/picture", appel du middleware auth pour verifier le token et recuperer user_id ,
+* de multer pour recuper le fichier 
+* et du controller pour modifier l'image
+*/
+router.put('/picture',auth,multer, userCtrl.putPicture);
+
+
+/*
+* route "/currentUser", appel du middleware auth pour verifier le token et recuperer user_id ,
+* et du controller pour recuperer les infos de l'utilisateur
 */
 router.get('/currentUser',auth, userCtrl.getCurrentUser);
 

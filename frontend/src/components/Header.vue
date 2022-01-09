@@ -10,7 +10,7 @@
     <div class="navigation">
         <div class="dropDown" @click="openNav">
           <!-- <img class="dropDown__img" height="40" width="40" src="../assets/images/profil.png" alt=""> -->
-          <img class="dropDown__img" height="40" width="40" :src="this.currentUser.profil_picture_url" alt="Image de profil de user">
+          <img class="dropDown__img" height="40" width="40" :src="this.currentUser.user_picture" alt="Image de profil de user">
           <button class="dropDown__button">{{this.currentUser.user_prenom}}</button>
         </div>
         <nav class="nav" v-if="isOpen">
