@@ -6,7 +6,8 @@ require("dotenv").config();
 const jwt = require('jsonwebtoken');
 // import DB
 const db = require('../modele/database');
-
+// import du module fs de gestion des fichiers systeme
+const fs = require('fs');
 
 
 exports.signup = async (req, res) => {
@@ -81,7 +82,7 @@ exports.getCurrentUser =  (req, res) => {
   // recuperation user_id du token
   const {user_id} = req.token ;
   console.log(user_id);
-  // requete BDD sur la table user et la table profil_picture et envoie au client
+  // requete BDD sur la table user  envoie au client
   const sql = `SELECT user_nom, user_prenom, user_email,user_picture, droits_id
               FROM user
               WHERE user_id =? `
@@ -103,8 +104,63 @@ exports.getCurrentUser =  (req, res) => {
 
 // fonction pour modifier l'image de l'utilisateur courant
 
-exports.putPicture =  (req, res) => {
-  console.log(req.body.image);
-  // console.log(JSON.parse(req.body.user));
-  res.status(200).json("ok");
+exports.updatePicture =  (req, res) => {
+    console.log(req.body.image);
+    console.log(req.file.filename)
+    // recuperation de l'url de l'image
+    const user_picture= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    console.log("/////user_picture");
+    console.log(user_picture);
+    // requete BDD sur la table user pour récuperer l'url de l'ancienne image
+    const sql = `SELECT user_picture FROM user WHERE user_id =? `;
+    // recuperation user_id du token
+    const {user_id} = req.token ;
+    db.query(sql, user_id, function(err, results) {
+        if (err){res.status(500).json({ err })}
+        else {
+          // recuperation du nom de l'ancienne image
+          const oldPicture = results[0].user_picture.split('/images/')[1];
+          console.log("/////oldpicture");
+          console.log(oldPicture);
+          console.log(oldPicture=="profil.png");
+          
+            // verification si l'ancienne image est l'image par défaut
+            if (oldPicture=="profil.png") {
+              // requete BDD sur la table user  pour mettre à jour l'url de l'image
+              const sql = `UPDATE user SET user_picture='${user_picture}'WHERE user_id =? `
+              db.query(sql, user_id, function(err, results) {
+                if (err){res.status(500).json({ err })}
+                else {
+                    console.log(results);
+                    return res.status(200).json(user_picture);
+                  }
+              })
+            }
+            else {
+              fs.unlink(`images/${oldPicture}`, () => {
+                // requete BDD sur la table user  pour mettre à jour l'url de l'image
+                const sql = `UPDATE user SET user_picture='${user_picture}'WHERE user_id =? `
+                db.query(sql, user_id, function(err, results) {
+                    if (err){res.status(500).json({ err })}
+                    else {
+                      console.log(results);
+                      return res.status(200).json(user_picture);
+                    }
+                  })
+              })
+            }
+
+        }
+        
+        
+    })
 }
+  
+
+
+
+
+
+
+
+ 

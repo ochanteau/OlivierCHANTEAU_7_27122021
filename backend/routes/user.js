@@ -32,7 +32,7 @@ router.post('/login', accountLimiter.loginAccountLimiter, userCtrl.login);
 * de multer pour recuper le fichier 
 * et du controller pour modifier l'image
 */
-router.put('/picture',auth,multer, userCtrl.putPicture);
+router.put('/picture',auth,multer, userCtrl.updatePicture);
 
 
 /*

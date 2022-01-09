@@ -5,7 +5,7 @@
    <div>
        <div>
            <input @change.prevent="uploadFile($event)"  type="file" accept="image/png, image/jpeg,image/jpg">
-           <button>Enregister</button>
+           <button @click="fetchFile">Enregister</button>
        </div>
    </div>
  
@@ -41,6 +41,7 @@ export default {
         uploadFile (e){
             this.profilPicture=e.target.files[0];
             console.log(this.profilPicture)
+            
         },
         fetchFile(){
             if (!this.profilPicture) {return}
