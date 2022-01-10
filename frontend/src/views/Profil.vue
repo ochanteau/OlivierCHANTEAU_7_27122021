@@ -2,26 +2,31 @@
 <div>
     
    <Header></Header>
-   <div class="profil">
+   <div role="main" class="profil">
        <div class="userInfos">
             <div class="userInfos__img">
                 <img height="200" width="200" :src="this.currentUser.user_picture" alt="Image de profil de user">
             </div>
             <div class="userInfos__infos">
-                <!-- <p>{{toUpperCase(this.currentUser.user_prenom)}} {{toUpperCase(this.currentUser.user_nom)}}</p> -->
-                <p>{{this.fullName}}</p>
-                <p>{{this.currentUser.user_email}}</p>
+                <h2  class="userInfos__fullName">{{this.fullName}}</h2>
+                <!-- <p class="userInfos__fullName">{{this.fullName}}</p> -->
+                <h3  class="userInfos__email">{{this.currentUser.user_email}}</h3>
             </div>
        </div>
        <div class="updatePicture">
-           <label for="updatePicture__picture">Modifier votre photo de profil</label>
-           <input @change.prevent="uploadFile($event)" id="profil__picture"  type="file" accept="image/png, image/jpeg,image/jpg">
-           <button @click="fetchFile">Enregister</button>
+           <label class="updatePicture__label" for="profil__picture">Modifier votre photo de profil</label>
+           <input class="updatePicture__input" @change.prevent="uploadFile($event)" id="profil__picture"  type="file" accept="image/png, image/jpeg,image/jpg">
+           <button class="updatePicture__button" @click="fetchFile">Enregister</button>
        </div>
-       <div class="profil__delete">
-           <button>Supprimer mon compte</button>
+       <div class="delete">
+           <button class="delete__button">Supprimer mon compte</button>
        </div>
+       <div class="error">
+            <p v-if="MissingPicture" class="error_missingPicture">Vous n'avez pas selectionner d'image!</p>
+            <p v-if="ErrorServer" class="error_ErrorServer">Une erreur s'est produite ! Essayez de nouveau</p>
+        </div>
    </div>
+
  
 </div>
 </template>
@@ -89,23 +94,47 @@ export default {
 
 <style lang="scss" scoped>
 
+// responsive
+@mixin S {
+    @media (max-width: 430px) {
+      @content;
+    }
+  }
+  
+@mixin M {
+    @media (max-width: 830px) {
+      @content;
+    }
+  }
+
 Header{
-    margin-bottom: 6rem;
+    margin-bottom: 4rem;
 }
 
 .profil{
     max-width: 80rem;
-    padding: 2rem 0rem;
-    margin: auto;
+    padding: 3rem 0rem 1rem 0rem;
+    margin: 2rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: $box-shadow $primary;
+    @include M {
+      max-width: 40rem;
+    }
+    @include S{
+      padding: 3rem 0rem 0rem 0rem;
+    //   margin: 2rem auto;
+      max-width: 30rem;
+    }
 
-    .userInfos{
+}
+
+.userInfos{
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: blue;
     
         &__img{
             margin-bottom: 2rem;
@@ -115,14 +144,84 @@ Header{
             text-align: center;
             margin-bottom: 2rem;
         }
-    }
-    &__update{
+        &__fullName{
+            font-size: 2.5rem;
+        }
+        
+        &__email{
+            padding: 0.5rem 0rem;
+            position: relative;
+            font-size: 2.5rem;
+            font-weight: normal;
+           
+    
+            &::after{
+                content: "";
+                width: 25rem;
+                border-bottom: 2px solid $secondary;
+                position: absolute;
+                left: 0;
+                top: 5rem;
+                
+                
+
+            }
+        }
+}
+
+.updatePicture{
+        margin: 1rem 0rem;
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
+        font-size : 2.5rem;
+        position: relative;
+        &__label{
+           padding-bottom: 0.5rem;
+           @include S{
+            text-align: center;
+            }
+           
+        }
+        &__button{
+            font-size: 2rem;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            border : solid $secondary 1px;
+            border-radius: 2rem;
+            background-color: $primary;
+            &::after{
+                content: "";
+                width: 32rem;
+                border-bottom: 2px solid $secondary;
+                position: absolute;
+                left: 0;
+                top: 12rem;
+                @include S{
+                top: 15rem;
+                width: 30rem;
+                }
+                
+
+            }
+        }
+        
 }
 
+.error{
+    color: red;
+}
 
+.delete{
+    margin: 3rem 0rem 3rem 0rem;
+    
+    &__button{
+        font-size: 2.5rem;
+        padding: 1rem;
+        border-radius: 2rem;
+        background-color: $primary;
+        border : solid $secondary 1px;
+    }
+}
 
 </style>
