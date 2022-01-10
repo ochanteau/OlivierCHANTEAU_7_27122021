@@ -11,7 +11,7 @@
         <div class="dropDown" @click="openNav">
           <!-- <img class="dropDown__img" height="40" width="40" src="../assets/images/profil.png" alt=""> -->
           <img class="dropDown__img" height="40" width="40" :src="this.currentUser.user_picture" alt="Image de profil de user">
-          <button class="dropDown__button">{{this.currentUser.user_prenom}}</button>
+          <button class="dropDown__button">{{this.firstName}}</button>
         </div>
         <nav class="nav" v-if="isOpen">
             <router-link to="/home" class="nav__home">Accueil</router-link> 
@@ -26,6 +26,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+
 
 export default {
   name: 'Header',
@@ -35,7 +37,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser']),...mapGetters(['firstName'])
   },
   methods:{
     openNav : function(){this.isOpen = !this.isOpen}

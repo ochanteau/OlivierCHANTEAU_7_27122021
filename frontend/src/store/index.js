@@ -17,14 +17,27 @@ export default createStore({
   state: {
     user_id:null,
     currentUser:{},
+    // currentUser:{user_nom:"  ",user_prenom:"  "},
     // assignation du token via local storage
     token :localStorage.getItem('token'),
     // verification de la presence du token
     isLoggedIn: localStorage.getItem('token')? true:false
   },
   getters:{
-    isLoggedIn: state =>  state.isLoggedIn
-  },
+    isLoggedIn: state =>  state.isLoggedIn,
+    // fullName : state => state.currentUser.user_prenom.string[0]+state.currentUser.user_prenom.slice(1)
+    fullName : state => {
+               if (!state.currentUser.user_prenom || !state.currentUser.user_nom) { return null} 
+               else {return state.currentUser.user_prenom[0].toUpperCase() + state.currentUser.user_prenom.slice(1)+ " " + state.currentUser.user_nom.toUpperCase()}  
+
+    },
+    firstName : state => {
+      if (!state.currentUser.user_prenom ) { return null} 
+      else {return state.currentUser.user_prenom[0].toUpperCase() + state.currentUser.user_prenom.slice(1)}  
+
+    },
+      
+  }, 
     
   mutations: {
     //  fonction pour iodentifier l'utilisateur 
@@ -46,6 +59,10 @@ export default createStore({
     getCurrentUser(state,payload){
       state.currentUser = payload.currentUser;
       state.user_id = payload.user_id;
+    },
+    updateUserPicture(state,payload){
+      
+      state.currentUser.user_picture= payload;
     }
   },
   actions: {
@@ -91,6 +108,7 @@ export default createStore({
       
     // }
   },
+
   modules: {
   }
 })

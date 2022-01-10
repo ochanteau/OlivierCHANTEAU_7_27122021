@@ -2,10 +2,24 @@
 <div>
     
    <Header></Header>
-   <div>
-       <div>
-           <input @change.prevent="uploadFile($event)"  type="file" accept="image/png, image/jpeg,image/jpg">
+   <div class="profil">
+       <div class="userInfos">
+            <div class="userInfos__img">
+                <img height="200" width="200" :src="this.currentUser.user_picture" alt="Image de profil de user">
+            </div>
+            <div class="userInfos__infos">
+                <!-- <p>{{toUpperCase(this.currentUser.user_prenom)}} {{toUpperCase(this.currentUser.user_nom)}}</p> -->
+                <p>{{this.fullName}}</p>
+                <p>{{this.currentUser.user_email}}</p>
+            </div>
+       </div>
+       <div class="updatePicture">
+           <label for="updatePicture__picture">Modifier votre photo de profil</label>
+           <input @change.prevent="uploadFile($event)" id="profil__picture"  type="file" accept="image/png, image/jpeg,image/jpg">
            <button @click="fetchFile">Enregister</button>
+       </div>
+       <div class="profil__delete">
+           <button>Supprimer mon compte</button>
        </div>
    </div>
  
@@ -15,6 +29,7 @@
 <script>
 import Header from '../components/Header';
 import { mapState } from 'vuex';
+import { mapGetters } from 'vuex'
 
 // import axios pour requete API 
 const axios = require('axios');
@@ -28,15 +43,18 @@ export default {
     components : {Header} ,
     data: function (){
             return {
-        profilPicture:null
+        profilPicture:null,
+        MissingPicture:false,
+        ErrorServer:false,
         }
+    },
+    computed:{
+    ...mapState(['currentUser']),...mapGetters(['fullName'])
     },
     mounted(){
         this.$store.dispatch('fetchCurrentUser')
     },
-    computed:{
-    ...mapState(['currentUser'])
-    },
+    
     methods:{
         uploadFile (e){
             this.profilPicture=e.target.files[0];
@@ -44,22 +62,23 @@ export default {
             
         },
         fetchFile(){
-            if (!this.profilPicture) {return}
+            this.MissingPicture=false;
+            this.ErrorServer=false;
+            const self=this;
+            if (!this.profilPicture) {this.MissingPicture=true}
             else {
-            let formData = new FormData();
-            const image = this.profilPicture;
-            formData.append("image",image);
-            instance.put('/picture', formData, {
-            headers: {
-            'Content-Type': 'multipart/form-data'
-            }
-            })
-            .then(function(){
-
-            }
-
-            )
-            .catch()
+                let formData = new FormData();
+                const image = this.profilPicture;
+                formData.append("image",image);
+                instance.put('/picture', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                    .then(function(res){
+                        console.log(res.data);
+                        self.$store.commit("updateUserPicture", res.data);
+                    })
+                    .catch(function(err){
+                        this.ErrorServer=true;
+                        console.log(err)
+                        })
             }
 
         }
@@ -69,5 +88,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+Header{
+    margin-bottom: 6rem;
+}
+
+.profil{
+    max-width: 80rem;
+    padding: 2rem 0rem;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: $box-shadow $primary;
+
+    .userInfos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+        &__img{
+            margin-bottom: 2rem;
+        }
+        &__infos{
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+    }
+    &__update{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
 
 </style>
