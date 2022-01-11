@@ -17,7 +17,6 @@ export default createStore({
   state: {
     user_id:null,
     currentUser:{},
-    // currentUser:{user_nom:"  ",user_prenom:"  "},
     // assignation du token via local storage
     token :localStorage.getItem('token'),
     // verification de la presence du token
@@ -25,7 +24,6 @@ export default createStore({
   },
   getters:{
     isLoggedIn: state =>  state.isLoggedIn,
-    // fullName : state => state.currentUser.user_prenom.string[0]+state.currentUser.user_prenom.slice(1)
     fullName : state => {
                if (!state.currentUser.user_prenom || !state.currentUser.user_nom) { return null} 
                else {return state.currentUser.user_prenom[0].toUpperCase() + state.currentUser.user_prenom.slice(1)+ " " + state.currentUser.user_nom.toUpperCase()}  
@@ -63,6 +61,14 @@ export default createStore({
     updateUserPicture(state,payload){
       
       state.currentUser.user_picture= payload;
+    },
+    logout(state){
+      localStorage.removeItem('token');
+      state.currentUser={};
+      state.token=null;
+      state.user_id=null;
+      state.isLoggedIn=false;
+      router.push('/');
     }
   },
   actions: {

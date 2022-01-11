@@ -16,7 +16,7 @@
         <nav class="nav" v-if="isOpen">
             <router-link to="/home" class="nav__home">Accueil</router-link> 
             <router-link to="/profil" class="nav__profil">Votre profil</router-link>
-            <button class="nav__button">Déconnexion</button>
+            <button @click="logout" class="nav__button">Déconnexion</button>
         </nav>
         
     </div>
@@ -25,8 +25,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 
 
 export default {
@@ -40,7 +41,7 @@ export default {
     ...mapState(['currentUser']),...mapGetters(['firstName'])
   },
   methods:{
-    openNav : function(){this.isOpen = !this.isOpen}
+    openNav : function(){this.isOpen = !this.isOpen},...mapMutations(['logout'])
   },
   props: {
     msg: String
