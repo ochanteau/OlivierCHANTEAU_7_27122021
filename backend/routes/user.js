@@ -34,6 +34,12 @@ router.post('/login', accountLimiter.loginAccountLimiter, userCtrl.login);
 */
 router.put('/picture',auth,multer, userCtrl.updatePicture);
 
+/*
+* route "/delete", appel du middleware auth pour verifier le token et recuperer user_id ,
+* et du controller pour surpprimer le compte de l'utilisateur
+*/
+router.delete('/delete',auth, userCtrl.deleteAccount);
+
 
 /*
 * route "/currentUser", appel du middleware auth pour verifier le token et recuperer user_id ,
@@ -41,11 +47,7 @@ router.put('/picture',auth,multer, userCtrl.updatePicture);
 */
 router.get('/currentUser',auth, userCtrl.getCurrentUser);
 
-/*
-* route "/delete", appel du middleware auth pour verifier le token et recuperer user_id ,
-* et du controller pour surpprimer le compte de l'utilisateur
-*/
-router.delete('/delete',auth, userCtrl.deleteAccount);
+
 
 
 module.exports = router;

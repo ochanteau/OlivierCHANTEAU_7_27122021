@@ -42,9 +42,6 @@ export default {
   },
   methods:{
     openNav : function(){this.isOpen = !this.isOpen},...mapMutations(['logout'])
-  },
-  props: {
-    msg: String
   }
 }
 </script>

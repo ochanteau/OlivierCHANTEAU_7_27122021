@@ -105,8 +105,7 @@ exports.getCurrentUser =  (req, res) => {
 // fonction pour modifier l'image de l'utilisateur courant
 
 exports.updatePicture =  (req, res) => {
-    console.log(req.body.image);
-    console.log(req.file.filename)
+    
     // recuperation de l'url de l'image
     const user_picture= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     console.log("/////user_picture");
@@ -115,9 +114,12 @@ exports.updatePicture =  (req, res) => {
     const sql = `SELECT user_picture FROM user WHERE user_id =? `;
     // recuperation user_id du token
     const {user_id} = req.token ;
+    console.log(user_id);
     db.query(sql, user_id, function(err, results) {
         if (err){res.status(500).json({ err })}
         else {
+          console.log(results);
+          
           // recuperation du nom de l'ancienne image
           const oldPicture = results[0].user_picture.split('/images/')[1];
           console.log("/////oldpicture");

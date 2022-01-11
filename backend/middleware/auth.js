@@ -15,7 +15,8 @@ module.exports = (req, res, next) => {
     next();
     
   }
-  catch {
+  catch (e) {
+    console.log("erreur token:",e);
     res.status(401).json({
       error: new Error('Invalid request!')
     });

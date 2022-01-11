@@ -13,13 +13,16 @@
                 <h3  class="userInfos__email">{{this.currentUser.user_email}}</h3>
             </div>
        </div>
+       <div class="separation" ></div>
        <div class="updatePicture">
            <label class="updatePicture__label" for="profil__picture">Modifier votre photo de profil</label>
            <input class="updatePicture__input" @change.prevent="uploadFile($event)" id="profil__picture"  type="file" accept="image/png, image/jpeg,image/jpg">
            <button class="updatePicture__button" @click="fetchFile">Enregister</button>
        </div>
+       <div class="separation" ></div>
        <div class="delete">
-           <button class="delete__button">Supprimer mon compte</button>
+           <button v-if="!deleteConfirmation" @click="deleteAccount" class="delete__button">Supprimer mon compte</button>
+           <p class="delete__message" v-if="deleteConfirmation">Votre compte a bien été supprimé ! </p>
        </div>
        <div class="error">
             <p v-if="MissingPicture" class="error_missingPicture">Vous n'avez pas selectionner d'image !</p>
@@ -34,14 +37,19 @@
 <script>
 import Header from '../components/Header';
 import { mapState } from 'vuex';
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
+
 
 // import axios pour requete API 
 const axios = require('axios');
 // ajout d'une URL de base aux requetes
 const instance = axios.create({baseURL: 'http://localhost:3000/api/auth'});
 // configuration du token dans le header
-instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`
+// instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+
+console.log('instance header');
+
+console.log(instance.defaults.headers.common['Authorization']);
 
 export default {
     name:'profil',
@@ -51,10 +59,11 @@ export default {
         profilPicture:null,
         MissingPicture:false,
         ErrorServer:false,
+        deleteConfirmation:false
         }
     },
     computed:{
-    ...mapState(['currentUser']),...mapGetters(['fullName'])
+    ...mapState(['currentUser','token']),...mapGetters(['fullName'])
     },
     mounted(){
         this.$store.dispatch('fetchCurrentUser')
@@ -76,10 +85,36 @@ export default {
                 let formData = new FormData();
                 const image = this.profilPicture;
                 formData.append("image",image);
+                instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
                 instance.put('/picture', formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then(function(res){
                         console.log(res.data);
                         self.$store.commit("updateUserPicture", res.data);
+                    })
+                    .catch(function(err){
+                        this.ErrorServer=true;
+                        console.log(err)
+                        })
+            }
+
+        },
+        deleteAccount(){
+            const self = this;
+            // demande de confirmation suppression de compte
+            if ( window.confirm('Vous souhaitez vraiment supprimer votre compte?') 
+            && window.confirm('Cette action entrainera la suppression de tout votre contenu et de vos participations au contenu des autres utisateurs')) 
+            {
+                instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+                instance.delete('/delete')
+                    .then(function(res){
+                        console.log(res);
+                        // affichage confirmation suppression de compte
+                        self.deleteConfirmation= true;
+                        // appel logout apres 1seconde
+                        setTimeout(() => {
+                            self.$store.commit('logout')
+                        }, 1000);
+                        
                     })
                     .catch(function(err){
                         this.ErrorServer=true;
@@ -156,27 +191,28 @@ Header{
             font-weight: normal;
            
     
-            &::after{
-                content: "";
-                width: 25rem;
-                border-bottom: 2px solid $secondary;
-                position: absolute;
-                left: 0;
-                top: 5rem;
+            // &::after{
+            //     content: "";
+            //     width: 25rem;
+            //     border-bottom: 2px solid $secondary;
+            //     position: absolute;
+            //     left: 0;
+            //     top: 5rem;
                 
                 
 
-            }
+            // }
         }
 }
 
 .updatePicture{
-        margin: 1rem 0rem;
+        margin: 0.5rem 0rem;
         display: flex;
         flex-direction: column;
         align-items: center;
         font-size : 2.5rem;
         position: relative;
+        padding: 0.5rem 0rem;
         &__label{
            padding-bottom: 0.5rem;
            @include S{
@@ -191,22 +227,32 @@ Header{
             border : solid $secondary 1px;
             border-radius: 2rem;
             background-color: $primary;
-            &::after{
-                content: "";
-                width: 32rem;
-                border-bottom: 2px solid $secondary;
-                position: absolute;
-                left: 0;
-                top: 12rem;
-                @include S{
-                top: 15rem;
-                width: 30rem;
-                }
+            // &::after{
+            //     content: "";
+            //     width: 32rem;
+            //     border-bottom: 2px solid $secondary;
+            //     position: absolute;
+            //     left: 0;
+            //     top: 12rem;
+            //     @include S{
+            //     top: 15rem;
+            //     width: 30rem;
+            //     }
                 
 
-            }
+            
         }
         
+}
+
+.separation{
+    height: 1px;
+    background-color: $secondary;
+    width: 32rem;
+    text-align: center;
+    @include S{
+        width: 30rem;
+    }
 }
 
 .error{
@@ -222,6 +268,10 @@ Header{
         border-radius: 2rem;
         background-color: $primary;
         border : solid $secondary 1px;
+    }
+    &__message{
+        font-size: 2rem;
+        color: red;
     }
 }
 

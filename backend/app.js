@@ -103,10 +103,10 @@ app.use(helmet());
 * middleware express-rate-limit
 * limitation des requetes provenant d'une même adresse IP 
 */
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300 // limit each IP to 300 requests per windowMs
-}));
+// app.use(rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 500 // limit each IP to 300 requests per windowMs
+// }));
 
 
 // middleware CORS headers
