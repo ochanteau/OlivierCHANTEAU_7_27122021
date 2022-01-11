@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 // import de la vue profil
 import Profil from '../views/Profil.vue'
 // import du store
-// import store from '../store/index';
+import store from '../store/index';
 
 // attention a supprimer le getters et a le remplacer par le state
 
@@ -17,10 +17,10 @@ const routes = [
     component: Authentification,
     meta:{title: "Groupomania"},
     // si utilisateur déja loguer , on le dirige vers vue home
-    // beforeEnter(to,from,next){
-    //   if (store.getters.isLoggedIn) { router.push("/home")}
-    //   else {next()}
-    // }
+    beforeEnter(to,from,next){
+      if (store.getters.isLoggedIn) { router.push("/home")}
+      else {next()}
+    }
   },
   {
     path: '/home',
@@ -28,10 +28,10 @@ const routes = [
     meta:{title: "Groupomania-Home"},
     component: Home,
     // si pas loguer on le dirige vers la vue authentification 
-    // beforeEnter(to,from,next){
-    //   if (store.getters.isLoggedIn) { next()}
-    //   else {router.push("/")}
-    // }
+    beforeEnter(to,from,next){
+      if (store.getters.isLoggedIn) { next()}
+      else {router.push("/")}
+    }
    
   },
   {
@@ -40,10 +40,10 @@ const routes = [
     meta:{title: "Groupomania-Profil"},
     component: Profil,
     // si pas loguer on le dirige vers la vue authentification 
-    // beforeEnter(to,from,next){
-    //   if (store.getters.isLoggedIn) { next()}
-    //   else {router.push("/")}
-    // }
+    beforeEnter(to,from,next){
+      if (store.getters.isLoggedIn) { next()}
+      else {router.push("/")}
+    }
     // est ce que j utilise le getters ou pas je vois pas l interet en l espece 
    
   },

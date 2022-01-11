@@ -4,12 +4,12 @@
    <Header></Header>
    <div role="main" class="profil">
        <div class="userInfos">
-            <div class="userInfos__img">
+            <div class="userInfos__img">                
                 <img height="200" width="200" :src="this.currentUser.user_picture" alt="Image de profil de user">
             </div>
             <div class="userInfos__infos">
                 <h2  class="userInfos__fullName">{{this.fullName}}</h2>
-                <!-- <p class="userInfos__fullName">{{this.fullName}}</p> -->
+               
                 <h3  class="userInfos__email">{{this.currentUser.user_email}}</h3>
             </div>
        </div>
@@ -22,7 +22,7 @@
            <button class="delete__button">Supprimer mon compte</button>
        </div>
        <div class="error">
-            <p v-if="MissingPicture" class="error_missingPicture">Vous n'avez pas selectionner d'image!</p>
+            <p v-if="MissingPicture" class="error_missingPicture">Vous n'avez pas selectionner d'image !</p>
             <p v-if="ErrorServer" class="error_ErrorServer">Une erreur s'est produite ! Essayez de nouveau</p>
         </div>
    </div>
@@ -64,6 +64,7 @@ export default {
         uploadFile (e){
             this.profilPicture=e.target.files[0];
             console.log(this.profilPicture)
+            
             
         },
         fetchFile(){

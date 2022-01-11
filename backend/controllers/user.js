@@ -161,6 +161,22 @@ exports.updatePicture =  (req, res) => {
 
 
 
+// fonction pour supprimer le compte de l'utilisateur
 
+exports.deleteAccount =  (req, res) => {
+  // recuperation user_id du token
+  const {user_id} = req.token ;
+  console.log(user_id);
+  // requete BDD sur la table user pour supprimer le compte
+  const sql = ` DELETE FROM user WHERE user_id =? `
+  db.query(sql, user_id, function(err, results) {
+      if (err){res.status(500).json({ err })}
+      else {
+        console.log(results);
+        return res.status(200).json({message:'Votre compte a bien été supprimé !'});
+      }
+    }
+  )
+}
 
  
