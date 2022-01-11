@@ -5,7 +5,9 @@
    <div role="main" class="profil">
        <div class="userInfos">
             <div class="userInfos__img">                
-                <img height="200" width="200" :src="this.currentUser.user_picture" alt="Image de profil de user">
+                <img v-if="!previewPicture" height="200" width="200" :src="this.currentUser.user_picture" alt="Image de profil de user">
+                <img v-if="previewPicture" height="200" width="200" :src="this.previewPicture" alt="image de profil">
+
             </div>
             <div class="userInfos__infos">
                 <h2  class="userInfos__fullName">{{this.fullName}}</h2>
@@ -59,20 +61,39 @@ export default {
         profilPicture:null,
         MissingPicture:false,
         ErrorServer:false,
-        deleteConfirmation:false
+        deleteConfirmation:false,
+        previewPicture : null,
+        updateSucces:false
         }
     },
     computed:{
     ...mapState(['currentUser','token']),...mapGetters(['fullName'])
     },
+    created(){
+        console.log("created page profil")
+    },
     mounted(){
         this.$store.dispatch('fetchCurrentUser')
+        console.log("fetchcurrentUser")
     },
     
     methods:{
         uploadFile (e){
+            const self = this;
             this.profilPicture=e.target.files[0];
-            console.log(this.profilPicture)
+            console.log(this.profilPicture);
+            console.log(e.target.value)
+
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                // get loaded data and render thumbnail.
+                self.previewPicture = e.target.result;
+            
+            };
+            // read the image file as a data URL.
+            reader.readAsDataURL(e.target.files[0]);
+            console.log(e.target.files[0])
             
             
         },

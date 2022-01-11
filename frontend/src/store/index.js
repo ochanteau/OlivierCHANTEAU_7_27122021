@@ -84,8 +84,9 @@ export default createStore({
       }
       catch(err) {
         console.log(err)
-        router.push('/')
-        window.alert("une erreur s'est produite, merci de recharger la page")
+        commit("logout")
+       
+        
       }
      
     }

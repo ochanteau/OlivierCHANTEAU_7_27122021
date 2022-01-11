@@ -13,6 +13,12 @@ import Header from '../components/Header'
 export default {
     name:'home',
     components : {Header} ,
+    created(){
+      console.log("created home")
+    },
+    mounted(){
+      console.log("mounted home")
+    }
     
 }
 </script>
