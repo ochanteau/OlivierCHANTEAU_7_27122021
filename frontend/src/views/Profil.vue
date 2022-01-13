@@ -17,9 +17,9 @@
        </div>
        <div class="separation" ></div>
        <div class="updatePicture">
-           <label class="updatePicture__label" for="profil__picture">Modifier votre photo de profil</label>
+           <label class="updatePicture__label" for="profil__picture">Modifier votre photo  <i class="fas fa-upload"></i> </label>
            <input class="updatePicture__input" @change.prevent="uploadFile($event)" id="profil__picture"  type="file" accept="image/png, image/jpeg,image/jpg">
-           <button class="updatePicture__button" @click="fetchFile">Enregister</button>
+           <button class="updatePicture__button" @click="fetchFile">Enregister  </button>
            <p v-if="this.updateSucces" class="updatePicture__message">Votre photo de profil a bien été modifiée !</p>
        </div>
        <div class="separation" ></div>
@@ -177,7 +177,7 @@ Header{
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: $box-shadow $primary;
+    box-shadow: $box-shadow $border;
     @include M {
       max-width: 40rem;
     }
@@ -233,7 +233,7 @@ Header{
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size : 2.3rem;
+        font-size : 2rem;
         position: relative;
         padding: 0.5rem 0rem;
         &__label{
@@ -248,21 +248,13 @@ Header{
             font-size: 2rem;
             padding: 0.5rem 1rem;
             margin-top: 1rem;
-            border : solid $secondary 1px;
-            border-radius: 2rem;
-            background-color: $primary;
+            // border : solid $secondary 1px;
+            // border : none;
+            border-radius: 1rem;
+            // background-color: $border;
+            border-color: $border;
             cursor: pointer;
-            // &::after{
-            //     content: "";
-            //     width: 32rem;
-            //     border-bottom: 2px solid $secondary;
-            //     position: absolute;
-            //     left: 0;
-            //     top: 12rem;
-            //     @include S{
-            //     top: 15rem;
-            //     width: 30rem;
-            //     }
+          
             
         }
         &__input{
@@ -278,7 +270,7 @@ Header{
 
 .separation{
     height: 1px;
-    background-color: $secondary;
+    background-color:grey;
     width: 32rem;
     text-align: center;
     @include S{
@@ -294,11 +286,14 @@ Header{
     margin: 3rem 0rem 2rem 0rem;
     
     &__button{
-        font-size: 2.5rem;
+        font-size: 2rem;
         padding: 1rem;
-        border-radius: 2rem;
-        background-color: $primary;
-        border : solid $secondary 1px;
+        border-radius: 1rem;
+        // background-color: $border;
+        // border : solid $secondary 1px;
+        border-radius: 1rem;
+        // background-color: $border;
+        border-color: $border;
         cursor: pointer;
     }
     &__message{
