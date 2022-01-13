@@ -5,8 +5,7 @@
       <form role="form" class="form" >
         <div class="post">
           <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
-          <!-- <input class="post__input" placeholder="Que souhaitez vous partager ?" type="text-area"> -->
-          <textarea maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
+          <textarea aria-label="texte du post" maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
         </div>
         <div v-if="this.previewPicture"  class="postPicture">
           <img class="postPicture__img" height="300" width="500" :src="this.currentUser.user_picture">
@@ -91,8 +90,8 @@ main{
     }
     &__input{
       width: 80%;
-      margin-left: 1rem;
-      border-radius: 2rem;
+      margin-left: 1.5rem;
+      // border-radius: 2rem;
       background-color: $textarea  ;
       border: none;
       outline: none;
@@ -118,6 +117,7 @@ main{
     margin: 0.5rem 0rem;
     &__label{
       padding: 1rem;
+      cursor: pointer;
     }
     &__input{
       display: none;
@@ -126,6 +126,7 @@ main{
       padding: 0rem 1rem;
       border-radius: 1rem;
       border-color: $border;
+      cursor: pointer;
     }
   }
 

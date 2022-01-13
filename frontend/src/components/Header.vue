@@ -105,7 +105,7 @@ export default {
 
     .dropDown{
       display: flex;
-      border-radius: 2rem;
+      border-radius: 1rem;
       background-color: $primary;
       padding: 0.5rem 0rem 0.5rem 1rem;
       margin-right: 1rem;
