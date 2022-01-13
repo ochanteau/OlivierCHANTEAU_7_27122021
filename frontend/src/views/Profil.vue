@@ -5,7 +5,7 @@
    <div role="main" class="profil">
        <div class="userInfos">
             <div class="userInfos__img">                
-                <img v-if="!previewPicture" height="200" width="200" :src="this.currentUser.user_picture" alt="Image de profil de user">
+                <img v-if="!previewPicture" height="200" width="200" :src="this.currentUser.user_picture" alt="Image de profil">
                 <img v-if="previewPicture" height="200" width="200" :src="this.previewPicture" alt="image de profil">
 
             </div>
@@ -20,6 +20,7 @@
            <label class="updatePicture__label" for="profil__picture">Modifier votre photo de profil</label>
            <input class="updatePicture__input" @change.prevent="uploadFile($event)" id="profil__picture"  type="file" accept="image/png, image/jpeg,image/jpg">
            <button class="updatePicture__button" @click="fetchFile">Enregister</button>
+           <p v-if="this.updateSucces" class="updatePicture__message">Votre photo de profil a bien été modifiée !</p>
        </div>
        <div class="separation" ></div>
        <div class="delete">
@@ -111,9 +112,10 @@ export default {
                     .then(function(res){
                         console.log(res.data);
                         self.$store.commit("updateUserPicture", res.data);
+                        self.updateSucces=true;
                     })
                     .catch(function(err){
-                        this.ErrorServer=true;
+                        self.ErrorServer=true;
                         console.log(err)
                         })
             }
@@ -231,11 +233,12 @@ Header{
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size : 2.5rem;
+        font-size : 2.3rem;
         position: relative;
         padding: 0.5rem 0rem;
         &__label{
            padding-bottom: 0.5rem;
+           cursor: pointer;
            @include S{
             text-align: center;
             }
@@ -248,6 +251,7 @@ Header{
             border : solid $secondary 1px;
             border-radius: 2rem;
             background-color: $primary;
+            cursor: pointer;
             // &::after{
             //     content: "";
             //     width: 32rem;
@@ -259,9 +263,15 @@ Header{
             //     top: 15rem;
             //     width: 30rem;
             //     }
-                
-
             
+        }
+        &__input{
+            display: none;
+        }
+        &__message{
+            font-size: 1.6rem;
+            padding-top: 0.7rem;
+            color: red;
         }
         
 }
@@ -281,7 +291,7 @@ Header{
 }
 
 .delete{
-    margin: 3rem 0rem 3rem 0rem;
+    margin: 3rem 0rem 2rem 0rem;
     
     &__button{
         font-size: 2.5rem;
@@ -289,6 +299,7 @@ Header{
         border-radius: 2rem;
         background-color: $primary;
         border : solid $secondary 1px;
+        cursor: pointer;
     }
     &__message{
         font-size: 2rem;

@@ -47,3 +47,22 @@ JOIN `profil_picture` ON `user`.`profil_picture_id` = `profil_picture`.`profil_p
 FROM user, profil_picture
 WHERE user.profil_picture_id = profil_picture.profil_picture_id
 AND user.user_id = '43' `
+
+
+-- selection des POST plus infos user 
+SELECT user.user_id,user_nom,user_prenom,user_picture,post_id,post_text,post_date,post_picture
+FROM user
+JOIN post ON post.user_id = user.user_id
+ORDER BY post_date DESC
+
+-- selection des commentaires relatifs à un post avec les infos de la personne qui a posté
+SELECT user.user_id,user_nom,user_prenom,user_picture,comment_id,comment_text,comment_date,post_id
+FROM user
+INNER JOIN comments
+WHERE comments.user_id = user.user_id AND post_id=2
+ORDER BY comment_date DESC
+
+-- selction des likes relatif à un POST 
+
+SELECT * FROM groupomania.like
+WHERE post_id =2
