@@ -2,7 +2,7 @@
  
     
 
-
+      <!-- affichage du corps du post -->
       <div  class="post" >
         <div class=" post__container">
           <div class="user">
@@ -27,6 +27,18 @@
           <img class="postPicture__img" height="300" width="500" :src="this.currentUser.user_picture">
         </div>
         <div class="separation"></div>
+      <!-- like et affichage du nb de like ainsi que du nombre de commentaires -->
+        <div class="commentsContainer">
+          <div class="like" :class="{likeCheck:like}">
+            <span class="like__number">5</span> 
+            <i  class="fas fa-thumbs-up like__i"></i>
+          </div>
+          <div class=" toggle">
+            <span class=" toggle__number">6</span>
+            <span class=" toggle__comment">Commentaires</span>
+          </div>
+        </div>
+        <div class="separation"></div>
         
       </div> 
       
@@ -46,6 +58,7 @@ export default {
         return {
           previewPicture : null,
           isOpen:true,
+          like:false
         }
     },
     created(){
@@ -64,12 +77,6 @@ export default {
 
 <style lang="scss" scoped>
 
-
-
-
-
-
-
 .post{
     display: flex;
     flex-direction: column;
@@ -80,7 +87,6 @@ export default {
       justify-content: space-between;
       
     }
-  
 }
 
 .user{
@@ -99,11 +105,9 @@ export default {
   &__fullName{
     font-weight: bold;
   }
-  
 }
 
 .update{
-  // color: grey;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -112,23 +116,18 @@ export default {
     left: -23rem;
     top: 2rem;
     box-shadow: $box-shadow $border;
-    background-color: $border;
+    // background-color: $border;
+    background-color: $primary;
     padding: 1rem;
     line-height: 3rem;
     p{
       cursor: pointer;
     }
-    
     i{
       margin-right: 0.3rem;
     }
   }
-  // &__update{
-  //   line-height: 2rem;
-  //   i{
-  //     margin-right: 0.2rem;
-  //   }
-  // }
+
 }
 
 .postText{
@@ -139,23 +138,50 @@ export default {
 .postPicture{
     margin: 1rem 0rem;
     display: flex;
-   
     justify-content: center;
-    // &__img{
-      
-    // }
-  }
-
-  
-
+    
+}
 
 .separation{
   height: 1px;
   background-color: $border;
-  // width: 32rem;
   text-align: center;
-  margin: 1rem 0rem;
   
+  
+}
+
+.commentsContainer{
+  display: flex;
+ 
+}
+
+.like{
+  flex-grow: 1;
+  text-align: center;
+  
+  padding: 1rem 0rem;
+  &Check{
+    background-color: $primary;
+  }
+  &__number{
+    margin-right: 1rem;
+  }
+  &__i{
+    cursor: pointer;
+  }
+}
+.toggle{
+  flex-grow: 1;
+  text-align: center;
+  padding: 1rem 0rem;
+  
+  &__number{
+    margin-right: 0.5rem;
+  }
+  &__comment{
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 </style>
