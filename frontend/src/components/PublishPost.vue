@@ -4,7 +4,7 @@
     
       <form role="form" class="form" >
         <div class="post">
-          <img  class="post__profilPicture" height="50" width="50" :src="this.profilPicture" alt="Image de profil ">
+          <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
           <textarea aria-label="texte du post" maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
         </div>
         <div v-if="this.previewPicture"  class="postPicture">
@@ -37,9 +37,9 @@ export default {
           previewPicture : null,
         }
     },
-    props:
-        ['profilPicture', 'postPicture']
-    ,
+    // props:
+    //     ['profilPicture', 'postPicture']
+    // ,
     created(){
       console.log("created publish post")
     },

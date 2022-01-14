@@ -1,26 +1,38 @@
 <template>
-  <div class="UpdatePost">
+ 
     
 
-      <div class="overlay"></div>
-      <form role="form" class="form" >
-        <div class="post">
-          <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
-          <textarea aria-label="texte du post" maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
+
+      <div  class="post" >
+        <div class=" post__container">
+          <div class="user">
+              <img  class="user__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
+              <div  class="user__infos">
+                <p  class="user__fullName">Prénom Nom</p>
+                <p class="user__date">le 14/01/2022</p>
+              </div>
+          </div>
+          <div class="update">
+            <i @click="openNav" class="fas fa-ellipsis-h"></i>
+            <div class="update__nav" v-if="isOpen">
+              <p class="update__update"><i class="far fa-edit"></i>Modifier votre publication</p>
+              <p class="update__delete"><i class="far fa-trash-alt"></i> Supprimer votre publication</p>
+            </div>
+          </div>
         </div>
+        <div class="postText">
+            <p class="postText__p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices vel nulla nec semper. Aenean volutpat erat turpis, a mattis ex laoreet malesuada. Donec commodo lectus eu dictum porttitor. In dui.</p>
+        </div>  
         <div class="postPicture">
           <img class="postPicture__img" height="300" width="500" :src="this.currentUser.user_picture">
         </div>
         <div class="separation"></div>
-        <div class="upload">
-          <label class="upload__label" for="upload">Choisir une image <i class="fas fa-upload"></i></label>
-          <input id="upload" class="upload__input" type="file">
-          <button class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
-        </div>
-      </form>
+        
+      </div> 
+      
       
 
-  </div>
+ 
 </template>
 
 
@@ -33,6 +45,7 @@ export default {
     data: function(){
         return {
           previewPicture : null,
+          isOpen:true,
         }
     },
     created(){
@@ -42,6 +55,7 @@ export default {
       ...mapState(['currentUser'])
     },
     methods:{
+      openNav : function(){this.isOpen = !this.isOpen}
       // ...mapActions(['fetchCurrentUser'])
     }
     
@@ -50,51 +64,79 @@ export default {
 
 <style lang="scss" scoped>
 
-Header{
-  margin-bottom: 4rem;
-}
 
-.UpdatePost{
-  max-width: 60rem;
-  margin: auto;
-}
 
-.form{
-  // padding: 2rem 2rem 1rem 2rem;
-  box-shadow: $box-shadow $border;
-  padding: 2rem 3rem 1rem 3rem;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  
-}
+
+
+
 
 .post{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    // padding: 1.5rem 1rem;
-    
-    &__profilPicture{
-      border-radius: 50%;
+    flex-direction: column;
+    padding: 2rem 3rem;
+    box-shadow: $box-shadow $border;
+    &__container{
+      display: flex;
+      justify-content: space-between;
       
-
     }
-    &__input{
-      width: 80%;
-      margin-left: 1.5rem;
-      // border-radius: 2rem;
-      background-color: $textarea  ;
-      border: none;
-      outline: none;
-      padding: 1rem ;
-      resize: none;
-     
+  
+}
+
+.user{
+  display: flex;
+  &__profilPicture{
+    border-radius: 50%;
+  }
+  &__infos{
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem;
+
+  }
+  &__fullName{
+    font-weight: bold;
+  }
+  
+}
+
+.update{
+  // color: grey;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &__nav{
+    position: absolute;
+    left: -23rem;
+    top: 2rem;
+    box-shadow: $box-shadow $border;
+    background-color: $border;
+    padding: 1rem;
+    line-height: 3rem;
+    p{
+      cursor: pointer;
+    }
+    
+    i{
+      margin-right: 0.3rem;
     }
   }
+  // &__update{
+  //   line-height: 2rem;
+  //   i{
+  //     margin-right: 0.2rem;
+  //   }
+  // }
+}
 
-  .postPicture{
+.postText{
+  margin: 1rem 0rem 0.5rem 0rem;
+
+}
+
+.postPicture{
     margin: 1rem 0rem;
     display: flex;
    
@@ -104,24 +146,7 @@ Header{
     // }
   }
 
-  .upload{
-    display: flex;
-    justify-content:space-around;
-    margin: 0.5rem 0rem;
-    &__label{
-      padding: 1rem;
-      cursor: pointer;
-    }
-    &__input{
-      display: none;
-    }
-    &__button{
-      padding: 0rem 1rem;
-      border-radius: 1rem;
-      border-color: $border;
-      cursor: pointer;
-    }
-  }
+  
 
 
 .separation{

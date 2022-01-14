@@ -20,7 +20,7 @@
       </form> -->
       
       <div class="postList">
-        <post></post>
+        <post class="post"></post>
       </div>
     </main>
   </div>
@@ -67,6 +67,10 @@ Header{
 main{
   max-width: 60rem;
   margin: auto;
+}
+
+post{
+  margin-bottom: 2rem;
 }
 
 // .form{
@@ -145,6 +149,10 @@ main{
 
 .postList{
   margin-top: 3rem;
+  margin-bottom: 2rem;
+  .post{
+  margin-bottom: 2rem;
+  }
 }
 
 </style>
