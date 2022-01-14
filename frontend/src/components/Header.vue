@@ -66,7 +66,7 @@ export default {
   header{
     
     height: 80px;
-    box-shadow: $box-shadow $primary;
+    box-shadow: $box-shadow $border;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr ;
     grid-template-areas:" . header navigation";
@@ -121,7 +121,7 @@ export default {
         border:none;
         font-weight: bold;
         font-size:2rem;
-        color: $secondary;
+        // color: $secondary;
         background: none ;
         cursor: pointer;
         padding: 0 3rem 0 1rem;
