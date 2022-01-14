@@ -13,8 +13,8 @@
               </div>
           </div>
           <div class="update">
-            <i @click="openNav" class="fas fa-ellipsis-h"></i>
-            <div class="update__nav" v-if="isOpen">
+            <i @click="openUpdatePost" class="fas fa-ellipsis-h"></i>
+            <div class="update__nav" v-if="isOpenPost">
               <p class="update__update"><i class="far fa-edit"></i>Modifier votre publication</p>
               <p class="update__delete"><i class="far fa-trash-alt"></i> Supprimer votre publication</p>
             </div>
@@ -26,9 +26,11 @@
         <div class="postPicture">
           <img class="postPicture__img" height="300" width="500" :src="this.currentUser.user_picture">
         </div>
+
         <div class="separation"></div>
-      <!-- like et affichage du nb de like ainsi que du nombre de commentaires -->
-        <div class="commentsContainer">
+
+        <!-- like et affichage du nb de like ainsi que du nombre de commentaires -->
+        <div class="numberContainer">
           <div class="like" :class="{likeCheck:like}">
             <span class="like__number">5</span> 
             <i  class="fas fa-thumbs-up like__i"></i>
@@ -40,6 +42,61 @@
         </div>
         <div class="separation"></div>
         
+          
+        <!--partie relative aux commentaires  -->
+        <div class="commentSection">
+          <!-- liste des commentaires -->
+          <div class="commentsList">
+              <comment></comment>
+              <comment></comment>
+              <!-- <div class="comment">
+                <div class="user user--center">
+                  <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
+                  <div  class="user__infos user__infos--comment">
+                        <p  class="user__fullName">Prénom Nom</p>
+                        <p  class="user__comment" >Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti unde ut nihil quas odio fuga iure amet. Consequuntur, quisquam quas.</p>
+                  </div>
+                  <div class="update">
+                      <i @click="openUpdateComment" class="fas fa-ellipsis-h"></i>
+                      <div class="update__nav" v-if="isOpenComment">
+                        <p class="update__update"><i class="far fa-edit"></i>Modifier</p>
+                        <p class="update__delete"><i class="far fa-trash-alt"></i>Supprimer</p>
+                      </div>
+                 </div>
+                </div>
+                <p class="user__date user__date--comment">le 14/01/2022</p>
+              </div> -->
+
+              <!-- <div class="comment">
+                <div class="user user--center">
+                  <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
+                  <div  class="user__infos user__infos--comment">
+                        <p  class="user__fullName">Prénom Nom</p>
+                        <p  class="user__comment" >Lorem ipsum </p>
+                  </div>
+                  <div class="update">
+                      <i @click="openUpdateComment" class="fas fa-ellipsis-h"></i>
+                      <div class="update__nav" v-if="isOpenComment">
+                        <p class="update__update"><i class="far fa-edit"></i>Modifier</p>
+                        <p class="update__delete"><i class="far fa-trash-alt"></i>Supprimer</p>
+                      </div>
+                 </div>
+                </div>
+                <p class="user__date user__date--comment">le 14/01/2022</p>
+              </div> -->
+          </div>  
+          <!-- ajouter un commentaire -->
+          <form>
+            <div class="user user--center">
+              <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
+              <div  class="user__infos user__infos--comment">
+                  <p  class="user__fullName">Prénom Nom</p>
+                  <textarea aria-label="texte du commentaire" maxlength="100" class="user__comment" placeholder="Votre commentaire ?"  cols="30" rows="2"></textarea>
+              </div>
+            </div>
+          </form>  
+        </div>
+        
       </div> 
       
       
@@ -50,14 +107,16 @@
 
 <script>
 import { mapState } from 'vuex';
+import comment from '../components/comment.vue'
 
 export default {
     name:'UpdatePost',
-    // components : {Header} ,
+    components : {comment} ,
     data: function(){
         return {
           previewPicture : null,
-          isOpen:true,
+          isOpenPost:false,
+          isOpenComment:false,
           like:false
         }
     },
@@ -68,7 +127,8 @@ export default {
       ...mapState(['currentUser'])
     },
     methods:{
-      openNav : function(){this.isOpen = !this.isOpen}
+      openUpdatePost : function(){this.isOpenPost = !this.isOpenPost},
+      openUpdateComment : function(){this.isOpenComment = !this.isOpenComment}
       // ...mapActions(['fetchCurrentUser'])
     }
     
@@ -80,7 +140,7 @@ export default {
 .post{
     display: flex;
     flex-direction: column;
-    padding: 2rem 3rem;
+    padding: 2rem 3rem 1rem 3rem;
     box-shadow: $box-shadow $border;
     &__container{
       display: flex;
@@ -91,19 +151,48 @@ export default {
 
 .user{
   display: flex;
+  &--center{
+      align-items: center;
+    }
   &__profilPicture{
     border-radius: 50%;
+    
   }
   &__infos{
     margin-left: 1rem;
     display: flex;
+    
     flex-direction: column;
     justify-content: space-between;
     padding: 0.5rem;
+    &--comment{
+      width: 85%;
+      // height: ;
+    }
 
   }
   &__fullName{
     font-weight: bold;
+    padding: 0.5rem 0rem;
+  }
+  &__comment{
+      width: 100%;
+      // margin-left: 1.5rem;
+      // border-radius: 2rem;
+      background-color: $textarea  ;
+      border: none;
+      outline: none;
+      padding: 1rem ;
+      resize: none;
+      border-radius: 1rem;
+  }
+  &__date{
+    font-size: 1.4rem;
+    // &--comment{
+    //   font-size: 1.3rem;
+    //   font-style: italic;
+    //   margin-left: 7rem;
+    // }
   }
 }
 
@@ -150,7 +239,7 @@ export default {
   
 }
 
-.commentsContainer{
+.numberContainer{
   display: flex;
  
 }
@@ -161,7 +250,8 @@ export default {
   
   padding: 1rem 0rem;
   &Check{
-    background-color: $primary;
+    
+    color: $secondary;
   }
   &__number{
     margin-right: 1rem;
@@ -182,6 +272,11 @@ export default {
     text-decoration: underline;
     cursor: pointer;
   }
+}
+
+
+.comment{
+  margin: 1rem 0rem;
 }
 
 </style>

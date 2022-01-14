@@ -94,6 +94,7 @@ export default {
       outline: none;
       padding: 1rem ;
       resize: none;
+      border-radius: 1rem;
      
     }
   }
@@ -118,11 +119,12 @@ export default {
     }
     &__input{
       display: none;
+      
     }
     &__button{
       padding: 0rem 1rem;
       border-radius: 1rem;
-      border-color: $border;
+      border: none;
       cursor: pointer;
     }
   }
