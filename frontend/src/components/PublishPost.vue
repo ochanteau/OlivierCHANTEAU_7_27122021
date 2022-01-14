@@ -1,15 +1,14 @@
 <template>
-  <div class="UpdatePost">
+  
+   
     
-
-      <div class="overlay"></div>
       <form role="form" class="form" >
         <div class="post">
-          <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
+          <img  class="post__profilPicture" height="50" width="50" :src="this.profilPicture" alt="Image de profil ">
           <textarea aria-label="texte du post" maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
         </div>
-        <div class="postPicture">
-          <img class="postPicture__img" height="300" width="500" :src="this.currentUser.user_picture">
+        <div v-if="this.previewPicture"  class="postPicture">
+          <img class="postPicture__img" height="300" width="500" :src="this.previewPicture">
         </div>
         <div class="separation"></div>
         <div class="upload">
@@ -20,44 +19,49 @@
       </form>
       
 
-  </div>
+    
+  
 </template>
 
 
 <script>
+
 import { mapState } from 'vuex';
 
+
 export default {
-    name:'UpdatePost',
-    // components : {Header} ,
+    name:'home',
+    // components : {Header,Post},
     data: function(){
         return {
           previewPicture : null,
         }
     },
+    props:
+        ['profilPicture', 'postPicture']
+    ,
     created(){
-      console.log("created home")
+      console.log("created publish post")
     },
     computed:{
       ...mapState(['currentUser'])
     },
     methods:{
       // ...mapActions(['fetchCurrentUser'])
+    },
+    mounted(){
+      console.log("mounted publis post");
+     
     }
     
 }
 </script>
 
+
 <style lang="scss" scoped>
 
-Header{
-  margin-bottom: 4rem;
-}
 
-.UpdatePost{
-  max-width: 60rem;
-  margin: auto;
-}
+
 
 .form{
   // padding: 2rem 2rem 1rem 2rem;
@@ -132,5 +136,7 @@ Header{
   margin: 1rem 0rem;
   
 }
+
+
 
 </style>
