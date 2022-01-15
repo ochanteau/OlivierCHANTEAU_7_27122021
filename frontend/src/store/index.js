@@ -17,6 +17,7 @@ export default createStore({
   state: {
     user_id:null,
     currentUser:{},
+    postList:{},
     // assignation du token via local storage
     token :localStorage.getItem('token'),
     // verification de la presence du token
@@ -69,7 +70,11 @@ export default createStore({
       state.user_id=null;
       state.isLoggedIn=false;
       router.push('/');
-    }
+    },
+    getAllPost(state,payload){
+      state.postList = {...payload};
+      
+    },
   },
   actions: {
     async fetchCurrentUser({commit}) {
@@ -88,8 +93,26 @@ export default createStore({
        
         
       }
-     
+    },
+    async fetchAllPost ({commit}){
+      try{
+        // requete Get api pour recuperer la totalité des posts
+      const response = await instance.get('/post/');
+      console.log("response.data////////");
+      console.log(response.data);
+      commit;
+      // appel de la mutation getAllPost du store
+      commit("getAllPost", response.data);
+      // throw new Error('test');
+      }
+      catch(err) {
+        console.log(err)
+        // commit("logout")
+       
+        
+      }
     }
+   
 
 
     // login : function ({commit}, user) {

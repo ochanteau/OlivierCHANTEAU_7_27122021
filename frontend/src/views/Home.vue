@@ -2,7 +2,7 @@
   <div class="Home">
     <Header></Header>
     <main>
-      <publish-post :profilPicture='this.currentUser.user_picture'></publish-post>
+      <create-post></create-post>
       <!-- <form role="form" class="form" >
         <div class="post">
           <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
@@ -20,7 +20,7 @@
       </form> -->
       
       <div class="postList">
-        <post class="post"></post>
+        <post  class="post"></post>
       </div>
     </main>
   </div>
@@ -31,11 +31,12 @@
 import Header from '../components/Header'
 import { mapState } from 'vuex';
 import Post from '../components/Post.vue'
-import publishPost from '../components/PublishPost.vue'
+import createPost from '../components/CreatePost.vue'
+
 
 export default {
     name:'home',
-    components : {Header,Post,publishPost},
+    components : {Header,Post,createPost},
     data: function(){
         return {
           previewPicture : null,
@@ -43,6 +44,7 @@ export default {
     },
     created(){
       console.log("created home")
+      this.$store.dispatch('fetchAllPost');
     },
     computed:{
       ...mapState(['currentUser'])
@@ -69,9 +71,9 @@ main{
   margin: auto;
 }
 
-post{
-  margin-bottom: 2rem;
-}
+// post{
+//   margin-bottom: 2rem;
+// }
 
 // .form{
 //   // padding: 2rem 2rem 1rem 2rem;

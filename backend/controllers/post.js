@@ -1,15 +1,69 @@
 
 // import du module fs de gestion des fichiers systeme
 const fs = require('fs');
+// import DB
+const db = require('../modele/database');
 
 
 
+// fonction qui renvoie la totalité des posts presents en BDD
+exports.getAllPost = (req, res, next)=> {
 
-// fonction qui renvoie la totalité des sauces presentes en BD
-exports.getAllSauces = (req, res, next)=> {
-  Sauce.find()
-        .then(sauces => res.status(200).json(sauces))
-        .catch(error => res.status(400).json({ error }));}
+  // requete BDD sur la table user join post et  envoie au client
+  const sql = `SELECT user.user_id,user_nom,user_prenom,user_picture,post_id,post_text,post_date,post_picture
+              FROM user
+              JOIN post ON post.user_id = user.user_id
+              ORDER BY post_date DESC `
+  db.query(sql, function(err, results) {
+      if (err){res.status(500).json({ err })}
+      else {
+        console.log(results);
+        return res.status(200).json(results);
+      }
+    }
+  )
+}
+
+
+     
+// fonction de creation d'un nouveau post
+exports.createPost = (req, res, next) => {
+  const {user_id} = req.token ;
+  console.log(req.body.post);
+  const post_date = new Date();
+  console.log(post_date)
+  try{
+    const text = JSON.parse(req.body.post);
+    const post_text = text.post_text;
+    const post = {
+      post_text,
+      user_id,
+      post_date,
+      post_picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    };
+    console.log(post);
+          try{
+                // requete BDD sur la table user join post et  envoie au client
+              const sql = `INSERT INTO post SET  ? `
+              db.query(sql,post, function(err, results) {
+                if (err){res.status(500).json({ err })}
+                else {
+                console.log(results);
+                post.post_id=results.insertId;
+                console.log(post);
+                return res.status(200).json(post)
+                }
+              })
+          }
+          catch (err){
+              res.status(500).json({ err })
+              console.log(err);
+          }
+  }
+  catch (err){return res.status(500).json({ err }) }
+ 
+}
+
 
 // fonction qui renvoie la sauce correspondant à l'id de la requete
 exports.getOneSauce = (req, res, next) => {
@@ -18,28 +72,7 @@ exports.getOneSauce = (req, res, next) => {
     .catch(error => res.status(404).json({ error }));
 }
      
-     
-// fonction de creation d'une nouvelle sauce
-exports.createSauce = (req, res, next) => {
-      // parsing req.body.sauce
-      const sauceObject = JSON.parse(req.body.sauce);
-      // creation d'une nouvelle sauce a partir du model Sauce
-      const sauce = new Sauce({
-        ...sauceObject,
-        likes: 0 ,
-        dislikes: 0 ,
-        usersLiked: [] ,
-        usersDisliked: [] ,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-       
-      });
-      //  enregistrement de la sauce créee dans la BD
-      sauce.save()
-        .then(() => res.status(201).json({ message: 'Sauce enregistrée !'}))
-        .catch(error => res.status(400).json({ error }));
-      
-     
-    }
+
 
 
 

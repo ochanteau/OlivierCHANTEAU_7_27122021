@@ -90,7 +90,7 @@
             <div class="user user--center">
               <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
               <div  class="user__infos user__infos--comment">
-                  <p  class="user__fullName">Prénom Nom</p>
+                  <p class="user__fullName">{{this.fullName}}</p>
                   <textarea aria-label="texte du commentaire" maxlength="100" class="user__comment" placeholder="Votre commentaire ?"  cols="30" rows="2"></textarea>
               </div>
             </div>
@@ -108,6 +108,7 @@
 <script>
 import { mapState } from 'vuex';
 import comment from '../components/comment.vue'
+import { mapGetters } from 'vuex';
 
 export default {
     name:'UpdatePost',
@@ -124,7 +125,7 @@ export default {
       console.log("created home")
     },
     computed:{
-      ...mapState(['currentUser'])
+      ...mapState(['currentUser']),...mapGetters(['fullName'])
     },
     methods:{
       openUpdatePost : function(){this.isOpenPost = !this.isOpenPost},

@@ -30,7 +30,7 @@ import { mapState } from 'vuex';
 
 
 export default {
-    name:'home',
+    name:'createPost',
     // components : {Header,Post},
     data: function(){
         return {
@@ -44,7 +44,7 @@ export default {
       console.log("created publish post")
     },
     computed:{
-      ...mapState(['currentUser'])
+      ...mapState(['currentUser']),
     },
     methods:{
       // ...mapActions(['fetchCurrentUser'])

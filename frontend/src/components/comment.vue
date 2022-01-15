@@ -4,7 +4,7 @@
             <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
             <div  class="user__infos ">
                 <p  class="user__fullName">Prénom Nom</p>
-                <p  class="user__comment" >Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti unde ut nihil quas odio fuga iure amet. Consequuntur, quisquam quas.</p>
+                <p  class="user__comment" >Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
             </div>
             <div class="update ">
                 <i @click="openUpdateComment" class="fas fa-ellipsis-h update__i"></i>
@@ -110,6 +110,7 @@ export default {
   &__nav{
     position: absolute;
     left: -10rem;
+    // right: -10rem;
     top: 2rem;
     box-shadow: $box-shadow $border;
     // background-color: $border;
