@@ -6,25 +6,25 @@
       <div  class="post" >
         <div class=" post__container">
           <div class="user">
-              <img  class="user__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
+              <img  class="user__profilPicture" height="50" width="50" :src="post.user_picture" alt="Image de profil ">
               <div  class="user__infos">
-                <p  class="user__fullName">Prénom Nom</p>
-                <p class="user__date">le 14/01/2022</p>
+                <p  class="user__fullName">{{capitalize(post.user_prenom,post.user_nom)}} {{index}}</p>
+                <p class="user__date">Le {{date(post.post_date)}} </p>
               </div>
           </div>
-          <div class="update">
+          <div v-if="this.user_id==post.user_id||this.currentUser.droits_id==2" class="update">
             <i @click="openUpdatePost" class="fas fa-ellipsis-h"></i>
             <div class="update__nav" v-if="isOpenPost">
-              <p class="update__update"><i class="far fa-edit"></i>Modifier votre publication</p>
-              <p class="update__delete"><i class="far fa-trash-alt"></i> Supprimer votre publication</p>
+              <p v-if="this.user_id==post.user_id" class="update__update"><i class="far fa-edit"></i>Modifier la publication</p>
+              <p class="update__delete"><i class="far fa-trash-alt"></i> Supprimer la publication</p>
             </div>
           </div>
         </div>
         <div class="postText">
-            <p class="postText__p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices vel nulla nec semper. Aenean volutpat erat turpis, a mattis ex laoreet malesuada. Donec commodo lectus eu dictum porttitor. In dui.</p>
+            <p class="postText__p">{{post.post_text}}</p>
         </div>  
         <div class="postPicture">
-          <img class="postPicture__img" height="300" width="500" :src="this.currentUser.user_picture">
+          <img class="postPicture__img" height="300" width="500" :src="post.post_picture">
         </div>
 
         <div class="separation"></div>
@@ -42,13 +42,13 @@
         </div>
         <div class="separation"></div>
         
-          
+         
         <!--partie relative aux commentaires  -->
         <div class="commentSection">
           <!-- liste des commentaires -->
           <div class="commentsList">
               <comment></comment>
-              <comment></comment>
+              <!-- <comment></comment> -->
               <!-- <div class="comment">
                 <div class="user user--center">
                   <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
@@ -109,6 +109,7 @@
 import { mapState } from 'vuex';
 import comment from '../components/comment.vue'
 import { mapGetters } from 'vuex';
+import dayjs from 'dayjs'
 
 export default {
     name:'UpdatePost',
@@ -121,15 +122,22 @@ export default {
           like:false
         }
     },
+    props:['post','index'],
     created(){
       console.log("created home")
     },
     computed:{
-      ...mapState(['currentUser']),...mapGetters(['fullName'])
+      ...mapState(['currentUser','user_id']),...mapGetters(['fullName'])
     },
     methods:{
       openUpdatePost : function(){this.isOpenPost = !this.isOpenPost},
-      openUpdateComment : function(){this.isOpenComment = !this.isOpenComment}
+      openUpdateComment : function(){this.isOpenComment = !this.isOpenComment},
+      capitalize(prenom,nom){
+        return prenom[0].toUpperCase() + prenom.slice(1)+ " " + nom.toUpperCase()
+      },
+      date(date){
+        return dayjs(date).format('DD/MM/YYYY')
+      }
       // ...mapActions(['fetchCurrentUser'])
     }
     
@@ -189,6 +197,8 @@ export default {
   }
   &__date{
     font-size: 1.4rem;
+    font-style: italic;
+    color: $hint;
     // &--comment{
     //   font-size: 1.3rem;
     //   font-style: italic;
@@ -203,8 +213,8 @@ export default {
   position: relative;
   &__nav{
     position: absolute;
-    left: -23rem;
-    top: 2rem;
+    left: -22rem;
+    top: 1rem;
     box-shadow: $box-shadow $border;
     // background-color: $border;
     background-color: $primary;

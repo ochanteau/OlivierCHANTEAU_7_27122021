@@ -17,7 +17,7 @@ export default createStore({
   state: {
     user_id:null,
     currentUser:{},
-    postList:{},
+    postList:[],
     // assignation du token via local storage
     token :localStorage.getItem('token'),
     // verification de la presence du token

@@ -19,8 +19,17 @@
         </div>
       </form> -->
       
+<!-- :capitalize="item.user_prenom+' '+item.user_nom" -->
+ <!-- :capitalize="capitalize(item.user_prenom,item.user_nom)" -->
+
       <div class="postList">
-        <post  class="post"></post>
+        <post  class="post"
+          v-for="(item,index) in this.postList"
+          :key="item.post_id"
+          :post="item"
+          :index="index"
+         
+        ></post>
       </div>
     </main>
   </div>
@@ -47,9 +56,10 @@ export default {
       this.$store.dispatch('fetchAllPost');
     },
     computed:{
-      ...mapState(['currentUser'])
+      ...mapState(['currentUser','postList'])
     },
     methods:{
+      
       // ...mapActions(['fetchCurrentUser'])
     },
     mounted(){
@@ -64,9 +74,14 @@ export default {
 
 Header{
   margin-bottom: 4rem;
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+  width: 100%;
 }
 
 main{
+  z-index: 1;
   max-width: 60rem;
   margin: auto;
 }

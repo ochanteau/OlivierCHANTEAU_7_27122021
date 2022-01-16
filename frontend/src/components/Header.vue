@@ -64,7 +64,7 @@ export default {
   
 
   header{
-    
+    background-color: white;
     height: 80px;
     box-shadow: $box-shadow $border;
     display: grid;
