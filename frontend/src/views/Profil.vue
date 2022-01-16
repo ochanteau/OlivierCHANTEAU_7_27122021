@@ -47,12 +47,7 @@ import { mapGetters } from 'vuex';
 const axios = require('axios');
 // ajout d'une URL de base aux requetes
 const instance = axios.create({baseURL: 'http://localhost:3000/api/auth'});
-// configuration du token dans le header
-// instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
 
-console.log('instance header');
-
-console.log(instance.defaults.headers.common['Authorization']);
 
 export default {
     name:'profil',

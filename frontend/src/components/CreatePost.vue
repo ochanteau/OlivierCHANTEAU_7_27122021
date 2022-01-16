@@ -5,7 +5,7 @@
       <form role="form" class="form" >
         <div class="post">
           <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
-          <textarea aria-label="texte du post" maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
+          <textarea v-model="post_text" aria-label="texte du post" maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
         </div>
         <div v-if="this.previewPicture"  class="postPicture">
           <img class="postPicture__img" height="300" width="500" :src="this.previewPicture">
@@ -13,9 +13,12 @@
         <div class="separation"></div>
         <div class="upload">
           <label class="upload__label" for="upload">Choisir une image <i class="fas fa-upload"></i></label>
-          <input id="upload" class="upload__input" type="file">
-          <button class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
+          <input @change.prevent="uploadFile($event)" id="upload" class="upload__input" type="file">
+          <button @click.prevent="fetchFile" class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
         </div>
+        <p class="error" v-if="this.missingFields">Une image et un texte sont obligatoires !</p>
+        <p class="error" v-if="this.ErrorServer">Une erreur s'est produite</p>
+
       </form>
       
 
@@ -28,13 +31,20 @@
 
 import { mapState } from 'vuex';
 
+const axios = require('axios');
+// ajout d'une URL de base aux requetes
+const instance = axios.create({baseURL: 'http://localhost:3000/api/post'});
 
 export default {
-    name:'createPost',
+    name:'CreatePost',
     // components : {Header,Post},
     data: function(){
         return {
           previewPicture : null,
+          postPicture:null,
+          missingFields:false,
+          ErrorServer:false,
+          post_text:null
         }
     },
     // props:
@@ -47,6 +57,59 @@ export default {
       ...mapState(['currentUser']),
     },
     methods:{
+      uploadFile (e){
+            const self = this;
+            this.postPicture=e.target.files[0];
+            console.log(this.postPicture);
+            console.log(e.target.value)
+
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                // get loaded data and render thumbnail.
+                self.previewPicture = e.target.result;
+            
+            };
+            // read the image file as a data URL.
+            reader.readAsDataURL(e.target.files[0]);
+            console.log(e.target.files[0])
+            
+            
+        },
+      fetchFile(){
+            this.MissingPicture=false;
+            this.ErrorServer=false;
+            const self=this;
+            if (!this.postPicture || !this.post_text) {this.missingFields=true}
+            else {
+                let formData = new FormData();
+                const image = this.postPicture;
+                const post_text= JSON.stringify(this.post_text)
+                formData.append("image",image);
+                // formData.append("post",this.post_text);
+               formData.append("post",post_text);
+
+                console.log(post_text)
+                instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+                instance.post('/', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                    .then(function(res){
+                        console.log(res.data);
+                        const post ={...res.data,...self.currentUser};
+                        console.log(post)
+                        self.$store.commit("createPost", post);
+                        self.post_text=null;
+                        self.previewPicture=null;
+                        self.missingFields=false;
+                        self.ErrorServer=false;
+                        
+                    })
+                    .catch(function(err){
+                        self.ErrorServer=true;
+                        console.log(err)
+                        console.log(err.response.data)
+                        })
+              }
+      }
       // ...mapActions(['fetchCurrentUser'])
     },
     mounted(){
@@ -138,7 +201,10 @@ export default {
   margin: 1rem 0rem;
   
 }
+.error{
+  text-align: center;
+  color: red;
 
-
+}
 
 </style>

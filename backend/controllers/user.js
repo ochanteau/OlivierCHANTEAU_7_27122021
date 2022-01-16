@@ -115,7 +115,9 @@ exports.updatePicture =  (req, res) => {
     // recuperation user_id du token
     const {user_id} = req.token ;
     console.log(user_id);
-    db.query(sql, user_id, function(err, results) {
+
+    try{
+      db.query(sql, user_id, function(err, results) {
         if (err){res.status(500).json({ err })}
         else {
           console.log(results);
@@ -155,7 +157,50 @@ exports.updatePicture =  (req, res) => {
         }
         
         
-    })
+      })
+    }
+    catch (err) {res.status(500).json({ err })    }
+    // db.query(sql, user_id, function(err, results) {
+    //     if (err){res.status(500).json({ err })}
+    //     else {
+    //       console.log(results);
+          
+    //       // recuperation du nom de l'ancienne image
+    //       const oldPicture = results[0].user_picture.split('/images/')[1];
+    //       console.log("/////oldpicture");
+    //       console.log(oldPicture);
+    //       console.log(oldPicture=="profil.png");
+          
+    //         // verification si l'ancienne image est l'image par défaut
+    //         if (oldPicture=="profil.png") {
+    //           // requete BDD sur la table user  pour mettre à jour l'url de l'image
+    //           const sql = `UPDATE user SET user_picture='${user_picture}'WHERE user_id =? `
+    //           db.query(sql, user_id, function(err, results) {
+    //             if (err){res.status(500).json({ err })}
+    //             else {
+    //                 console.log(results);
+    //                 return res.status(200).json(user_picture);
+    //               }
+    //           })
+    //         }
+    //         else {
+    //           fs.unlink(`images/${oldPicture}`, () => {
+    //             // requete BDD sur la table user  pour mettre à jour l'url de l'image
+    //             const sql = `UPDATE user SET user_picture='${user_picture}'WHERE user_id =? `
+    //             db.query(sql, user_id, function(err, results) {
+    //                 if (err){res.status(500).json({ err })}
+    //                 else {
+    //                   console.log(results);
+    //                   return res.status(200).json(user_picture);
+    //                 }
+    //               })
+    //           })
+    //         }
+
+    //     }
+        
+        
+    // })
 }
   
 

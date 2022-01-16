@@ -71,10 +71,13 @@ export default createStore({
       state.isLoggedIn=false;
       router.push('/');
     },
-    getAllPost(state,payload){
-      state.postList = {...payload};
+    getAllPost(state,postList){
+      state.postList = [...postList];
       
     },
+    createPost(state,newPost){
+      state.postList.unshift(newPost)
+    }
   },
   actions: {
     async fetchCurrentUser({commit}) {
@@ -83,7 +86,12 @@ export default createStore({
       const response = await instance.get('/auth/currentUser');
       console.log("response.data////////");
       console.log(response.data);
+      // const currentUser = JSON.parse(response.data)
+      // console.log(currentUser);
+
       // appel de la mutation getCurrentUser du store
+      // commit("getCurrentUser", currentUser);
+
       commit("getCurrentUser", response.data);
       // throw new Error('test');
       }

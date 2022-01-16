@@ -17,7 +17,7 @@ exports.getAllPost = (req, res, next)=> {
   db.query(sql, function(err, results) {
       if (err){res.status(500).json({ err })}
       else {
-        console.log(results);
+      
         return res.status(200).json(results);
       }
     }
@@ -33,8 +33,10 @@ exports.createPost = (req, res, next) => {
   const post_date = new Date();
   console.log(post_date)
   try{
-    const text = JSON.parse(req.body.post);
-    const post_text = text.post_text;
+    
+    const post_text = JSON.parse(req.body.post);
+    console.log(post_text)
+    // const post_text =  req.body.post;
     const post = {
       post_text,
       user_id,

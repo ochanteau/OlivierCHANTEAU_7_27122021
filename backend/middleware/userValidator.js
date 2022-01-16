@@ -19,7 +19,7 @@ module.exports = (req,res,next)=>{
     if (!req.body.user_nom ||!req.body.user_prenom ||!req.body.user_email||!req.body.user_password)
     { return res.status(400).json({error : "Merci de remplir tous les champs"}) };
 
-    if (  regexpName.test(req.body.user_nom)  ||  regexpName.test(req.body.prenom ))
+    if (  regexpName.test(req.body.user_nom)  ||  regexpName.test(req.body.user_prenom ))
      { return res.status(400).json({error : " Le nom et le prénom ne doivent pas contenir de caracteres spéciaux"}) } ;
 
     if (!regexpEmail.test(req.body.user_email))
