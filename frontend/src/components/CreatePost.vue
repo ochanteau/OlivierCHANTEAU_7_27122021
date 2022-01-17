@@ -18,7 +18,8 @@
         </div>
         <p class="error" v-if="this.missingFields">Une image et un texte sont obligatoires !</p>
         <p class="error" v-if="this.ErrorServer">Une erreur s'est produite</p>
-
+        <p class="error" v-if="this.textValidation">Le texte ne doit pas contenir de caracteres speciaux</p>
+        
       </form>
       
 
@@ -44,7 +45,7 @@ export default {
           postPicture:null,
           missingFields:false,
           ErrorServer:false,
-          post_text:null
+          post_text:null,
         }
     },
     // props:
@@ -54,6 +55,12 @@ export default {
       console.log("created publish post")
     },
     computed:{
+       textValidation  () {
+     const regexp = /[^a-zA-Z0-9.,!_@#\- ]/;
+      if (regexp.test(this.post_text)) { return true}
+      else {return false} 
+    },
+      
       ...mapState(['currentUser']),
     },
     methods:{
@@ -80,7 +87,8 @@ export default {
             this.MissingPicture=false;
             this.ErrorServer=false;
             const self=this;
-            if (!this.postPicture || !this.post_text) {this.missingFields=true}
+            if( this.textValidation) {return null}
+            else if (!this.postPicture || !this.post_text) {this.missingFields=true}
             else {
                 let formData = new FormData();
                 const image = this.postPicture;
