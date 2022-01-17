@@ -5,8 +5,8 @@ const router = express.Router();
 // import middleware d'authentification
 const auth = require ('../middleware/auth')
 
-// import middleware de comparaison de userId du token et du userId de la sauce en BD
-// const sauceOwner = require("../middleware/sauceOwner")
+// import middleware de comparaison de userId du token et du userId du propriétaire  en BD
+const owner = require("../middleware/ownerValidation")
 
 // import middleware multer pour gerer les images
 const multer = require('../middleware/multer-config');
@@ -35,6 +35,7 @@ router.get('/', auth, saucesCtrl.getAllPost);
 
 // route pour modifier une sauce 
 // router.put('/:id',auth,sauceOwner,multer,validator,saucesCtrl.modifySauce);
+router.put('/:id',auth,owner.postVerification);
 
 //route pour supprimer une sauce 
 // router.delete('/:id',auth,sauceOwner,saucesCtrl.deleteSauce);

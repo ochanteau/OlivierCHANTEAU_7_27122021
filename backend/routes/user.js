@@ -3,7 +3,7 @@ const express = require('express');
 // configuration router express
 const router = express.Router();
 // import middleware de controle Mail et mot de passe
-const userValidator = require('../middleware/userValidator');
+const userVerification = require('../middleware/userVerification');
 // import middleware pour limiter le nombre de requete avec la meme IP
 const accountLimiter = require('../middleware/rate-limit-config');
 // import users controllers 
@@ -18,7 +18,7 @@ const multer = require ('../middleware/multer-config')
 * route "/signup", appel des middlewares pour limiter le nombre de creation de compte avec la meme IP,
 * pour verifier nom,prenom,mail et MDP, et du controllers "signup"
 */
-router.post('/signup',accountLimiter.createAccountLimiter , userValidator, userCtrl.signup);
+router.post('/signup',accountLimiter.createAccountLimiter , userVerification, userCtrl.signup);
 
 
 /*
