@@ -59,7 +59,9 @@ export default {
       ...mapState(['currentUser','postList'])
     },
     methods:{
-      
+      // deletePost(index,post_id){
+        
+      // }
       // ...mapActions(['fetchCurrentUser'])
     },
     mounted(){

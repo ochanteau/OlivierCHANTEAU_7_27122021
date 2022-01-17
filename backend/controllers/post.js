@@ -9,7 +9,19 @@ const db = require('../modele/database');
 // fonction qui renvoie la totalité des posts presents en BDD
 exports.getAllPost = (req, res, next)=> {
 
-  
+  // requete BDD sur la table user join post et  envoie au client
+  const sql = `SELECT user.user_id,user_nom,user_prenom,user_picture,post_id,post_text,post_date,post_picture
+              FROM user
+              JOIN post ON post.user_id = user.user_id
+              ORDER BY post_date DESC `
+  db.query(sql, function(err, results) {
+      if (err){res.status(500).json({ err })}
+      else {
+      
+        return res.status(200).json(results);
+      }
+    }
+  )
 }
 
 
