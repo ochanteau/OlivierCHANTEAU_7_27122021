@@ -9,19 +9,7 @@ const db = require('../modele/database');
 // fonction qui renvoie la totalité des posts presents en BDD
 exports.getAllPost = (req, res, next)=> {
 
-  // requete BDD sur la table user join post et  envoie au client
-  const sql = `SELECT user.user_id,user_nom,user_prenom,user_picture,post_id,post_text,post_date,post_picture
-              FROM user
-              JOIN post ON post.user_id = user.user_id
-              ORDER BY post_date DESC `
-  db.query(sql, function(err, results) {
-      if (err){res.status(500).json({ err })}
-      else {
-      
-        return res.status(200).json(results);
-      }
-    }
-  )
+  
 }
 
 
@@ -36,7 +24,7 @@ exports.createPost = (req, res, next) => {
     
     const post_text = JSON.parse(req.body.post);
     console.log(post_text)
-    // const post_text =  req.body.post;
+    
     const post = {
       post_text,
       user_id,
@@ -68,18 +56,18 @@ exports.createPost = (req, res, next) => {
 
 
 // fonction qui renvoie la sauce correspondant à l'id de la requete
-exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
-    .then(sauce => res.status(200).json(sauce))
-    .catch(error => res.status(404).json({ error }));
-}
+// exports.getOneSauce = (req, res, next) => {
+//   Sauce.findOne({ _id: req.params.id })
+//     .then(sauce => res.status(200).json(sauce))
+//     .catch(error => res.status(404).json({ error }));
+// }
      
 
 
 
 
 // fonction pour supprimer une sauce
-    exports.deleteSauce = (req, res, next) => {
+    exports.deletePost = (req, res, next) => {
       // recherche de la sauce en BD
       Sauce.findOne({ _id: req.params.id })
         .then(sauce => {

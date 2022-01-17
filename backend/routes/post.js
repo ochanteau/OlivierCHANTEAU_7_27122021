@@ -11,9 +11,8 @@ const owner = require("../middleware/ownerValidation")
 // import middleware multer pour gerer les images
 const multer = require('../middleware/multer-config');
 
-// import middlewares de controle des données pour la creation ou modification de sauce
-// const validator = require('../middleware/sauceValidator');
-
+// import middlewares de controle des données pour la creation ou modification de post ou commentaires
+const textVerification = require('../middleware/textVerification')
 // import sauces controllers
 const saucesCtrl = require('../controllers/post');
 
@@ -25,7 +24,7 @@ const saucesCtrl = require('../controllers/post');
 */
 
 // route creation de post
-router.post('/', auth, multer, saucesCtrl.createPost);
+router.post('/', auth, multer, textVerification,  saucesCtrl.createPost);
 
 //route pour obtenir toutes les sauces
 router.get('/', auth, saucesCtrl.getAllPost);
