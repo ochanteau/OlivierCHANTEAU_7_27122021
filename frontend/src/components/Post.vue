@@ -1,7 +1,7 @@
 <template>
  
-    
-
+<div>
+      <update-post v-if="this.update" :post="post" :index="index"></update-post>
       <!-- affichage du corps du post -->
       <div  class="post" >
         <div class=" post__container">
@@ -15,7 +15,7 @@
           <div v-if="this.user_id==post.user_id||this.currentUser.droits_id==2" class="update">
             <i @click="openUpdatePost" class="fas fa-ellipsis-h"></i>
             <div class="update__nav" v-if="isOpenPost">
-              <p v-if="this.user_id==post.user_id" class="update__update"><i class="far fa-edit"></i>Modifier la publication</p>
+              <p @click="updatePost" v-if="this.user_id==post.user_id" class="update__update"><i class="far fa-edit"></i>Modifier la publication</p>
               <p class="update__delete"><i class="far fa-trash-alt"></i> Supprimer la publication</p>
             </div>
           </div>
@@ -100,7 +100,7 @@
       </div> 
       
       
-
+</div>
  
 </template>
 
@@ -110,16 +110,18 @@ import { mapState } from 'vuex';
 import comment from '../components/comment.vue'
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs'
+import updatePost from '../components/UpdatePost.vue'
 
 export default {
-    name:'UpdatePost',
-    components : {comment} ,
+    name:'Post',
+    components : {comment,updatePost} ,
     data: function(){
         return {
           previewPicture : null,
           isOpenPost:false,
           isOpenComment:false,
-          like:false
+          like:false,
+          update:false,
         }
     },
     props:['post','index'],
@@ -130,6 +132,7 @@ export default {
       ...mapState(['currentUser','user_id']),...mapGetters(['fullName'])
     },
     methods:{
+      updatePost (){this.update=!this.update},
       openUpdatePost : function(){this.isOpenPost = !this.isOpenPost},
       openUpdateComment : function(){this.isOpenComment = !this.isOpenComment},
       capitalize(prenom,nom){

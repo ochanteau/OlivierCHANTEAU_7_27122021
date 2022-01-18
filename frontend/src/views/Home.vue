@@ -2,7 +2,7 @@
   <div class="Home">
     <Header></Header>
     <main>
-      <create-post></create-post>
+      <create-post ></create-post>
       <!-- <form role="form" class="form" >
         <div class="post">
           <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
@@ -23,6 +23,7 @@
  <!-- :capitalize="capitalize(item.user_prenom,item.user_nom)" -->
 
       <div class="postList">
+        <!-- <post class="post"></post> -->
         <post  class="post"
           v-for="(item,index) in this.postList"
           :key="item.post_id"
@@ -49,6 +50,7 @@ export default {
     data: function(){
         return {
           previewPicture : null,
+          update:false,
         }
     },
     created(){
