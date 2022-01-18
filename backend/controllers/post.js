@@ -99,29 +99,91 @@ exports.createPost = (req, res, next) => {
 
 
 // fonction pour modifier une sauce 
-    exports.modifySauce = (req, res, next) => {
-      // verification de la presence d'une nouvelle image
-      if (req.file) {
-        // parsing req.body.sauce
-        const sauceObject = {...JSON.parse(req.body.sauce),imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
-        // recherche de la sauce en BD
-        Sauce.findOne({ _id: req.params.id })
-          .then(sauce => {
-            const filename = sauce.imageUrl.split('/images/')[1];
-            // suppression de l'image associé sur le serveur
-            fs.unlink(`images/${filename}`, () => {
-              // MAJ de la sauce en BD
-              Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-              .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
-              .catch(error => res.status(400).json({ error }));
-          });
+    exports.updatePost = (req, res, next) => {
+      const post_id = req.params.id ;
+     
+
+      if (req.file){
+        post_picture= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        // post_text = JSON.parse(req.body.post.post_text)
+        post_text = req.body.post
+
+        console.log(post_picture,post_text);
+        const sql = `SELECT post_picture 
+                    FROM post
+                    WHERE post_id = ? `
+        db.query(sql,post_id, function(err, results) {
+            if (err){res.status(500).json({ err })}
+            else {
+                console.log(results[0]);
+                const oldPicture = results[0].post_picture.split('/images/')[1];
+                console.log(oldPicture);
+
+                fs.unlink(`images/${oldPicture}`, () => {
+                  const sql = `UPDATE post
+                              SET post_picture = ?, post_text = ?
+                              WHERE post_id=? `
+                  db.query(sql,[post_picture,post_text,post_id], function(err, results) {
+                    if (err){res.status(500).json({ err })}
+                    else {
+                    console.log(results);
+                    return res.status(200).json({post_picture, post_text})
+                    }
+                  })        
+                })
+                
+            }
         })
-          .catch(error => res.status(500).json({ error }))
       }
-      // si pas de nouvelle image dans la requete, MAJ de la sauce en BD
-      else {Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
-      .catch(error => res.status(400).json({ error }))}
+      else {
+        console.log("pas de req file")
+        post_text = req.body.text
+        console.log(post_text)
+
+        const sql =`UPDATE post
+                   SET post_text = ?
+                   WHERE post_id=? `
+        db.query(sql,[post_text,post_id], function(err, results) {
+        if (err){res.status(500).json({ err })}
+        else {
+        console.log(results);
+    
+        return res.status(200).json({post_text})
+        }
+        })        
+      }
+      
+
+
+
+
+
+
+
+
+
+      // // verification de la presence d'une nouvelle image
+      // if (req.file) {
+      //   // parsing req.body.sauce
+      //   const sauceObject = {...JSON.parse(req.body.sauce),imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
+      //   // recherche de la sauce en BD
+      //   Sauce.findOne({ _id: req.params.id })
+      //     .then(sauce => {
+      //       const filename = sauce.imageUrl.split('/images/')[1];
+      //       // suppression de l'image associé sur le serveur
+      //       fs.unlink(`images/${filename}`, () => {
+      //         // MAJ de la sauce en BD
+      //         Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+      //         .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
+      //         .catch(error => res.status(400).json({ error }));
+      //     });
+      //   })
+      //     .catch(error => res.status(500).json({ error }))
+      // }
+      // // si pas de nouvelle image dans la requete, MAJ de la sauce en BD
+      // else {Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+      // .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
+      // .catch(error => res.status(400).json({ error }))}
     };
 
 

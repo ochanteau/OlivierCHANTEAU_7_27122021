@@ -9,7 +9,7 @@ exports.postVerification = (req, res, next) => {
   
   const {user_id} = req.token ;
   const post_id = req.params.id ;
-  console.log(post_id)
+
   // requete BDD sur la table post pour recupererles droits de l utilisateur
   const sql = `SELECT droits_id
                FROM user
@@ -17,7 +17,7 @@ exports.postVerification = (req, res, next) => {
   db.query(sql, user_id, function(err, results) {
     if (err){res.status(500).json({ err })}
     else {
-      console.log(results[0].droits_id)
+      // console.log(results[0].droits_id)
       if (results && results[0].droits_id ==2)
          { next();}
       else {
@@ -29,9 +29,10 @@ exports.postVerification = (req, res, next) => {
         db.query(sql2, post_id, function(err, results) {
             if (err){res.status(500).json({ err })}
             else {
-                  console.log(results[0].user_id)
+                  // console.log(results[0].user_id)
                 if (!results || results[0].user_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
-              else {next ();}
+              else {console.log("next");
+                next ();}
             }
         }) 
       }

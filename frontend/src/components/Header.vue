@@ -109,6 +109,7 @@ export default {
       background-color: $primary;
       padding: 0.5rem 0rem 0.5rem 1rem;
       margin-right: 1rem;
+       box-shadow: $box-shadow $border;
       &__img{
         border-radius: 50%;
        
@@ -141,6 +142,7 @@ export default {
         justify-content: center;
         padding: 1rem;
         border-radius: 10%;
+         box-shadow: $box-shadow $border;
         &__button{
           background: none;
           border:none;

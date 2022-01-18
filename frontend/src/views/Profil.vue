@@ -232,7 +232,9 @@ Header{
         position: relative;
         padding: 0.5rem 0rem;
         &__label{
-           padding-bottom: 0.5rem;
+           padding: 1rem 1rem;
+           box-shadow: $box-shadow $border;
+           border-radius: 1rem;
            cursor: pointer;
            @include S{
             text-align: center;
@@ -242,12 +244,13 @@ Header{
         &__button{
             font-size: 2rem;
             padding: 0.5rem 1rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             // border : solid $secondary 1px;
             // border : none;
             border-radius: 1rem;
             // background-color: $border;
-            border-color: $border;
+            border :none;
+            box-shadow: $box-shadow $border;
             cursor: pointer;
           
             
@@ -286,9 +289,10 @@ Header{
         border-radius: 1rem;
         // background-color: $border;
         // border : solid $secondary 1px;
-        border-radius: 1rem;
+        
         // background-color: $border;
-        border-color: $border;
+        border:none;
+        box-shadow: $box-shadow $border;
         cursor: pointer;
     }
     &__message{

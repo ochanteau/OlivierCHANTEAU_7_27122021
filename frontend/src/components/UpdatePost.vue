@@ -172,6 +172,7 @@ Header{
       outline: none;
       padding: 1rem ;
       resize: none;
+      border-radius: 1rem;
      
     }
     &__close{
@@ -198,6 +199,7 @@ Header{
     margin: 0.5rem 0rem;
     &__label{
       padding: 1rem;
+      box-shadow: $box-shadow $border;
       cursor: pointer;
     }
     &__input{
@@ -206,7 +208,8 @@ Header{
     &__button{
       padding: 0rem 1rem;
       border-radius: 1rem;
-      border-color: $border;
+      box-shadow: $box-shadow $border;
+      border: none;
       cursor: pointer;
     }
   }

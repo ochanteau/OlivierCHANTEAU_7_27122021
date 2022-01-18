@@ -186,6 +186,8 @@ export default {
     margin: 0.5rem 0rem;
     &__label{
       padding: 1rem;
+      box-shadow: $box-shadow $border;
+      border-radius: 1rem;
       cursor: pointer;
     }
     &__input{
@@ -195,6 +197,7 @@ export default {
     &__button{
       padding: 0rem 1rem;
       border-radius: 1rem;
+      box-shadow: $box-shadow $border;
       border: none;
       cursor: pointer;
     }

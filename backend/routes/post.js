@@ -14,7 +14,7 @@ const multer = require('../middleware/multer-config');
 // import middlewares de controle des données pour la creation ou modification de post ou commentaires
 const textVerification = require('../middleware/textVerification')
 // import sauces controllers
-const saucesCtrl = require('../controllers/post');
+const postCtrl = require('../controllers/post');
 
 /*
 * Sur chaque route le middleware d'authentification est appelé
@@ -24,17 +24,17 @@ const saucesCtrl = require('../controllers/post');
 */
 
 // route creation de post
-router.post('/', auth, multer, textVerification,  saucesCtrl.createPost);
+router.post('/', auth, multer, textVerification,  postCtrl.createPost);
 
 //route pour obtenir toutes les sauces
-router.get('/', auth, saucesCtrl.getAllPost);
+router.get('/', auth, postCtrl.getAllPost);
 
 //route pour obtenir une sauce
 // router.get('/:id',auth, saucesCtrl.getOneSauce);
 
-// route pour modifier une sauce 
+// route pour modifier une post
 // router.put('/:id',auth,sauceOwner,multer,validator,saucesCtrl.modifySauce);
-router.put('/:id',auth,owner.postVerification);
+router.put('/:id',auth,owner.postVerification,multer,postCtrl.updatePost);
 
 //route pour supprimer une sauce 
 // router.delete('/:id',auth,sauceOwner,saucesCtrl.deleteSauce);
