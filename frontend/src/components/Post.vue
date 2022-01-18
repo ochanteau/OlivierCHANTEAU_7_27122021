@@ -1,7 +1,7 @@
 <template>
  
 <div>
-      <update-post v-if="this.update" :post="post" :index="index"></update-post>
+      <update-post v-if="this.update" :post="post" :index="index" :updatePost="updatePost"></update-post>
       <!-- affichage du corps du post -->
       <div  class="post" >
         <div class=" post__container">
@@ -125,9 +125,7 @@ export default {
         }
     },
     props:['post','index'],
-    created(){
-      console.log("created home")
-    },
+    
     computed:{
       ...mapState(['currentUser','user_id']),...mapGetters(['fullName'])
     },

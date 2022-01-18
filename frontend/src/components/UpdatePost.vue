@@ -1,12 +1,13 @@
 <template>
   <div class="UpdatePost">
     
-
-      <div class="overlay"></div>
+      <!-- <i class="far fa-window-close post__close"></i> -->
+      <div @click="updatePost" class="overlay"></div>
       <form role="form" class="form" >
         <div class="post">
           <img  class="post__profilPicture" height="50" width="50" :src="post.user_picture" alt="Image de profil ">
           <textarea v-model="post_text"  aria-label="texte du post" maxlength="200" class="post__input"  cols="30" rows="3"></textarea>
+          <i @click="updatePost" class="far fa-window-close post__close"></i>
         </div>
         <div  class="postPicture">
           <img v-if="this.preview"  class="postPicture__img" height="300" width="500" :src="this.preview">
@@ -38,7 +39,7 @@ const instance = axios.create({baseURL: 'http://localhost:3000/api/post'});
 
 export default {
     name:'UpdatePost',
-    props:['post','index'],
+    props:['post','index','updatePost'],
     // components : {Header} ,
     data: function(){
         return {
@@ -127,15 +128,26 @@ Header{
 .UpdatePost{
   max-width: 60rem;
   margin: auto;
+  position: fixed;
+  top: 20%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  
+
+
+  
 }
 
 .form{
   // padding: 2rem 2rem 1rem 2rem;
   box-shadow: $box-shadow $border;
   padding: 2rem 3rem 1rem 3rem;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
+  background-color: white;
+  position: relative;
+  z-index: 3;
+  
   
 }
 
@@ -145,7 +157,7 @@ Header{
     justify-content: center;
     align-items: center;
     // padding: 1.5rem 1rem;
-    
+ 
     &__profilPicture{
       border-radius: 50%;
       
@@ -162,6 +174,12 @@ Header{
       resize: none;
      
     }
+    &__close{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    
   }
 
   .postPicture{
@@ -203,6 +221,15 @@ Header{
   
 }
 
+.overlay{
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 
 .error{
   text-align: center;
