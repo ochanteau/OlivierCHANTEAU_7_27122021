@@ -17,7 +17,7 @@
         <div class="upload">
           <label class="upload__label" for="update">Choisir une image <i class="fas fa-upload"></i></label>
           <input @change.prevent="upload($event)" id="update" class="upload__input" type="file">
-          <button class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
+          <button @click.prevent="fetchFile(index,post.post_id)" class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
         </div>
         <p class="error" v-if="this.missingFields">Le texte est obligatoire !</p>
         <p class="error" v-if="this.ErrorServer">Une erreur s'est produite</p>
@@ -79,39 +79,53 @@ export default {
             
             
         },
-      fetchFile(){
+      fetchFile(index,post_id){
             this.missingFields=false;
             this.ErrorServer=false;
-            // const self=this;
+            const self=this;
             if( this.textValidation) {return null}
             else if ( !this.post_text || this.post_text=="") {this.missingFields=true}
             else {
-                let formData = new FormData();
-                const image = this.postPicture;
-                const post_text= JSON.stringify(this.post_text)
-                formData.append("image",image);
-                // formData.append("post",this.post_text);
-                formData.append("post",post_text);
 
-                console.log(post_text)
-                instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
-                // instance.post('/', formData, {headers: {'Content-Type': 'multipart/form-data'}})
-                //     .then(function(res){
-                //         console.log(res.data);
-                //         const post ={...res.data,...self.currentUser};
-                //         console.log(post)
-                //         self.$store.commit("createPost", post);
-                //         self.post_text=null;
-                //         self.previewPicture=null;
-                //         self.missingFields=false;
-                //         self.ErrorServer=false;
-                        
-                //     })
-                //     .catch(function(err){
-                //         self.ErrorServer=true;
-                //         console.log(err)
-                //         console.log(err.response.data)
-                //         })
+                if (this.postPicture) {
+                    let formData = new FormData();
+                    const image = this.postPicture;
+                    const post_text= JSON.stringify(this.post_text)
+                    formData.append("image",image);
+                    // formData.append("post",this.post_text);
+                    formData.append("post",post_text);
+
+                    console.log(post_text)
+                    instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+                  
+                    instance.put(`/${post_id}`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                        .then(function(res){
+                            console.log(res.data);
+                            const post = res.data;
+                            console.log(post)
+                            self.$store.commit("updatePost", post,index);
+                            self.post_text=null;
+                            self.previewPicture=null;
+                            self.missingFields=false;
+                            self.ErrorServer=false;
+                            
+                        })
+                        .catch(function(err){
+                            self.ErrorServer=true;
+                            console.log(err)
+                            console.log(err.response.data)
+                            })
+                }
+
+                else {
+                    return
+                }
+
+
+
+
+
+                
               }
       }
     }

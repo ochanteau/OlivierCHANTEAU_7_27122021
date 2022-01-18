@@ -24,6 +24,7 @@ export default createStore({
     isLoggedIn: localStorage.getItem('token')? true:false
   },
   getters:{
+    getPostList: state=> state.postList,
     isLoggedIn: state =>  state.isLoggedIn,
     fullName : state => {
                if (!state.currentUser.user_prenom || !state.currentUser.user_nom) { return null} 
@@ -77,6 +78,9 @@ export default createStore({
     },
     createPost(state,newPost){
       state.postList.unshift(newPost)
+    },
+    updatePost(state,data,index) {
+      state.postList[index] = {...state.postList[index], ...data}
     }
   },
   actions: {

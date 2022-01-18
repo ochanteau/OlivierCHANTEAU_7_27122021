@@ -106,7 +106,7 @@ exports.createPost = (req, res, next) => {
       if (req.file){
         post_picture= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
         // post_text = JSON.parse(req.body.post.post_text)
-        post_text = req.body.post
+        post_text = JSON.parse(req.body.post) 
 
         console.log(post_picture,post_text);
         const sql = `SELECT post_picture 
