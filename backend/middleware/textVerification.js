@@ -36,7 +36,7 @@ function deletePicture (req,res){
 module.exports = (req,res,next) => {
         // assignation du body de la requete en fonction du content type
         try{
-            const text = req.file? JSON.parse(req.body.post) : req.body;
+            const text = req.file? JSON.parse(req.body.post) : req.body.text;
             console.log(text)
             // verification des données saisies par l'utilisateur
             if (verifyText(text)) {deletePicture(req,res)}

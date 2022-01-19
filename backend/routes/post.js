@@ -34,7 +34,7 @@ router.get('/', auth, postCtrl.getAllPost);
 
 // route pour modifier une post
 // router.put('/:id',auth,sauceOwner,multer,validator,saucesCtrl.modifySauce);
-router.put('/:id',auth,owner.postVerification,multer,postCtrl.updatePost);
+router.put('/:id',auth,owner.postVerification,multer, textVerification,postCtrl.updatePost);
 
 //route pour supprimer une sauce 
 // router.delete('/:id',auth,sauceOwner,saucesCtrl.deleteSauce);
