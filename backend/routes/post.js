@@ -32,12 +32,12 @@ router.get('/', auth, postCtrl.getAllPost);
 //route pour obtenir une sauce
 // router.get('/:id',auth, saucesCtrl.getOneSauce);
 
-// route pour modifier une post
-// router.put('/:id',auth,sauceOwner,multer,validator,saucesCtrl.modifySauce);
+// route pour modifier un post
+
 router.put('/:id',auth,owner.postVerification,multer, textVerification,postCtrl.updatePost);
 
 //route pour supprimer une sauce 
-// router.delete('/:id',auth,sauceOwner,saucesCtrl.deleteSauce);
+router.delete('/:id',auth,owner.postVerification,postCtrl.deletePost);
 
 //route pour liker ou disliker une sauce
 // router.post("/:id/like",auth,saucesCtrl.likeDislike);

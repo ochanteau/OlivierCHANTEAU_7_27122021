@@ -21,7 +21,7 @@
             <i @click="openUpdatePost" class="fas fa-ellipsis-h"></i>
             <div class="update__nav" v-if="isOpenPost">
               <p @click="updatePost" v-if="this.user_id==post.user_id" class="update__update"><i class="far fa-edit"></i>Modifier la publication</p>
-              <p class="update__delete"><i class="far fa-trash-alt"></i> Supprimer la publication</p>
+              <p @click="fetchDeletePost" class="update__delete"><i class="far fa-trash-alt"></i> Supprimer la publication</p>
             </div>
           </div>
         </div>
@@ -116,6 +116,9 @@ import comment from '../components/comment.vue'
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs'
 import updatePost from '../components/UpdatePost.vue'
+const axios = require('axios');
+// ajout d'une URL de base aux requetes
+const instance = axios.create({baseURL: 'http://localhost:3000/api/post'});
 
 export default {
     name:'Post',
@@ -143,6 +146,21 @@ export default {
       },
       date(date){
         return dayjs(date).format('DD/MM/YYYY')
+      },
+      fetchDeletePost(){
+        const post_id = this.post.post_id
+        const post_index =this.index;
+        const self= this;
+        instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+        instance.delete(`/${post_id}`)
+           .then(function(res){
+              console.log(res.data);
+              self.$store.commit("deletePost", post_index);                       
+              })
+            .catch(function(err){
+              console.log(err)
+              console.log(err.response.data)
+              })                 
       }
       // ...mapActions(['fetchCurrentUser'])
     }
@@ -153,6 +171,7 @@ export default {
 <style lang="scss" scoped>
 
 .post{
+
     display: flex;
     flex-direction: column;
     padding: 2rem 3rem 1rem 3rem;

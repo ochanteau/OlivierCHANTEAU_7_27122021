@@ -79,22 +79,61 @@ exports.createPost = (req, res, next) => {
 
 
 // fonction pour supprimer une sauce
-    exports.deletePost = (req, res, next) => {
+  exports.deletePost = (req, res, next) => {
+    const {user_id} = req.token ;
+    const post_id = req.params.id ;
+    console.log(user_id, post_id)
+    // requete BDD sur la table post pour recupererles droits de l utilisateur
+    const sql = `SELECT post_picture 
+              FROM post
+              WHERE post_id = ? `
+    db.query(sql,post_id, function(err, results) {
+      if (err){res.status(500).json({ err })}
+      else {
+              console.log(results[0]);
+              const oldPicture = results[0].post_picture.split('/images/')[1];
+              console.log(oldPicture);
+
+              fs.unlink(`images/${oldPicture}`, () => {
+                  const sql = `DELETE FROM post
+                              WHERE post_id=? `
+                  db.query(sql,post_id, function(err, results) {
+                  if (err){res.status(500).json({ err })}
+                  else {
+                        console.log(results);
+                        return res.status(200).json( {message: "Post supprimé"})
+                  }
+                  })        
+              })
+
+      }
+    })
+
+  }
+
+
+
+
+
+
       // recherche de la sauce en BD
-      Sauce.findOne({ _id: req.params.id })
-        .then(sauce => {
-          // suppression de l'image associé sur le serveur
-          const filename = sauce.imageUrl.split('/images/')[1];
-          fs.unlink(`images/${filename}`, () => {
-            // suppression de la sauce en BD
-            Sauce.deleteOne({ _id: req.params.id })
+      // Sauce.findOne({ _id: req.params.id })
+      //   .then(sauce => {
+      //     // suppression de l'image associé sur le serveur
+      //     const filename = sauce.imageUrl.split('/images/')[1];
+      //     fs.unlink(`images/${filename}`, () => {
+      //       // suppression de la sauce en BD
+      //       Sauce.deleteOne({ _id: req.params.id })
              
-              .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
-              .catch(error => res.status(400).json({ error }));
-          });
-        })
-        .catch(error => res.status(500).json({ error }));
-    };
+      //         .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
+      //         .catch(error => res.status(400).json({ error }));
+      //     });
+      //   })
+      //   .catch(error => res.status(500).json({ error }));
+
+
+
+
 
 
 
@@ -152,38 +191,7 @@ exports.createPost = (req, res, next) => {
         }
         })        
       }
-      
-
-
-
-
-
-
-
-
-
-      // // verification de la presence d'une nouvelle image
-      // if (req.file) {
-      //   // parsing req.body.sauce
-      //   const sauceObject = {...JSON.parse(req.body.sauce),imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
-      //   // recherche de la sauce en BD
-      //   Sauce.findOne({ _id: req.params.id })
-      //     .then(sauce => {
-      //       const filename = sauce.imageUrl.split('/images/')[1];
-      //       // suppression de l'image associé sur le serveur
-      //       fs.unlink(`images/${filename}`, () => {
-      //         // MAJ de la sauce en BD
-      //         Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-      //         .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
-      //         .catch(error => res.status(400).json({ error }));
-      //     });
-      //   })
-      //     .catch(error => res.status(500).json({ error }))
-      // }
-      // // si pas de nouvelle image dans la requete, MAJ de la sauce en BD
-      // else {Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-      // .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
-      // .catch(error => res.status(400).json({ error }))}
+    
     };
 
 

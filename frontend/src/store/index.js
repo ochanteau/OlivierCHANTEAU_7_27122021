@@ -24,7 +24,7 @@ export default createStore({
     isLoggedIn: localStorage.getItem('token')? true:false
   },
   getters:{
-    getPostList: state=> state.postList,
+  
     isLoggedIn: state =>  state.isLoggedIn,
     fullName : state => {
                if (!state.currentUser.user_prenom || !state.currentUser.user_nom) { return null} 
@@ -85,6 +85,12 @@ export default createStore({
       state.postList[data.post_index] = {...state.postList[data.post_index], ...data}
       // state.postList[index].post_text = data.post_text;
       // state.postList[index].post_picture= data.post_picture;
+    },
+    deletePost(state,post_index){
+      console.log("index delete")
+      console.log(post_index)
+      state.postList.splice(post_index,1);
+
     }
   },
   actions: {
