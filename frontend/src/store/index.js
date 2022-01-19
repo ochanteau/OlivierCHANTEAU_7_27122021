@@ -79,8 +79,12 @@ export default createStore({
     createPost(state,newPost){
       state.postList.unshift(newPost)
     },
-    updatePost(state,data,index) {
-      state.postList[index] = {...state.postList[index], ...data}
+    updatePost(state,data) {
+      console.log("index et data de mutation")
+      console.log(data)
+      state.postList[data.post_index] = {...state.postList[data.post_index], ...data}
+      // state.postList[index].post_text = data.post_text;
+      // state.postList[index].post_picture= data.post_picture;
     }
   },
   actions: {

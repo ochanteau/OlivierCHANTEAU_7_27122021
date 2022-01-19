@@ -17,7 +17,7 @@
         <div class="upload">
           <label class="upload__label" for="update">Choisir une image <i class="fas fa-upload"></i></label>
           <input @change.prevent="upload($event)" id="update" class="upload__input" type="file">
-          <button @click.prevent="fetchFile(index,post.post_id)" class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
+          <button @click.prevent="fetchFile(post.post_id)" class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
         </div>
         <p class="error" v-if="this.missingFields">Le texte est obligatoire !</p>
         <p class="error" v-if="this.ErrorServer">Une erreur s'est produite</p>
@@ -39,7 +39,7 @@ const instance = axios.create({baseURL: 'http://localhost:3000/api/post'});
 
 export default {
     name:'UpdatePost',
-    props:['post','index','updatePost'],
+    props:['post','index','updatePost','openUpdatePost'],
     // components : {Header} ,
     data: function(){
         return {
@@ -79,14 +79,14 @@ export default {
             
             
         },
-      fetchFile(index,post_id){
+      fetchFile(post_id){
             this.missingFields=false;
             this.ErrorServer=false;
             const self=this;
             if( this.textValidation) {return null}
             else if ( !this.post_text || this.post_text=="") {this.missingFields=true}
             else {
-
+                instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
                 if (this.postPicture) {
                     let formData = new FormData();
                     const image = this.postPicture;
@@ -96,18 +96,21 @@ export default {
                     formData.append("post",post_text);
 
                     console.log(post_text)
-                    instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+                    // instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
                   
                     instance.put(`/${post_id}`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
                         .then(function(res){
                             console.log(res.data);
-                            const post = res.data;
+                            const post ={...res.data, post_index:self.index} 
                             console.log(post)
-                            self.$store.commit("updatePost", post,index);
+                            // console.log(self.index)
+                            self.$store.commit("updatePost", post);
                             self.post_text=null;
                             self.previewPicture=null;
-                            self.missingFields=false;
-                            self.ErrorServer=false;
+                            // self.missingFields=false;
+                            // self.ErrorServer=false;
+                            self.updatePost();
+                            self.openUpdatePost();
                             
                         })
                         .catch(function(err){
@@ -118,7 +121,29 @@ export default {
                 }
 
                 else {
-                    return
+                  console.log("coté obscur ok ")
+                  const post_text = {text:this.post_text}
+                
+                  instance.put(`/${post_id}`, post_text)
+                        .then(function(res){
+                            console.log(res.data);
+                            const post ={...res.data, post_index:self.index} 
+                            console.log(post)
+                            // console.log(self.index)
+                            self.$store.commit("updatePost", post);
+                            self.post_text=null;
+                            self.previewPicture=null;
+                            // self.missingFields=false;
+                            // self.ErrorServer=false;
+                            self.updatePost();
+                            self.openUpdatePost();
+                            
+                        })
+                        .catch(function(err){
+                            self.ErrorServer=true;
+                            console.log(err)
+                            console.log(err.response.data)
+                            })
                 }
 
 

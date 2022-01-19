@@ -1,7 +1,12 @@
 <template>
  
 <div>
-      <update-post v-if="this.update" :post="post" :index="index" :updatePost="updatePost"></update-post>
+      <update-post v-if="this.update"
+        :post="post"
+        :index="index" 
+        :updatePost="updatePost" 
+        :openUpdatePost="openUpdatePost">
+      </update-post>
       <!-- affichage du corps du post -->
       <div  class="post" >
         <div class=" post__container">
