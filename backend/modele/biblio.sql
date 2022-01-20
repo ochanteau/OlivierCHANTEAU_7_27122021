@@ -66,3 +66,6 @@ ORDER BY comment_date DESC
 
 SELECT * FROM groupomania.like
 WHERE post_id =2
+
+
+

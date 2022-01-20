@@ -41,7 +41,7 @@
             <i  @click="this.toggleLike"  class="fas fa-thumbs-up like__i"></i>
           </div>
           <div class=" toggle">
-            <span class=" toggle__number">6</span>
+            <span v-if="this.CommentNumber>0" class=" toggle__number">{{this.CommentNumber}}</span>
             <span class=" toggle__comment">Commentaires</span>
           </div>
         </div>
@@ -52,7 +52,15 @@
         <div class="commentSection">
           <!-- liste des commentaires -->
           <div class="commentsList">
-              <comment></comment>
+              <comment
+              v-for="(item,index) in this.commentList"
+              :key="item.comment_id"
+              :comment="item"
+              :index="index"
+              :capitalize="capitalize(item.user_prenom,item.user_nom)"
+              :fromNow="fromNow(item.comment_date)"
+              
+               ></comment>
               <!-- <comment></comment> -->
               <!-- <div class="comment">
                 <div class="user user--center">
@@ -115,6 +123,11 @@ import { mapState } from 'vuex';
 import comment from '../components/comment.vue'
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs'
+require("dayjs/locale/fr");
+const  relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
+
+
 import updatePost from '../components/UpdatePost.vue'
 const axios = require('axios');
 // ajout d'une URL de base aux requetes
@@ -129,13 +142,15 @@ export default {
           isOpenPost:false,
           isOpenComment:false,
           update:false,
-          likeList:[]
+          likeList:[],
+          commentList:[]
         }
     },
     props:['post','index'],
     
     computed:{
       likeNumber(){return this.likeList.length},
+      CommentNumber(){return this.commentList.length},
       checklike() {
         return  this.likeList.findIndex(el => el.user_id == this.user_id);
        
@@ -152,6 +167,9 @@ export default {
       date(date){
         return dayjs(date).format('DD/MM/YYYY')
       },
+      fromNow(date){
+        return dayjs(date).locale("fr").fromNow();
+     },
       fetchDeletePost(){
         const post_id = this.post.post_id
         const post_index =this.index;
@@ -217,11 +235,28 @@ export default {
               console.log(err.response.data)
             })
        }
+    },
+    async fetchPostComment (){
+      const post_id = this.post.post_id
+      try{
+        // requete Get api pour recuperer la totalité des commentaires relatifs au post
+      const response = await instance.get(`/comment/${post_id}`);
+      console.log("response.data liste de commentaires////////");
+      console.log(response.data);
+      this.commentList = response.data
+      }
+      catch(err) {
+        console.log(err)
+        // commit("logout")
+       
+        
+      }
     }
       // ...mapActions(['fetchCurrentUser'])
     },
     created(){
      this.getAllLike();
+     this.fetchPostComment();
     }
     
 }

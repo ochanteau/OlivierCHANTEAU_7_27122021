@@ -1,10 +1,10 @@
 <template>
     <div class="comment">
         <div class="user user--comment">
-            <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
+            <img  class="user__profilPicture " height="50" width="50" :src="this.comment.user_picture" alt="Image de profil ">
             <div  class="user__infos ">
-                <p  class="user__fullName">Prénom Nom</p>
-                <p  class="user__comment" >Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <p  class="user__fullName">{{capitalize}}</p>
+                <p  class="user__comment" >{{this.comment.comment_text}} </p>
             </div>
             <div class="update ">
                 <i @click="openUpdateComment" class="fas fa-ellipsis-h update__i"></i>
@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <p class="user__date ">le 14/01/2022</p>
+        <p class="user__date ">{{fromNow}}</p>
     </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
          
         }
     },
+    props:['comment','index','capitalize','fromNow'],
     created(){
       console.log("created comment")
     },

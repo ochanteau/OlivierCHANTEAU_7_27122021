@@ -122,7 +122,7 @@ export default createStore({
       const response = await instance.get('/post/');
       console.log("response.data////////");
       console.log(response.data);
-      commit;
+    
       // appel de la mutation getAllPost du store
       commit("getAllPost", response.data);
       // throw new Error('test');

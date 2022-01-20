@@ -1,29 +1,12 @@
 <template>
   <div class="Home">
+    <!-- composent header -->
     <Header></Header>
     <main>
+      <!-- forumaire de creation de post -->
       <create-post ></create-post>
-      <!-- <form role="form" class="form" >
-        <div class="post">
-          <img  class="post__profilPicture" height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
-          <textarea aria-label="texte du post" maxlength="200" class="post__input" placeholder="Que souhaitez vous partager ?"  cols="30" rows="3"></textarea>
-        </div>
-        <div v-if="this.previewPicture"  class="postPicture">
-          <img class="postPicture__img" height="300" width="500" :src="this.currentUser.user_picture">
-        </div>
-        <div class="separation"></div>
-        <div class="upload">
-          <label class="upload__label" for="upload">Choisir une image <i class="fas fa-upload"></i></label>
-          <input id="upload" class="upload__input" type="file">
-          <button class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
-        </div>
-      </form> -->
-      
-<!-- :capitalize="item.user_prenom+' '+item.user_nom" -->
- <!-- :capitalize="capitalize(item.user_prenom,item.user_nom)" -->
-
+      <!-- liste des publications  -->
       <div class="postList">
-        <!-- <post class="post"></post> -->
         <post  class="post"
           v-for="(item,index) in this.postList"
           :key="item.post_id"
