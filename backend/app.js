@@ -17,6 +17,7 @@ const morgan = require('morgan');
 // import des routes
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post')
+const likeRoutes = require('./routes/like')
 
 
 
@@ -131,6 +132,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 // middleware de routing
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
+app.use('/api/like', likeRoutes);
 
 module.exports = app;
 

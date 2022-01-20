@@ -78,7 +78,7 @@ exports.createPost = (req, res, next) => {
 
 
 
-// fonction pour supprimer une sauce
+// fonction pour supprimer un post
   exports.deletePost = (req, res, next) => {
     const {user_id} = req.token ;
     const post_id = req.params.id ;
