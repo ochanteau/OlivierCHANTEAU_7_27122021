@@ -40,7 +40,7 @@ exports.postVerification = (req, res, next) => {
       }
     }
   })
-
+}
 
 
   // requete BDD sur la table post pour recuperer user_id du propriétaire
@@ -61,7 +61,7 @@ exports.postVerification = (req, res, next) => {
   //   }
   // )
     
-};
+
 
 
 /*
@@ -73,7 +73,7 @@ exports.commentVerification = (req, res, next) => {
   
   const {user_id} = req.token ;
   const comment_id = req.params.id ;
-  console.log(comment_id)
+  console.log(user_id,comment_id)
   // requete BDD sur la table post pour recupererles droits de l utilisateur
   const sql = `SELECT droits_id
                FROM user
@@ -81,29 +81,25 @@ exports.commentVerification = (req, res, next) => {
   db.query(sql, user_id, function(err, results) {
     if (err){res.status(500).json({ err })}
     else {
+      console.log(results[0])
       console.log(results[0].droits_id)
       if (results && results[0].droits_id ==2)
-         {  // next ()
-          return res.status(200).json("ok");}
+         { next();}
       else {
       
           // requete BDD sur la table post pour recuperer user_id du propriétaire
         const sql2 = `SELECT user_id 
-        FROM comments
+        FROM comment
         WHERE comment_id = ? `
         db.query(sql2, comment_id, function(err, results) {
             if (err){res.status(500).json({ err })}
             else {
-                  console.log(results[0].user_id)
+                  // console.log(results[0].user_id)
                 if (!results || results[0].user_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
-              else {
-                    // next ()
-                    return res.status(200).json("ok");
-                  }
-
+              else {console.log("next");
+                next ();}
             }
-        }
-        ) 
+        }) 
       }
     }
   })
@@ -115,36 +111,3 @@ exports.commentVerification = (req, res, next) => {
 
 
 
-
-
-
-
-
-
-
-
-// exports.commentVerification = (req, res, next) => {
-  
-//   const {user_id} = req.token ;
-//   const comment_id = req.params.id ;
-//   console.log(comment_id)
-//   // requete BDD sur la table post pour recuperer user_id du propriétaire
-//   const sql = `SELECT user_id 
-//                FROM comments
-//                WHERE comment_id = ? `
-//   db.query(sql, comment_id, function(err, results) {
-//       if (err){res.status(500).json({ err })}
-//       else {
-//         console.log(results[0].comment_id)
-//         if (!results || results[0].comment_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
-//         else {
-//            // next ()
-//         return res.status(200).json("ok");
-//         }
-        
-//       }
-//     }
-//   )
-
-    
-// }

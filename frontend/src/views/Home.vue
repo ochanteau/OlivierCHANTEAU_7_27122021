@@ -42,7 +42,6 @@ import Header from '../components/Header'
 import { mapState } from 'vuex';
 import Post from '../components/Post.vue'
 import createPost from '../components/CreatePost.vue'
-import { mapGetters } from 'vuex';
 
 export default {
     name:'home',
@@ -58,7 +57,7 @@ export default {
       this.$store.dispatch('fetchAllPost');
     },
     computed:{
-      ...mapState(['currentUser','postList']),...mapGetters(['getPostList'])
+      ...mapState(['currentUser','postList']),
     },
     methods:{
       // deletePost(index,post_id){
