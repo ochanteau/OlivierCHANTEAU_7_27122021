@@ -36,9 +36,9 @@
 
         <!-- like et affichage du nb de like ainsi que du nombre de commentaires -->
         <div class="numberContainer">
-          <div class="like" :class="{'like--check' : (this.checklike >=0) }">
+          <div  class="like" :class="{'like--check' : (this.checklike >=0) }">
             <span v-if="this.likeNumber>0" class="like__number">{{this.likeNumber}}</span> 
-            <i  class="fas fa-thumbs-up like__i"></i>
+            <i  @click="this.toggleLike"  class="fas fa-thumbs-up like__i"></i>
           </div>
           <div class=" toggle">
             <span class=" toggle__number">6</span>
@@ -188,6 +188,36 @@ export default {
         
         }
     },
+    async toggleLike(){
+       instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+       const post_id = this.post.post_id
+       const index = this.checklike
+       const self =this;
+       if (index >=0) {
+         instance.delete(`/like/${post_id}`)
+           .then(function(res){
+              console.log(res.data);
+              self.likeList.splice(index,1);                    
+              })
+            .catch(function(err){
+              console.log(err)
+              console.log(err.response.data)
+              })  
+
+       }
+       else{
+         instance.post(`/like/${post_id}`)
+            .then(function(res){
+                console.log(res.data);
+                self.likeList.push(res.data.like)  
+                        
+            })
+            .catch(function(err){
+              console.log(err)
+              console.log(err.response.data)
+            })
+       }
+    }
       // ...mapActions(['fetchCurrentUser'])
     },
     created(){
@@ -279,6 +309,7 @@ export default {
     }
     i{
       margin-right: 0.3rem;
+      
     }
   }
 
@@ -328,7 +359,7 @@ export default {
   }
   &__i{
     cursor: pointer;
-   
+    font-size: 2rem;
   }
   
 }
