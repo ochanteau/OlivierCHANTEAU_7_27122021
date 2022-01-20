@@ -81,60 +81,24 @@ exports.createComment = (req, res, next) => {
 
 
 // fonction pour modifier un commentaire
-    exports.updatePost = (req, res, next) => {
-      const post_id = req.params.id ;
-     
-
-      if (req.file){
-        post_picture= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-        // post_text = JSON.parse(req.body.post.post_text)
-        post_text = JSON.parse(req.body.post) 
-
-        console.log(post_picture,post_text);
-        const sql = `SELECT post_picture 
-                    FROM post
-                    WHERE post_id = ? `
-        db.query(sql,post_id, function(err, results) {
-            if (err){res.status(500).json({ err })}
-            else {
-                console.log(results[0]);
-                const oldPicture = results[0].post_picture.split('/images/')[1];
-                console.log(oldPicture);
-
-                fs.unlink(`images/${oldPicture}`, () => {
-                  const sql = `UPDATE post
-                              SET post_picture = ?, post_text = ?
-                              WHERE post_id=? `
-                  db.query(sql,[post_picture,post_text,post_id], function(err, results) {
-                    if (err){res.status(500).json({ err })}
-                    else {
-                    console.log(results);
-                    return res.status(200).json({post_picture, post_text})
-                    }
-                  })        
-                })
-                
-            }
-        })
-      }
-      else {
-        console.log("pas de req file")
-        post_text = req.body.text
-        console.log(post_text)
-
-        const sql =`UPDATE post
-                   SET post_text = ?
-                   WHERE post_id=? `
-        db.query(sql,[post_text,post_id], function(err, results) {
+    exports.updateComment = (req, res, next) => {
+      const comment_id = req.params.id ;
+      comment_text = req.body.text  
+      console.log(comment_text)
+      const sql =`UPDATE comment
+                   SET comment_text = ?
+                   WHERE comment_id=? `  
+      db.query(sql,[comment_text,comment_id], function(err, results) {
         if (err){res.status(500).json({ err })}
         else {
-        console.log(results);
-    
-        return res.status(200).json({post_text})
+            console.log(results);
+            return res.status(200).json({comment_text})
         }
-        })        
-      }
-    
-    };
+      })     
+
+        
+              
+     
+};
 
 

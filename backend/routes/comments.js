@@ -30,7 +30,7 @@ router.get('/:id', auth, commentCtrl.getAllComments);
 
 // route pour modifier un commentaire
 
-// router.put('/:id',auth,owner.postVerification,multer, textVerification,postCtrl.updatePost);
+router.put('/:id',auth,owner.commentVerification,textVerification,commentCtrl.updateComment);
 
 //route pour supprimer un commentaire
 router.delete('/:id',auth,owner.commentVerification,commentCtrl.deleteComment);
