@@ -36,8 +36,8 @@
 
         <!-- like et affichage du nb de like ainsi que du nombre de commentaires -->
         <div class="numberContainer">
-          <div class="like" :class="{likeCheck:like}">
-            <span class="like__number">5</span> 
+          <div class="like" :class="{'like--check' : (this.checklike >=0) }">
+            <span v-if="this.likeNumber>0" class="like__number">{{this.likeNumber}}</span> 
             <i  class="fas fa-thumbs-up like__i"></i>
           </div>
           <div class=" toggle">
@@ -118,7 +118,7 @@ import dayjs from 'dayjs'
 import updatePost from '../components/UpdatePost.vue'
 const axios = require('axios');
 // ajout d'une URL de base aux requetes
-const instance = axios.create({baseURL: 'http://localhost:3000/api/post'});
+const instance = axios.create({baseURL: 'http://localhost:3000/api'});
 
 export default {
     name:'Post',
@@ -128,13 +128,18 @@ export default {
           previewPicture : null,
           isOpenPost:false,
           isOpenComment:false,
-          like:false,
           update:false,
+          likeList:[]
         }
     },
     props:['post','index'],
     
     computed:{
+      likeNumber(){return this.likeList.length},
+      checklike() {
+        return  this.likeList.findIndex(el => el.user_id == this.user_id);
+       
+      },
       ...mapState(['currentUser','user_id']),...mapGetters(['fullName'])
     },
     methods:{
@@ -152,7 +157,7 @@ export default {
         const post_index =this.index;
         const self= this;
         instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
-        instance.delete(`/${post_id}`)
+        instance.delete(`/post/${post_id}`)
            .then(function(res){
               console.log(res.data);
               self.$store.commit("deletePost", post_index);                       
@@ -161,8 +166,32 @@ export default {
               console.log(err)
               console.log(err.response.data)
               })                 
-      }
+      },
+      async getAllLike (){
+       instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+       try{ 
+            // const post_id = this.post.post_id
+            const post_id = this.post.post_id
+
+            console.log(post_id)
+            // requete Get api pour recuperer la totalité des like pour le post
+            const response = await instance.get(`/like/${post_id}`);
+            console.log("response.dataget all like////////");
+            console.log(response.data);
+            this.likeList = response.data
+
+       }
+        catch(err) {
+        console.log(err)
+        // commit("logout")
+       
+        
+        }
+    },
       // ...mapActions(['fetchCurrentUser'])
+    },
+    created(){
+     this.getAllLike();
     }
     
 }
@@ -281,10 +310,15 @@ export default {
 }
 
 .like{
-  flex-grow: 1;
+  // flex-grow: 1;
+  flex: 1;
   text-align: center;
   
   padding: 1rem 0rem;
+  &--check{
+    color: $secondary;
+    background-color: $primary;
+    }
   &Check{
     
     color: $secondary;
@@ -294,10 +328,13 @@ export default {
   }
   &__i{
     cursor: pointer;
+   
   }
+  
 }
 .toggle{
-  flex-grow: 1;
+  // flex-grow: 1;
+  flex : 1;
   text-align: center;
   padding: 1rem 0rem;
   
