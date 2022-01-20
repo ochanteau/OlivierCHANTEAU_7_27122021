@@ -12,7 +12,7 @@ exports.getAllComments= (req, res, next)=> {
                 FROM user
                 INNER JOIN comment
                 WHERE comment.user_id = user.user_id AND post_id=?
-                ORDER BY comment_date DESC `
+                ORDER BY comment_date ASC `
   db.query(sql,post_id, function(err, results) {
       if (err){res.status(500).json({ err })}
       else {

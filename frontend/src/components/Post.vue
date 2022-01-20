@@ -104,9 +104,12 @@
               <img  class="user__profilPicture " height="50" width="50" :src="this.currentUser.user_picture" alt="Image de profil ">
               <div  class="user__infos user__infos--comment">
                   <p class="user__fullName">{{this.fullName}}</p>
-                  <textarea aria-label="texte du commentaire" maxlength="100" class="user__comment" placeholder="Votre commentaire ?"  cols="30" rows="2"></textarea>
+                  <textarea  v-model="commentText" aria-label="texte du commentaire" maxlength="100" class="user__comment" placeholder="Votre commentaire ?"  cols="30" rows="2"></textarea>
               </div>
+              <i @click="fetchNewComment" class="fas fa-chevron-circle-right user__newComment"></i>
             </div>
+            <p class="error" v-if="this.textValidation">Le texte ne doit pas contenir de caracteres speciaux</p>
+
           </form>  
         </div>
         
@@ -143,7 +146,8 @@ export default {
           isOpenComment:false,
           update:false,
           likeList:[],
-          commentList:[]
+          commentList:[],
+          commentText:null
         }
     },
     props:['post','index'],
@@ -155,6 +159,11 @@ export default {
         return  this.likeList.findIndex(el => el.user_id == this.user_id);
        
       },
+      textValidation  () {
+      const regexp = /[^a-zA-Z0-9.,!_@#\- ]/;
+      if (regexp.test(this.commentText)) { return true}
+      else {return false} 
+    },
       ...mapState(['currentUser','user_id']),...mapGetters(['fullName'])
     },
     methods:{
@@ -236,10 +245,11 @@ export default {
             })
        }
     },
-    async fetchPostComment (){
+    async fetchListComment (){
       const post_id = this.post.post_id
       try{
         // requete Get api pour recuperer la totalité des commentaires relatifs au post
+      instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
       const response = await instance.get(`/comment/${post_id}`);
       console.log("response.data liste de commentaires////////");
       console.log(response.data);
@@ -251,12 +261,35 @@ export default {
        
         
       }
+    },
+    async fetchNewComment(){
+      if (this.textValidation||!this.commentText||this.commentText==" ") {return null}
+      else {
+          instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+          const text = this.commentText
+          const self= this;
+          const post_id = this.post.post_id
+          instance.post(`/comment/${post_id}`,{text})
+                .then(function(res){
+                    console.log(res.data);
+                    const newComment = {...res.data,user_picture:self.currentUser.user_picture,user_prenom:self.currentUser.user_prenom,user_nom:self.currentUser.user_nom };
+                    console.log(newComment)
+                    self.commentList.push(newComment)
+                    self.commentText=null; 
+                            
+                })
+                .catch(function(err){
+                  console.log(err)
+                  console.log(err.response.data)
+                })
+      }
+      
     }
       // ...mapActions(['fetchCurrentUser'])
     },
     created(){
      this.getAllLike();
-     this.fetchPostComment();
+     this.fetchListComment();
     }
     
 }
@@ -279,6 +312,7 @@ export default {
 
 .user{
   display: flex;
+  position: relative;
   &--center{
       align-items: center;
     }
@@ -324,6 +358,12 @@ export default {
     //   margin-left: 7rem;
     // }
   }
+  &__newComment{
+    position: absolute;
+    bottom: 20px;
+    right:-10px;
+  }
+  
 }
 
 .update{
@@ -416,6 +456,12 @@ export default {
 
 .comment{
   margin: 1rem 0rem;
+}
+
+.error{
+  text-align: center;
+  color: red;
+
 }
 
 </style>
