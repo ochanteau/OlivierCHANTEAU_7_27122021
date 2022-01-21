@@ -42,14 +42,14 @@
           </div>
           <div class=" toggle">
             <span v-if="this.CommentNumber>0" class=" toggle__number">{{this.CommentNumber}}</span>
-            <span class=" toggle__comment">Commentaires</span>
+            <span @click="switchOpenCommentSection" class=" toggle__comment">Commentaires</span>
           </div>
         </div>
         <div class="separation"></div>
         
          
         <!--partie relative aux commentaires  -->
-        <div class="commentSection">
+        <div v-if="openCommentSection" class="commentSection">
           <!-- liste des commentaires -->
           <div class="commentsList">
               <comment
@@ -61,7 +61,7 @@
               :fromNow="fromNow(item.comment_date)"
               :deleteComment="deleteComment"
               :updateComment="updateComment"
-              
+
                ></comment>
               <!-- <comment></comment> -->
               <!-- <div class="comment">
@@ -150,7 +150,8 @@ export default {
           update:false,
           likeList:[],
           commentList:[],
-          commentText:null
+          commentText:null,
+          openCommentSection:false
         }
     },
     props:['post','index'],
@@ -170,6 +171,9 @@ export default {
       ...mapState(['currentUser','user_id']),...mapGetters(['fullName'])
     },
     methods:{
+      switchOpenCommentSection() {
+        this.openCommentSection = !this.openCommentSection
+      },
       updatePost (){this.update=!this.update},
       openUpdatePost : function(){this.isOpenPost = !this.isOpenPost},
       openUpdateComment : function(){this.isOpenComment = !this.isOpenComment},
