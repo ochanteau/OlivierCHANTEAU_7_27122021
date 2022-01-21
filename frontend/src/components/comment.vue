@@ -6,11 +6,11 @@
                 <p  class="user__fullName">{{capitalize}}</p>
                 <p  class="user__comment" >{{this.comment.comment_text}} </p>
             </div>
-            <div class="update ">
+            <div v-if="this.user_id==comment.user_id||this.currentUser.droits_id==2" class="update ">
                 <i @click="openUpdateComment" class="fas fa-ellipsis-h update__i"></i>
                 <div class="update__nav" v-if="isOpenComment">
-                    <p class="update__update"><i class="far fa-edit"></i>Modifier</p>
-                    <p class="update__delete"><i class="far fa-trash-alt"></i>Supprimer</p>
+                    <p v-if="this.user_id==comment.user_id" class="update__update"><i class="far fa-edit"></i>Modifier</p>
+                    <p @click=" fetchDeletePost" class="update__delete"><i class="far fa-trash-alt"></i>Supprimer</p>
                 </div>
             </div>
         </div>
@@ -20,6 +20,11 @@
 
 <script>
 import { mapState } from 'vuex';
+const axios = require('axios');
+// ajout d'une URL de base aux requetes
+const instance = axios.create({baseURL: 'http://localhost:3000/api'});
+
+
 
 export default {
    name:'comment',
@@ -32,16 +37,32 @@ export default {
          
         }
     },
-    props:['comment','index','capitalize','fromNow'],
+    props:['comment','index','capitalize','fromNow','deleteComment'],
     created(){
       console.log("created comment")
     },
     computed:{
-      ...mapState(['currentUser'])
+      ...mapState(['currentUser','user_id'])
     },
     methods:{
       
-      openUpdateComment : function(){this.isOpenComment = !this.isOpenComment}
+      openUpdateComment : function(){this.isOpenComment = !this.isOpenComment},
+      fetchDeletePost(){
+        const comment_id = this.comment.comment_id
+        const comment_index =this.index;
+        const self= this;
+        instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+        instance.delete(`/comment/${comment_id}`)
+           .then(function(res){
+              console.log(res.data);
+              self.deleteComment(comment_index); 
+              self.isOpenComment= false;                    
+              })
+            .catch(function(err){
+              console.log(err)
+              console.log(err.response.data)
+              })                 
+      },
       // ...mapActions(['fetchCurrentUser'])
     }
     

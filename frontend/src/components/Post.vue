@@ -59,7 +59,8 @@
               :index="index"
               :capitalize="capitalize(item.user_prenom,item.user_nom)"
               :fromNow="fromNow(item.comment_date)"
-              
+              :deleteComment="deleteComment"
+
                ></comment>
               <!-- <comment></comment> -->
               <!-- <div class="comment">
@@ -98,6 +99,7 @@
                 <p class="user__date user__date--comment">le 14/01/2022</p>
               </div> -->
           </div>  
+          <div class="separation"></div>
           <!-- ajouter un commentaire -->
           <form>
             <div class="user user--center">
@@ -178,7 +180,7 @@ export default {
       },
       fromNow(date){
         return dayjs(date).locale("fr").fromNow();
-     },
+      },
       fetchDeletePost(){
         const post_id = this.post.post_id
         const post_index =this.index;
@@ -195,27 +197,27 @@ export default {
               })                 
       },
       async getAllLike (){
-       instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
-       try{ 
-            // const post_id = this.post.post_id
-            const post_id = this.post.post_id
+        instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+        try{ 
+              // const post_id = this.post.post_id
+              const post_id = this.post.post_id
 
-            console.log(post_id)
-            // requete Get api pour recuperer la totalité des like pour le post
-            const response = await instance.get(`/like/${post_id}`);
-            console.log("response.dataget all like////////");
-            console.log(response.data);
-            this.likeList = response.data
+              console.log(post_id)
+              // requete Get api pour recuperer la totalité des like pour le post
+              const response = await instance.get(`/like/${post_id}`);
+              console.log("response.dataget all like////////");
+              console.log(response.data);
+              this.likeList = response.data
 
-       }
-        catch(err) {
-        console.log(err)
-        // commit("logout")
-       
-        
         }
-    },
-    async toggleLike(){
+          catch(err) {
+          console.log(err)
+          // commit("logout")
+        
+          
+          }
+     },
+      async toggleLike(){
        instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
        const post_id = this.post.post_id
        const index = this.checklike
@@ -284,6 +286,9 @@ export default {
                 })
       }
       
+    },
+    deleteComment(item){
+      this.commentList.splice(item,1);
     }
       // ...mapActions(['fetchCurrentUser'])
     },
