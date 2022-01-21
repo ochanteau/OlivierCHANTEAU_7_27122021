@@ -70,7 +70,7 @@ exports.postVerification = (req, res, next) => {
 */
 
 exports.commentVerification = (req, res, next) => {
-  
+  console.log("comment verification part1")
   const {user_id} = req.token ;
   const comment_id = req.params.id ;
   console.log(user_id,comment_id)
@@ -86,6 +86,7 @@ exports.commentVerification = (req, res, next) => {
       if (results && results[0].droits_id ==2)
          { next();}
       else {
+        console.log("comment verification part1")
       
           // requete BDD sur la table post pour recuperer user_id du propriétaire
         const sql2 = `SELECT user_id 

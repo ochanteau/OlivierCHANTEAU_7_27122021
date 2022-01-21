@@ -60,7 +60,8 @@
               :capitalize="capitalize(item.user_prenom,item.user_nom)"
               :fromNow="fromNow(item.comment_date)"
               :deleteComment="deleteComment"
-
+              :updateComment="updateComment"
+              
                ></comment>
               <!-- <comment></comment> -->
               <!-- <div class="comment">
@@ -287,10 +288,14 @@ export default {
       }
       
     },
-    deleteComment(item){
-      this.commentList.splice(item,1);
+    deleteComment(index){
+      this.commentList.splice(index,1);
+    },
+    updateComment(index,data){
+      this.commentList[index] = {...this.commentList[index], ...data}
     }
-      // ...mapActions(['fetchCurrentUser'])
+    
+    // ...mapActions(['fetchCurrentUser'])
     },
     created(){
      this.getAllLike();

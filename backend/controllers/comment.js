@@ -74,12 +74,6 @@ exports.createComment = (req, res, next) => {
 
 
 
-
-
-
-
-
-
 // fonction pour modifier un commentaire
     exports.updateComment = (req, res, next) => {
       const comment_id = req.params.id ;
