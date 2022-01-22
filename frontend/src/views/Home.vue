@@ -3,10 +3,11 @@
     <!-- composent header -->
     <Header></Header>
     <main>
-      <!-- forumaire de creation de post -->
+      <!-- inmport composant formulaire de creation de post -->
       <create-post ></create-post>
-      <!-- liste des publications  -->
+      <!-- liste des publications, itération sur la liste de poste du store  -->
       <div class="postList">
+        <!-- composants publications , props objet post et index  -->
         <post  class="post"
           v-for="(item,index) in this.postList"
           :key="item.post_id"
@@ -36,20 +37,17 @@ export default {
         }
     },
     created(){
-      console.log("created home")
+      //  requete API de la liste des publications via action fetcAllpost
       this.$store.dispatch('fetchAllPost');
     },
     computed:{
+      // recuperation des données user et de la liste de post
       ...mapState(['currentUser','postList']),
     },
     methods:{
-      // deletePost(index,post_id){
-        
-      // }
-      // ...mapActions(['fetchCurrentUser'])
     },
     mounted(){
-      console.log("mounted home");
+      // requete API du user via action fetchCurrentUser
       this.$store.dispatch('fetchCurrentUser');
     }
     
@@ -58,6 +56,7 @@ export default {
 
 <style lang="scss" scoped>
 
+// positionnement du header 
 Header{
   margin-bottom: 4rem;
   position: sticky;
@@ -72,84 +71,7 @@ main{
   margin: auto;
 }
 
-// post{
-//   margin-bottom: 2rem;
-// }
-
-// .form{
-//   // padding: 2rem 2rem 1rem 2rem;
-//   box-shadow: $box-shadow $border;
-//   padding: 2rem 3rem 1rem 3rem;
-//   // display: flex;
-//   // flex-direction: column;
-//   // align-items: center;
-  
-// }
-
-// .post{
-//     display: flex;
-//     flex-direction: row;
-//     justify-content: center;
-//     align-items: center;
-//     // padding: 1.5rem 1rem;
-    
-//     &__profilPicture{
-//       border-radius: 50%;
-      
-
-//     }
-//     &__input{
-//       width: 80%;
-//       margin-left: 1.5rem;
-//       // border-radius: 2rem;
-//       background-color: $textarea  ;
-//       border: none;
-//       outline: none;
-//       padding: 1rem ;
-//       resize: none;
-     
-//     }
-//   }
-
-//   .postPicture{
-//     margin: 1rem 0rem;
-//     display: flex;
-   
-//     justify-content: center;
-//     // &__img{
-      
-//     // }
-//   }
-
-//   .upload{
-//     display: flex;
-//     justify-content:space-around;
-//     margin: 0.5rem 0rem;
-//     &__label{
-//       padding: 1rem;
-//       cursor: pointer;
-//     }
-//     &__input{
-//       display: none;
-//     }
-//     &__button{
-//       padding: 0rem 1rem;
-//       border-radius: 1rem;
-//       border-color: $border;
-//       cursor: pointer;
-//     }
-//   }
-
-
-// .separation{
-//   height: 1px;
-//   background-color: $border;
-//   // width: 32rem;
-//   text-align: center;
-//   margin: 1rem 0rem;
-  
-// }
-
+// bloc liste de post
 .postList{
   margin-top: 3rem;
   margin-bottom: 2rem;

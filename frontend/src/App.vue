@@ -19,6 +19,6 @@ export default {
 
 
 <style lang="scss" >
-// la mise en page général et les variables sont importés dans le vue.config.js
+// la mise en page générale et les variables sont importées dans le vue.config.js
 
 </style>
