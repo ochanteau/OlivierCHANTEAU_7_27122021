@@ -18,25 +18,22 @@ const postCtrl = require('../controllers/post');
 
 /*
 * Sur chaque route le middleware d'authentification est appelé
-* Sur les routes de creation et de modification de sauce sont appelés
-* les middlewares Multer et  validator 
-* Sur la route DELETE et modification de sauce on appelle egalement SauceOwner   
+* Sur les routes de creation et de modification de post sont appelés
+* les middlewares Multer et  textVerification
+* Sur la route DELETE et modification de post on appelle egalement owner 
 */
 
-// route creation de post
+// route creation de publication
 router.post('/', auth, multer, textVerification,  postCtrl.createPost);
 
-//route pour obtenir toutes les sauces
+//route pour obtenir toutes les publications
 router.get('/', auth, postCtrl.getAllPost);
 
-//route pour obtenir une sauce
-// router.get('/:id',auth, saucesCtrl.getOneSauce);
 
-// route pour modifier un post
-
+// route pour modifier une publication
 router.put('/:id',auth,owner.postVerification,multer, textVerification,postCtrl.updatePost);
 
-//route pour supprimer une sauce 
+//route pour supprimer une publication
 router.delete('/:id',auth,owner.postVerification,postCtrl.deletePost);
 
 //route pour liker ou disliker une sauce
