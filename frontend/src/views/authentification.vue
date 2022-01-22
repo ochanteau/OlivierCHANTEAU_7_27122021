@@ -127,7 +127,7 @@ export default {
           // appel de la mutation Log user du store
           this.$store.commit("logUser", response.data);
           // envoie de l'utilisateur sur la vue Home
-          this.$router.push('/profil');
+          this.$router.push('/home');
       }
       catch (error){
         // affichage de l'erreur de login
