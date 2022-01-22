@@ -5,7 +5,7 @@ require("dotenv").config();
 const mysql2= require('mysql2');
 
 
-
+// connection a la BDD avec les variables d'environnement
 const db = mysql2.createConnection({
   host     : process.env.MySQL_HOST,
   user     : process.env.MySQL_USER,

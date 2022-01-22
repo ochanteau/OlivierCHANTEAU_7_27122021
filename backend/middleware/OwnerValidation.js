@@ -6,61 +6,38 @@ const db = require('../modele/database');
 * de l'userId du propriétaire du post 
 */
 exports.postVerification = (req, res, next) => {
-  
+  // recuperation du userId dans le token
   const {user_id} = req.token ;
+  // recupération de l'id du post dans le path de la requete
   const post_id = req.params.id ;
-  console.log(user_id, post_id)
-  // requete BDD sur la table post pour recupererles droits de l utilisateur
+  // requete BDD sur la table post pour recuperer les droits de l utilisateur
   const sql = `SELECT droits_id
                FROM user
                WHERE user_id = ? `
   db.query(sql, user_id, function(err, results) {
     if (err){res.status(500).json({ err })}
     else {
-      console.log(results[0])
-      
-      console.log(results[0].droits_id)
-      if (results && results[0].droits_id ==2)
-         { next();}
-      else {
-      
-          // requete BDD sur la table post pour recuperer user_id du propriétaire
-        const sql2 = `SELECT user_id 
-        FROM post
-        WHERE post_id = ? `
-        db.query(sql2, post_id, function(err, results) {
-            if (err){res.status(500).json({ err })}
-            else {
-                  // console.log(results[0].user_id)
-                if (!results || results[0].user_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
-              else {console.log("next");
-                next ();}
-            }
-        }) 
-      }
+          // si les droits utilisateurs sont égaux à 2 , cest un moderateur 
+          if (results && results[0].droits_id ==2) {next();}
+          // sinon verification que c est bien le propriétaire en BDD
+          else {
+            // requete BDD sur la table post pour recuperer user_id du propriétaire
+            const sql2 = `SELECT user_id 
+                          FROM post
+                          WHERE post_id = ? `
+            db.query(sql2, post_id, function(err, results) {
+                if (err){res.status(500).json({ err })}
+                else {
+                    // si ce n'est pas le propriétaire reponse status 403
+                    if (!results || results[0].user_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
+                    else {next();}
+                }
+            }) 
+          }
     }
   })
 }
 
-
-  // requete BDD sur la table post pour recuperer user_id du propriétaire
-  // const sql2 = `SELECT user_id 
-  //              FROM post
-  //              WHERE post_id = ? `
-  // db.query(sql2, post_id, function(err, results) {
-  //     if (err){res.status(500).json({ err })}
-  //     else {
-  //       console.log(results[0].user_id)
-  //       if (!results || results[0].user_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
-  //       else {
-  //          // next ()
-  //       return res.status(200).json("ok");
-  //       }
-        
-  //     }
-  //   }
-  // )
-    
 
 
 
@@ -70,8 +47,9 @@ exports.postVerification = (req, res, next) => {
 */
 
 exports.commentVerification = (req, res, next) => {
-  console.log("comment verification part1")
+   // recuperation du userId dans le token
   const {user_id} = req.token ;
+  // recupération de l'id du commentaire dans le path de la requete
   const comment_id = req.params.id ;
   console.log(user_id,comment_id)
   // requete BDD sur la table post pour recupererles droits de l utilisateur
@@ -81,26 +59,22 @@ exports.commentVerification = (req, res, next) => {
   db.query(sql, user_id, function(err, results) {
     if (err){res.status(500).json({ err })}
     else {
-      console.log(results[0])
-      console.log(results[0].droits_id)
-      if (results && results[0].droits_id ==2)
-         { next();}
+      // si les droits utilisateurs sont égaux à 2 , cest un moderateur 
+      if (results && results[0].droits_id ==2){ next();}
+      // sinon verification que c est bien le propriétaire en BDD
       else {
-        console.log("comment verification part1")
-      
-          // requete BDD sur la table post pour recuperer user_id du propriétaire
-        const sql2 = `SELECT user_id 
-        FROM comment
-        WHERE comment_id = ? `
-        db.query(sql2, comment_id, function(err, results) {
-            if (err){res.status(500).json({ err })}
-            else {
-                  // console.log(results[0].user_id)
-                if (!results || results[0].user_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
-              else {console.log("next");
-                next ();}
-            }
-        }) 
+            // requete BDD sur la table post pour recuperer user_id du propriétaire
+            const sql2 = `SELECT user_id 
+                          FROM comment
+                          WHERE comment_id = ? `
+            db.query(sql2, comment_id, function(err, results) {
+                if (err){res.status(500).json({ err })}
+                else {
+                    // si ce n'est pas le propriétaire reponse status 403
+                    if (!results || results[0].user_id !=user_id) {res.status(403).json({ message:"Vous n'avez pas les droits necessaires"})}
+                    else {next ();}
+                }
+            }) 
       }
     }
   })

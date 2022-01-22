@@ -30,7 +30,7 @@ function deletePicture (req,res){
 
 /*
 * middleware de verification des donnees utilisateurs 
-* lors de la creationd'un post ou d'un commentaire
+* lors de la creation d'un post ou d'un commentaire
 */
 
 module.exports = (req,res,next) => {
