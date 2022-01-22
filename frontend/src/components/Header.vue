@@ -1,18 +1,19 @@
 <template>
   <header>
+    <!-- logo du groupe -->
     <div class="header">
         <img class="header__img" height="80" width="80  "    src="../assets/images/icon.svg" alt="logo groupomania">
-         
         <h1 class="header__h1">Groupomania</h1>
     </div>
    
-           
+   <!-- navigation  -->
     <div class="navigation">
+        <!-- ouverture de la navigation -->
         <div class="dropDown" @click="openNav">
-          <!-- <img class="dropDown__img" height="40" width="40" src="../assets/images/profil.png" alt=""> -->
           <img class="dropDown__img" height="40" width="40" :src="this.currentUser.user_picture" alt="Image de profil ">
           <button class="dropDown__button">{{this.firstName}}</button>
         </div>
+        <!-- liens vers les autres vues et logout -->
         <nav class="nav" v-if="isOpen">
             <router-link to="/home" class="nav__home">Accueil</router-link> 
             <router-link to="/profil" class="nav__profil">Votre profil</router-link>
@@ -41,7 +42,8 @@ export default {
     ...mapState(['currentUser']),...mapGetters(['firstName'])
   },
   methods:{
-    openNav : function(){this.isOpen = !this.isOpen},...mapMutations(['logout'])
+    openNav : function(){this.isOpen = !this.isOpen},
+    ...mapMutations(['logout'])
   }
 }
 </script>
@@ -62,7 +64,7 @@ export default {
     }
   }
   
-
+// container
   header{
     background-color: white;
     height: 80px;
@@ -80,7 +82,7 @@ export default {
     }
    
   }
-
+// logo du groupe
   .header{
     grid-area: header;
     display: flex;
@@ -93,7 +95,7 @@ export default {
     }
     }
   }
-
+// navigation
   .navigation{
    
     justify-content: center;
@@ -102,7 +104,7 @@ export default {
     flex-direction: column;
     align-items: center;
     position: relative;
-
+    // ouverture de la navigation
     .dropDown{
       display: flex;
       border-radius: 1rem;
@@ -112,17 +114,12 @@ export default {
        box-shadow: $box-shadow $border;
       &__img{
         border-radius: 50%;
-       
-        cursor: pointer;
-        
-      
-        
+        cursor: pointer;    
       }
       &__button{
         border:none;
         font-weight: bold;
         font-size:2rem;
-        // color: $secondary;
         background: none ;
         cursor: pointer;
         padding: 0 3rem 0 1rem;
@@ -130,7 +127,7 @@ export default {
     }
    
 
-
+    // liens vers les autres vues et logout
     .nav{
         margin-top: 1rem;
         background-color: $primary;
