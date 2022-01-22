@@ -11,6 +11,7 @@ import store from '../store/index';
 // attention a supprimer le getters et a le remplacer par le state
 
 const routes = [
+  // route vers la vue d'authentification
   {
     path: '/',
     name: 'Authentification',
@@ -22,6 +23,7 @@ const routes = [
       else {next()}
     }
   },
+  // route vers la vue principale avec l'ensemble des publications
   {
     path: '/home',
     name: 'Home',
@@ -34,6 +36,7 @@ const routes = [
     }
    
   },
+  // route vers la vue de profil
   {
     path: '/profil',
     name: 'Profil',
@@ -47,6 +50,7 @@ const routes = [
     // est ce que j utilise le getters ou pas je vois pas l interet en l espece 
    
   },
+  // match de l'ensemble des autres routes
   {
     // si la route ne correspond à aucune vue, on renvoie vers vue authentification 
    path: '/:pathMatch(.*)*',
