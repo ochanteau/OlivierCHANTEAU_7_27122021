@@ -69,3 +69,14 @@ WHERE post_id =2
 
 
 
+-- // connection à la base de donnée
+-- // const db = require('./modele/database')
+-- // voir pour try catch
+-- // db.connect(function(err) {
+-- //   if (err) throw err;
+-- //   console.log("Connecté à la base de données MySQL!");
+-- // });
+
+-- // try{db.connect();
+-- //   console.log("Connecté à la base de données MySQL!");
+-- // } catch{ }
