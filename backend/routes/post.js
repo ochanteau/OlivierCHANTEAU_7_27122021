@@ -36,7 +36,5 @@ router.put('/:id',auth,owner.postVerification,multer, textVerification,postCtrl.
 //route pour supprimer une publication
 router.delete('/:id',auth,owner.postVerification,postCtrl.deletePost);
 
-//route pour liker ou disliker une sauce
-// router.post("/:id/like",auth,saucesCtrl.likeDislike);
 
 module.exports = router;
