@@ -82,7 +82,7 @@ export default {
   },
   
   methods:{
-    // focntion pour naviguer entre signup et signin
+    // fonction pour naviguer entre signup et signin
     switchToCreateAccount : function (){
       this.mode = "createAccount"
     },

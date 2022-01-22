@@ -9,10 +9,6 @@ const instance = axios.create({baseURL: 'http://localhost:3000/api'});
 instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`
 
 
-console.log("////instance begin");
-console.log(instance.defaults.headers.common);
-
-
 export default createStore({
   state: {
     user_id:null,
@@ -26,11 +22,13 @@ export default createStore({
   getters:{
   
     isLoggedIn: state =>  state.isLoggedIn,
+    // recupération du nom et du prenom de l'utilisateur et mise en capital
     fullName : state => {
                if (!state.currentUser.user_prenom || !state.currentUser.user_nom) { return null} 
                else {return state.currentUser.user_prenom[0].toUpperCase() + state.currentUser.user_prenom.slice(1)+ " " + state.currentUser.user_nom.toUpperCase()}  
 
     },
+    //  recupération du prenom de l'utilisateur et mise en capital
     firstName : state => {
       if (!state.currentUser.user_prenom ) { return null} 
       else {return state.currentUser.user_prenom[0].toUpperCase() + state.currentUser.user_prenom.slice(1)}  
@@ -40,14 +38,10 @@ export default createStore({
   }, 
     
   mutations: {
-    //  fonction pour iodentifier l'utilisateur 
+    //  fonction pour identifier l'utilisateur 
     logUser : function(state,user){
-        console.log("user/////")
-        console.log(user)
       // configuration du token dans le header  
       instance.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
-        console.log("////instance after");
-        console.log(instance.defaults.headers.common);
       // envoie du token dans le local storage
       localStorage.setItem('token', user.token);
       // modification du state
@@ -56,14 +50,16 @@ export default createStore({
       state.isLoggedIn = true;
         
     },
+    // MAJ  apres actions requete API  FetchCurrentUSer
     getCurrentUser(state,payload){
       state.currentUser = payload.currentUser;
       state.user_id = payload.user_id;
     },
+    // MAJ de l url de la photo de profil de l'utilisateur
     updateUserPicture(state,payload){
-      
       state.currentUser.user_picture= payload;
     },
+    // deconnection de l'utilateur 
     logout(state){
       localStorage.removeItem('token');
       state.currentUser={};
@@ -72,43 +68,34 @@ export default createStore({
       state.isLoggedIn=false;
       router.push('/');
     },
+    // MAJ de l'ensemble des publications
     getAllPost(state,postList){
       state.postList = [...postList];
       
     },
+    // ajout d une nouvelle publication dans la liste de publication
     createPost(state,newPost){
       state.postList.unshift(newPost)
     },
+    // MAJ d'une publication
     updatePost(state,data) {
-      console.log("index et data de mutation")
-      console.log(data)
       state.postList[data.post_index] = {...state.postList[data.post_index], ...data}
-      // state.postList[index].post_text = data.post_text;
-      // state.postList[index].post_picture= data.post_picture;
     },
+    // suppression d'une publication
     deletePost(state,post_index){
-      console.log("index delete")
-      console.log(post_index)
       state.postList.splice(post_index,1);
 
     }
   },
   actions: {
+    // recuperation API des infos de l'utilisateur
     async fetchCurrentUser({commit}) {
       try{
         // requete Get api pour recuperer les données utilisateur
       const response = await instance.get('/auth/currentUser');
-      console.log("response.data////////");
-      console.log(response.data);
-      // const currentUser = JSON.parse(response.data)
-      // console.log(currentUser);
-
-      // appel de la mutation getCurrentUser du store
-      // commit("getCurrentUser", currentUser);
-
       commit("getCurrentUser", response.data);
-      // throw new Error('test');
       }
+      // en cas d'erreur on appelle logout 
       catch(err) {
         console.log(err)
         commit("logout")
@@ -116,49 +103,18 @@ export default createStore({
         
       }
     },
+    // recuperation API de l'ensemble des publications
     async fetchAllPost ({commit}){
       try{
         // requete Get api pour recuperer la totalité des posts
       const response = await instance.get('/post/');
-      console.log("response.data////////");
-      console.log(response.data);
-    
       // appel de la mutation getAllPost du store
       commit("getAllPost", response.data);
-      // throw new Error('test');
       }
       catch(err) {
-        console.log(err)
-        // commit("logout")
-       
-        
+        console.log(err)    
       }
     }
-   
-
-
-    // login : function ({commit}, user) {
-    //   commit;
-    //   return new Promise((resolve, reject) => {
-    //     instance.post('/login',user)
-    //         .then(function (response) {
-    //     console.log(response);
-    //   })
-    //         .catch(function (error) {
-    //     console.log(error);
-    //   });
-    //   })
-    // }
-    // login : async function ({commit}, user) {
-    //   commit;
-    //   try{
-    //     const response = await instance.post('/login',user);
-       
-    //     return response.data;
-    //   }
-    //   catch (error){console.log(error)}
-      
-    // }
   },
 
   modules: {
