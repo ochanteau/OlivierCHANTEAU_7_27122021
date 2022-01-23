@@ -8,7 +8,7 @@
             <div  class="user__infos ">
                 <p  class="user__fullName">{{capitalize}}</p>
                 <p v-if="!updateIsOpen"  class="user__comment" >{{this.comment.comment_text}} </p>
-                <textarea v-if="updateIsOpen"  v-model="newComment" aria-label="texte du commentaire" maxlength="100" class="user__comment" placeholder="Votre commentaire ?"  cols="30" rows="2"></textarea>
+                <textarea v-if="updateIsOpen"  v-model="newComment" aria-label="texte du commentaire" maxlength="150" class="user__comment" placeholder="Votre commentaire ?"  cols="30" rows="2"></textarea>
                 <i v-if="updateIsOpen" @click="fetchUpdateComment" class="fas fa-chevron-circle-right user__newComment"></i>
             </div>
             <!-- bloc update du commentaire -->

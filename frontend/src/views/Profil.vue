@@ -17,15 +17,15 @@
        <div class="separation" ></div>
        <!-- bloc de MAJ de la photo de profil -->
        <div class="updatePicture">
-           <label class="updatePicture__label" for="profil__picture">Modifier votre photo  <i class="fas fa-upload"></i> </label>
+           <label class="updatePicture__label" for="profil__picture">Modifier votre photo  <i class="far fa-edit"></i> </label>
            <input class="updatePicture__input" @change.prevent="uploadFile($event)" id="profil__picture"  type="file" accept="image/png, image/jpeg,image/jpg">
-           <button class="updatePicture__button" @click="fetchFile">Enregister  </button>
+           <button class="updatePicture__button" @click="fetchFile">Enregistrer  </button>
            <p v-if="this.updateSucces" class="updatePicture__message">Votre photo de profil a bien été modifiée !</p>
        </div>
        <div class="separation" ></div>
        <!-- bloc de supression du compte -->
        <div class="delete">
-           <button v-if="!deleteConfirmation" @click="deleteAccount" class="delete__button">Supprimer mon compte</button>
+           <button v-if="!deleteConfirmation" @click="deleteAccount" class="delete__button">Supprimer votre compte</button>
            <p class="delete__message" v-if="deleteConfirmation">Votre compte a bien été supprimé ! </p>
        </div>
        <!-- bloc d'erreur -->
@@ -165,6 +165,7 @@ Header{
     max-width: 80rem;
     padding: 3rem 0rem 1rem 0rem;
     margin: 2rem auto;
+    border-radius: 5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -185,7 +186,7 @@ Header{
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: blue;
+    color: $secondary;
     
         &__img{
             margin-bottom: 2rem;

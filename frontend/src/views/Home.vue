@@ -8,13 +8,13 @@
       <!-- liste des publications, itération sur la liste de poste du store  -->
       <div class="postList">
         <!-- composants publications , props objet post et index  -->
-        <post  class="post"
+        <Post  class="Post"
           v-for="(item,index) in this.postList"
           :key="item.post_id"
           :post="item"
           :index="index"
          
-        ></post>
+        ></Post>
       </div>
     </main>
   </div>
@@ -58,26 +58,30 @@ export default {
 
 // positionnement du header 
 Header{
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   position: sticky;
   top: 0px;
   z-index: 2;
   width: 100%;
 }
 
+
+
 main{
   z-index: 1;
-  max-width: 60rem;
+  max-width: 70rem;
   margin: auto;
 }
 
 // bloc liste de post
 .postList{
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   margin-bottom: 2rem;
-  .post{
+  
+}
+
+.Post{
   margin-bottom: 2rem;
-  }
 }
 
 </style>

@@ -15,7 +15,7 @@
           <div class="user">
               <img  class="user__profilPicture" height="50" width="50" :src="post.user_picture" alt="Image de profil ">
               <div  class="user__infos">
-                <p  class="user__fullName">{{capitalize(post.user_prenom,post.user_nom)}} {{index}}</p>
+                <p  class="user__fullName">{{capitalize(post.user_prenom,post.user_nom)}}</p>
                 <p class="user__date">Le {{date(post.post_date)}} </p>
               </div>
           </div>
@@ -311,6 +311,7 @@ export default {
 
     display: flex;
     flex-direction: column;
+    border-radius: 4rem;
     padding: 2rem 3rem 1rem 3rem;
     box-shadow: $box-shadow $border;
     &__container{
@@ -347,12 +348,14 @@ export default {
   }
   &__comment{
       width: 100%;
-      background-color: $textarea  ;
+      background-color: $textarea ;
       border: none;
       outline: none;
       padding: 1rem ;
       resize: none;
       border-radius: 1rem;
+      
+
   }
   &__date{
     font-size: 1.4rem;
@@ -402,6 +405,9 @@ export default {
     margin: 1rem 0rem;
     display: flex;
     justify-content: center;
+    &__img{
+      object-fit: contain;
+    }
     
 }
 
