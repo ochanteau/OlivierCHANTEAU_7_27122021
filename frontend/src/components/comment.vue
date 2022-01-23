@@ -150,6 +150,8 @@ export default {
       padding: 1rem ;
       resize: none;
       border-radius: 1rem;
+      word-wrap: break-word;
+      
   }
   &__date{
     font-size: 1.4rem;
