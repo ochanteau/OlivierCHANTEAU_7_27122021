@@ -120,7 +120,11 @@ export default {
 
 <style lang="scss" scoped>
 
-
+@mixin XS {
+    @media (max-width: 300px) {
+      @content;
+    }
+  }
 
 // formulaire de creation d une publication
 .form{
@@ -159,6 +163,9 @@ export default {
 // bloc de slection de l image et de publiation du post 
 .upload{
     display: flex;
+    @include XS {
+      flex-direction: column;
+    }
     justify-content:space-around;
     margin: 0.5rem 0rem;
     &__label{
@@ -166,6 +173,9 @@ export default {
       box-shadow: $box-shadow $border;
       border-radius: 1rem;
       cursor: pointer;
+      @include XS {
+      margin-bottom: 1rem;
+    }
     }
     &__input{
       display: none;
@@ -177,6 +187,9 @@ export default {
       box-shadow: $box-shadow $border;
       border: none;
       cursor: pointer;
+      @include XS {
+      padding: 1rem;
+    }
     }
   }
 

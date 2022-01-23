@@ -56,6 +56,29 @@ export default {
 
 <style lang="scss" scoped>
 
+// responsive
+@mixin XS {
+    @media (max-width: 300px) {
+      @content;
+    }
+  }
+@mixin S {
+    @media (max-width: 430px) {
+      @content;
+    }
+  }
+@mixin M{
+    @media (max-width: 620px) {
+      @content;
+    }
+  }
+  
+@mixin L{
+    @media (max-width: 715px) {
+      @content;
+    }
+  }
+
 // positionnement du header 
 Header{
   margin-bottom: 2rem;
@@ -71,6 +94,19 @@ main{
   z-index: 1;
   max-width: 70rem;
   margin: auto;
+  @include L {
+      max-width: 60rem;
+    }
+  @include M {
+      max-width: 50rem;
+    }
+  @include S {
+      max-width: 35rem;
+    }
+  @include XS {
+      max-width: 25rem;
+    }
+
 }
 
 // bloc liste de post

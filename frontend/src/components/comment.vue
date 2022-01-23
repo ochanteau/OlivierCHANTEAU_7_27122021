@@ -13,7 +13,7 @@
             </div>
             <!-- bloc update du commentaire -->
             <div v-if="this.user_id==comment.user_id||this.currentUser.droits_id==2" class="update ">
-                <i @click="openUpdateComment" class="fas fa-ellipsis-h update__i"></i>
+                <i tabindex="0" role="button" aria-label="ouvrir le menu de modification de la publication" @click="openUpdateComment" class="fas fa-ellipsis-h update__i"></i>
                 <div class="update__nav" v-if="openUpdate">
                     <p @click="switchUpdateIsOpen" v-if="this.user_id==comment.user_id" class="update__update"><i class="far fa-edit"></i>Modifier</p>
                     <p @click=" fetchDeletePost" class="update__delete"><i class="far fa-trash-alt"></i>Supprimer</p>

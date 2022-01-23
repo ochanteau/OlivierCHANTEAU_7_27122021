@@ -21,7 +21,7 @@
           </div>
           <!-- partie pour initier la MAJ ou la suppression du post -->
           <div v-if="this.user_id==post.user_id||this.currentUser.droits_id==2" class="update">
-            <i @click="openUpdatePost" class="fas fa-ellipsis-h"></i>
+            <i tabindex="0"  role="button" aria-label="ouvrir le menu de modification de la publication" @click="openUpdatePost" class="fas fa-ellipsis-h"></i>
             <div class="update__nav" v-if="isOpenPost">
               <p @click="updatePost" v-if="this.user_id==post.user_id" class="update__update"><i class="far fa-edit"></i>Modifier la publication</p>
               <p @click="fetchDeletePost" class="update__delete"><i class="far fa-trash-alt"></i> Supprimer la publication</p>
@@ -34,7 +34,7 @@
         </div>  
         <!-- partie avec la photo du post -->
         <div class="postPicture">
-          <img class="postPicture__img" height="300" width="500" :src="post.post_picture">
+          <img class="postPicture__img" height="300" width="500" :src="post.post_picture" alt="image de la publication">
         </div>
 
         <div class="separation"></div>
@@ -43,11 +43,11 @@
         <div class="numberContainer">
           <div  class="like" :class="{'like--check' : (this.checklike >=0) }">
             <span v-if="this.likeNumber>0" class="like__number">{{this.likeNumber}}</span> 
-            <i  @click="this.toggleLike"  class="fas fa-thumbs-up like__i"></i>
+            <i tabindex="0"  role="button" aria-label="aimer la publication"  @click="this.toggleLike"  class="fas fa-thumbs-up like__i"></i>
           </div>
           <div class=" toggle">
             <span v-if="this.CommentNumber>0" class=" toggle__number">{{this.CommentNumber}}</span>
-            <span @click="switchOpenCommentSection" class=" toggle__comment">Commentaires</span>
+            <span tabindex="0"  role="button" aria-label="ouvrir la section commentaire commentaire" @click="switchOpenCommentSection" class=" toggle__comment">Commentaires</span>
           </div>
         </div>
         <div class="separation"></div>
@@ -78,7 +78,7 @@
                   <p class="user__fullName">{{this.fullName}}</p>
                   <textarea  v-model="commentText" aria-label="texte du commentaire" maxlength="100" class="user__comment" placeholder="Votre commentaire ?"  cols="30" rows="2"></textarea>
               </div>
-              <i @click="fetchNewComment" class="fas fa-chevron-circle-right user__newComment"></i>
+              <i tabindex="0"  role="button" aria-label="enregistrer le commentaire" @click="fetchNewComment" class="fas fa-chevron-circle-right user__newComment"></i>
             </div>
             <p class="error" v-if="this.textValidation">Le texte ne doit pas contenir de caracteres speciaux</p>
 
@@ -304,7 +304,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+// responsive
+@mixin XS {
+    @media (max-width: 300px) {
+      @content;
+    }
+  }
+@mixin S {
+    @media (max-width: 430px) {
+      @content;
+    }
+  }
+@mixin M{
+    @media (max-width: 715px) {
+      @content;
+    }
+  }
+  
+@mixin L{
+    @media (max-width: 715px) {
+      @content;
+    }
+  }
 
 // bloc post
 .post{
@@ -349,6 +370,7 @@ export default {
   &__comment{
       width: 100%;
       background-color: $textarea ;
+      // text-align: justify;
       border: none;
       outline: none;
       padding: 1rem ;
@@ -364,9 +386,19 @@ export default {
   }
   &__newComment{
     position: absolute;
-    bottom: 20px;
+    bottom: 22px;
     font-size: 1.7rem;
     right:5px;
+    @include L {
+    bottom: 25px;
+    font-size: 1.6rem;
+    right:-3px;
+    }
+    @include M {
+    bottom: 25px;
+    font-size: 1.6rem;
+    right:-15px;
+    }
   }
   
 }
@@ -425,6 +457,9 @@ export default {
 
 .numberContainer{
   display: flex;
+  @include XS {
+      flex-direction: column;
+    }
  
 }
 

@@ -10,7 +10,7 @@
           <img  class="post__profilPicture" height="50" width="50" :src="post.user_picture" alt="Image de profil ">
           <textarea v-model="post_text"  aria-label="texte du post" maxlength="200" class="post__input"  cols="30" rows="3"></textarea>
           <!-- icone de cloture de la fenetre -->
-          <i @click="updatePost" class="far fa-window-close post__close"></i>
+          <i tabindex="0"  role="button" aria-label="quitter la fenetre de modification" @click="updatePost" class="far fa-window-close post__close"></i>
         </div>
         <!-- bloc affichage photo actuelle et preview de la nouvelle photo -->
         <div  class="postPicture">
