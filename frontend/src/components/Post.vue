@@ -365,7 +365,8 @@ export default {
   &__newComment{
     position: absolute;
     bottom: 20px;
-    right:-10px;
+    font-size: 1.7rem;
+    right:5px;
   }
   
 }

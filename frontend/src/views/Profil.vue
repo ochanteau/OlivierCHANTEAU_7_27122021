@@ -162,7 +162,7 @@ Header{
 }
 // bloc container
 .profil{
-    max-width: 80rem;
+    max-width: 70rem;
     padding: 3rem 0rem 1rem 0rem;
     margin: 2rem auto;
     border-radius: 5rem;
@@ -190,6 +190,9 @@ Header{
     
         &__img{
             margin-bottom: 2rem;
+            img{
+                object-fit: contain;
+            }
         }
         &__infos{
             font-size: 2.5rem;
