@@ -137,7 +137,7 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 1rem;
+        padding: 1rem ;
         border-radius: 10%;
          box-shadow: $box-shadow $border;
         &__button{
