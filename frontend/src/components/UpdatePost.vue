@@ -1,24 +1,30 @@
 <template>
   <div class="UpdatePost">
     
-      <!-- <i class="far fa-window-close post__close"></i> -->
+      <!-- overlay -->
       <div @click="updatePost" class="overlay"></div>
+      <!-- formulaire de modification du post -->
       <form role="form" class="form" >
+        <!-- bloc de saisie du texte -->
         <div class="post">
           <img  class="post__profilPicture" height="50" width="50" :src="post.user_picture" alt="Image de profil ">
           <textarea v-model="post_text"  aria-label="texte du post" maxlength="200" class="post__input"  cols="30" rows="3"></textarea>
+          <!-- icone de cloture de la fenetre -->
           <i @click="updatePost" class="far fa-window-close post__close"></i>
         </div>
+        <!-- bloc affichage photo actuelle et preview de la nouvelle photo -->
         <div  class="postPicture">
           <img v-if="this.preview"  class="postPicture__img" height="300" width="500" :src="this.preview">
           <img v-else class="postPicture__img" height="300" width="500" :src="post.post_picture">
         </div>
         <div class="separation"></div>
+        <!-- bloc de selection de la photo et d'enregistrement des changements -->
         <div class="upload">
           <label class="upload__label" for="update">Choisir une image <i class="fas fa-upload"></i></label>
           <input @change.prevent="upload($event)" id="update" class="upload__input" type="file">
           <button @click.prevent="fetchFile(post.post_id)" class="upload__button">Publier <i class="fas fa-chevron-circle-right"></i></button>
         </div>
+        <!-- bloc erreur -->
         <p class="error" v-if="this.missingFields">Le texte est obligatoire !</p>
         <p class="error" v-if="this.ErrorServer">Une erreur s'est produite</p>
         <p class="error" v-if="this.textValidation">Le texte ne doit pas contenir de caracteres speciaux</p>
@@ -32,7 +38,7 @@
 <script>
 import { mapState } from 'vuex';
 
-
+// import librairie axios
 const axios = require('axios');
 // ajout d'une URL de base aux requetes
 const instance = axios.create({baseURL: 'http://localhost:3000/api/post'});
@@ -40,9 +46,9 @@ const instance = axios.create({baseURL: 'http://localhost:3000/api/post'});
 export default {
     name:'UpdatePost',
     props:['post','index','updatePost','openUpdatePost'],
-    // components : {Header} ,
     data: function(){
         return {
+          // preview image avant enrefistrement
           preview : null,
           post_text:this.post.post_text,
           postPicture:null,
@@ -52,6 +58,7 @@ export default {
     },
     
     computed:{
+      // verification du nouveau texte de la publication
       textValidation  () {
         const regexp = /[^a-zA-Z0-9.,!_@#\- ]/;
         if (regexp.test(this.post_text)) { return true}
@@ -60,25 +67,21 @@ export default {
     ...mapState(['currentUser'])
     },
     methods:{
+    // recuperation de la nouvelle photo pour affichage avant enregistrement
      upload (e){
             const self = this;
             this.postPicture=e.target.files[0];
-            console.log(this.postPicture);
-            console.log(e.target.value)
-
             let reader = new FileReader();
-
             reader.onload = function (e) {
                 // get loaded data and render thumbnail.
                 self.preview = e.target.result;
             
             };
             // read the image file as a data URL.
-            reader.readAsDataURL(e.target.files[0]);
-            console.log(e.target.files[0])
-            
+            reader.readAsDataURL(e.target.files[0]);           
             
         },
+      // envoie des modifications apporté au post à la BDD et Maj du store
       fetchFile(post_id){
             this.missingFields=false;
             this.ErrorServer=false;
@@ -87,29 +90,26 @@ export default {
             else if ( !this.post_text || this.post_text=="") {this.missingFields=true}
             else {
                 instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
+                // verification si modification de l'image ou simplement du texte du post
                 if (this.postPicture) {
+                  // creation objet instance Form data et ajout image et text
                     let formData = new FormData();
                     const image = this.postPicture;
                     const post_text= JSON.stringify(this.post_text)
                     formData.append("image",image);
-                    // formData.append("post",this.post_text);
                     formData.append("post",post_text);
-
-                    console.log(post_text)
-                    // instance.defaults.headers.common['Authorization'] =`Bearer ${localStorage.getItem('token')}`;
-                  
+                    // envoie au serveur pour MAJ BDD
                     instance.put(`/${post_id}`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
                         .then(function(res){
-                            console.log(res.data);
                             const post ={...res.data, post_index:self.index} 
-                            console.log(post)
-                            // console.log(self.index)
+                            // mise à jour du store apres le retour ok du serveur
                             self.$store.commit("updatePost", post);
+                            // clean des variables
                             self.post_text=null;
                             self.previewPicture=null;
-                            // self.missingFields=false;
-                            // self.ErrorServer=false;
+                            // fermeture de la fenetre de mise a jour 
                             self.updatePost();
+                            // fermeture de l onglet de maj
                             self.openUpdatePost();
                             
                         })
@@ -119,23 +119,21 @@ export default {
                             console.log(err.response.data)
                             })
                 }
-
+                // cas ou seul le texte est modifié
                 else {
-                  console.log("coté obscur ok ")
                   const post_text = {text:this.post_text}
-                
+                  // envoie au serveur pour MAJ BDD
                   instance.put(`/${post_id}`, post_text)
                         .then(function(res){
-                            console.log(res.data);
                             const post ={...res.data, post_index:self.index} 
-                            console.log(post)
-                            // console.log(self.index)
+                            // mise à jour du store apres le retour ok du serveur
                             self.$store.commit("updatePost", post);
+                            // clean des variables
                             self.post_text=null;
                             self.previewPicture=null;
-                            // self.missingFields=false;
-                            // self.ErrorServer=false;
+                            // fermeture de la fenetre de mise a jour 
                             self.updatePost();
+                            // fermeture de l onglet de maj
                             self.openUpdatePost();
                             
                         })
@@ -164,6 +162,7 @@ Header{
   margin-bottom: 4rem;
 }
 
+// container
 .UpdatePost{
   max-width: 60rem;
   margin: auto;
@@ -179,24 +178,22 @@ Header{
   
 }
 
+// bloc formulaire de modification du post
+
 .form{
-  // padding: 2rem 2rem 1rem 2rem;
   box-shadow: $box-shadow $border;
   padding: 2rem 3rem 1rem 3rem;
   background-color: white;
   position: relative;
-  z-index: 3;
-  
-  
+  z-index: 3;  
 }
 
+//  bloc de saisie du texte
 .post{
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    // padding: 1.5rem 1rem;
- 
     &__profilPicture{
       border-radius: 50%;
       
@@ -205,7 +202,6 @@ Header{
     &__input{
       width: 80%;
       margin-left: 1.5rem;
-      // border-radius: 2rem;
       background-color: $textarea  ;
       border: none;
       outline: none;
@@ -214,25 +210,24 @@ Header{
       border-radius: 1rem;
      
     }
+    // icone de cloture de la fenetre
     &__close{
       position: absolute;
       top: 10px;
       right: 10px;
     }
     
-  }
+}
 
-  .postPicture{
+// bloc affichage photo actuelle et preview de la nouvelle photo 
+.postPicture{
     margin: 1rem 0rem;
     display: flex;
-   
     justify-content: center;
-    // &__img{
-      
-    // }
-  }
+}
 
-  .upload{
+//  bloc de selection de la photo et d'enregistrement des changements
+.upload{
     display: flex;
     justify-content:space-around;
     margin: 0.5rem 0rem;
@@ -263,6 +258,7 @@ Header{
   
 }
 
+//  overlay
 .overlay{
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
