@@ -19,7 +19,8 @@ $ npm install
 Create 'images' folder
 
 Create '.env' file with this template :  
-```MySQL_USER="your user name"  
+```
+MySQL_USER="your DB user name"  
 MySQL_PASS="your password"
 MySQL_HOST=localhost  
 MySQL_DATABASE=groupomania  
