@@ -158,6 +158,9 @@ export default {
     margin: 1rem 0rem;
     display: flex;
     justify-content: center;
+    &__img{
+      object-fit: contain;
+    }
 }
 
 // bloc de slection de l image et de publiation du post 

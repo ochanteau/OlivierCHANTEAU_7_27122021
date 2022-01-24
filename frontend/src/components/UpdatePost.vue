@@ -224,6 +224,9 @@ Header{
     margin: 1rem 0rem;
     display: flex;
     justify-content: center;
+    &__img{
+      object-fit: contain;
+    }
 }
 
 //  bloc de selection de la photo et d'enregistrement des changements
