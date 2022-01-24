@@ -20,11 +20,11 @@ Create 'images' folder
 
 Create '.env' file with this template :  
 ```
-MySQL_USER="your DB user name"  
-MySQL_PASS="your password"
+MySQL_USER="your_DB_user_name"  
+MySQL_PASS="your_password"
 MySQL_HOST=localhost  
 MySQL_DATABASE=groupomania  
-USER_TOKEN="your salt key"  
+USER_TOKEN="your_salt_key"  
 ```
 $npm start
   
