@@ -54,7 +54,7 @@ export default {
     computed:{
       // validation du texte du commentaire
       textValidation  () {
-      const regexp = /[^a-zA-Z0-9.,!_@#\- ]/;
+      const regexp = /[$^*<>``]/;
         if (regexp.test(this.newComment)) { return true}
         else {return false} 
     },

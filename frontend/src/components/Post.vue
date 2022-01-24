@@ -147,7 +147,7 @@ export default {
       },
       // verification du texte saisi par l'utilisateur
       textValidation  () {
-      const regexp = /[^a-zA-Z0-9.,!_@#\- ]/;
+      const regexp = /[$^*<>``]/;
       if (regexp.test(this.commentText)) { return true}
       else {return false} 
     },

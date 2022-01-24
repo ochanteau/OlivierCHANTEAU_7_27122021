@@ -57,7 +57,7 @@ export default {
     computed:{
       // validation du texte du post
        textValidation  () {
-       const regexp = /[^a-zA-Z0-9.,!_@#\- ]/;
+       const regexp = /[$^*<>``]/;
         if (regexp.test(this.post_text)) { return true}
         else {return false} 
     },

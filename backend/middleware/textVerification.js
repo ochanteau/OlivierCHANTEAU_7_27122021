@@ -7,7 +7,7 @@ const fs = require('fs');
 *   
 */ 
 function verifyText(text) {
-    if (!text || /[^a-zA-Z0-9.,!_@#\- ]/.test(text) ){return true}
+    if (!text || /[$^*<>``]/.test(text) ){return true}
     else {return false}
 }
 
