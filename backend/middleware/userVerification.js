@@ -1,6 +1,6 @@
 
 // regexp pour controler l'asbsence de caracteres spéciaux
-const regexpName = /[^a-zA-Z0-9 _-]/;
+const regexpName = /[^a-zA-Z0-9éèù _-]/;
 // regexp pour verifier la conformaité de l'adresse email
 const regexpEmail =/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 // regexp pour verifier que le mot de passe a bien 8 caracteres, un nombre, une minuscule, une majuscule

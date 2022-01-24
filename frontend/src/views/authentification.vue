@@ -168,7 +168,7 @@ export default {
     },
     // verification de l'absence de caracteres speciaux
     validatedNames  () {
-     const regexp = /[^a-zA-Z0-9 _-]/;
+     const regexp = /[^a-zA-Z0-9éèù _-]/;
       if (regexp.test(this.nom)  ||  regexp.test(this.prenom)) {
         return false
       }
