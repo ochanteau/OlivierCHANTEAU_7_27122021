@@ -113,8 +113,8 @@ exports.updatePicture =  (req, res) => {
       db.query(sql, user_id, function(err, results) {
         if (err){res.status(500).json({ err })}
         else {         
-          // recuperation du nom de l'ancienne image
-          const oldPicture = results[0].user_picture.split('/images/')[1];          
+            // recuperation du nom de l'ancienne image
+            const oldPicture = results[0].user_picture.split('/images/')[1];          
             // verification si l'ancienne image est l'image par défaut
             if (oldPicture=="profil.png") {
               // requete BDD sur la table user  pour mettre à jour l'url de l'image
@@ -135,7 +135,6 @@ exports.updatePicture =  (req, res) => {
                 db.query(sql, user_id, function(err, results) {
                     if (err){res.status(500).json({ err })}
                     else {
-                      console.log(results);
                       return res.status(200).json(user_picture);
                     }
                   })
