@@ -10,7 +10,7 @@ Then :
 $ Git clone https://github.com/ochanteau/OlivierCHANTEAU_7_27122021.git
 
 ## DATABASE
-Use the config file to configure the database  
+Use 'Groupomania_config.sql' file to configure the database  
 
 ## BACKEND  
 $ cd backend    
