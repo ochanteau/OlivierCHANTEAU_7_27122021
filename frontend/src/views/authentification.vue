@@ -1,6 +1,6 @@
 <template>
   <div  role ="main" class="auth">
-    <div role="header" class="auth__header">
+    <div class="auth__header">
     <img height="100" width="100"    src="../assets/images/icon.svg" alt="logo groupomania">
     <h1 class="auth__h1">Groupomania</h1>
     </div>

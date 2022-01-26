@@ -47,7 +47,7 @@
           </div>
           <div class=" toggle">
             <span v-if="this.CommentNumber>0" class=" toggle__number">{{this.CommentNumber}}</span>
-            <span tabindex="0"  role="button" aria-label="ouvrir la section commentaire commentaire" @click="switchOpenCommentSection" class=" toggle__comment">Commentaires</span>
+            <span tabindex="0"  role="button" aria-label="ouvrir la section commentaire" @click="switchOpenCommentSection" class=" toggle__comment">Commentaires</span>
           </div>
         </div>
         <div class="separation"></div>
