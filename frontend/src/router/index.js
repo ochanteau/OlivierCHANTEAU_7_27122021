@@ -8,7 +8,6 @@ import Profil from '../views/Profil.vue'
 // import du store
 import store from '../store/index';
 
-// attention a supprimer le getters et a le remplacer par le state
 
 const routes = [
   // route vers la vue d'authentification
@@ -47,7 +46,7 @@ const routes = [
       if (store.getters.isLoggedIn) { next()}
       else {router.push("/")}
     }
-    // est ce que j utilise le getters ou pas je vois pas l interet en l espece 
+ 
    
   },
   // match de l'ensemble des autres routes
