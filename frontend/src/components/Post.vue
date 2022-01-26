@@ -95,9 +95,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import comment from '../components/comment.vue'
+import comment from './Comment.vue'
 import { mapGetters } from 'vuex';
-import updatePost from '../components/UpdatePost.vue'
+import updatePost from './UpdatePost.vue'
 // import module Dayjs pour la gestion de l'affichage des dates 
 
 import dayjs from 'dayjs'
