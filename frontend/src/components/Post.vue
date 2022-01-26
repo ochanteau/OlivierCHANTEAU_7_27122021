@@ -370,7 +370,6 @@ export default {
   &__comment{
       width: 100%;
       background-color: $textarea ;
-      // text-align: justify;
       border: none;
       outline: none;
       padding: 1rem ;
@@ -432,7 +431,6 @@ export default {
   margin: 1rem 0rem 0.5rem 0rem;
   &__p{
     max-width: 100%;
-    // word-wrap: break-word;
     word-wrap: break-word;
   }
 
